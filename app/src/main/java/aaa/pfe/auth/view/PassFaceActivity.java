@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import aaa.pfe.auth.R;
 
-public class PassFace extends AppCompatActivity {
+public class PassFaceActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

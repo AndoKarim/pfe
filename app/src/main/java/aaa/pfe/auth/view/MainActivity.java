@@ -1,4 +1,4 @@
-package aaa.pfe.auth;
+package aaa.pfe.auth.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import aaa.pfe.auth.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +88,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_pattern) {
 
         } else if (id == R.id.nav_passface) {
-
+            Intent i = new Intent(MainActivity.this,PassFaceActivity.class);
+            startActivity(i);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
