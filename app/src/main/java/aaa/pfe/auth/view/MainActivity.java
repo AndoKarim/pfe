@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_pattern) {
 
+            Intent i = new Intent(MainActivity.this,SchemePatternActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_passface) {
             Intent i = new Intent(MainActivity.this,PassFaceActivity.class);
             startActivity(i);
