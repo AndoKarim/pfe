@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
      <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_pin"
             android:icon="@drawable/ic_menu_camera"
             android:title="PIN CODE" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_pattern"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Scheme Pattern" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_passface"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Passface" />
 </menu>
