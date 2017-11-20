@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SchemePatternActivity"></activity>
+        <activity android:name=".view.SchemePatternActivity"></activity>
         <activity android:name=".view.PassFaceActivity"></activity>
     </application>
 

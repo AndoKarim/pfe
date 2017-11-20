@@ -1,7 +1,9 @@
-package aaa.pfe.auth;
+package aaa.pfe.auth.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import aaa.pfe.auth.R;
 
 public class SchemePatternActivity extends AppCompatActivity {
 
