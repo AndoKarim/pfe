@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.view.passface.PassFaceActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
