@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.passface.PassFaceActivity"></activity>
+        <activity android:name=".view.SchemePatternActivity"></activity>
     </application>
 
 </manifest>
