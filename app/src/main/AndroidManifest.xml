@@ -19,8 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.passface.PassFaceActivity"></activity>
-        <activity android:name=".view.SchemePatternActivity"></activity>
+        <activity android:name=".view.passface.PassFaceActivity" />
+        <activity android:name=".view.SchemePatternActivity" />
+        <activity android:name=".view.passface.PassFaceAdminActivity"></activity>
     </application>
 
 </manifest>
