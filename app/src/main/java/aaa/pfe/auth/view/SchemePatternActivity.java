@@ -1,7 +1,7 @@
 package aaa.pfe.auth.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import aaa.pfe.auth.R;
 
