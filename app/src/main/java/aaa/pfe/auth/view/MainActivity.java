@@ -8,12 +8,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.passface.PassFaceActivity;
-import aaa.pfe.auth.view.pincode.PinCodeActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,9 +42,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_pin) {
-            Log.i("Here","here");
-            Intent i = new Intent(MainActivity.this,PinCodeActivity.class);
-            startActivity(i);
+            // Handle the camera action
         } else if (id == R.id.nav_pattern) {
 
             Intent i = new Intent(MainActivity.this,SchemePatternActivity.class);
