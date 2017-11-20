@@ -1,7 +1,8 @@
 package aaa.pfe.auth.view.passface;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -41,6 +42,12 @@ public class PassFaceActivity extends AppCompatActivity {
             // do something here
             Toast t =Toast.makeText(this,"Pull From Server",Toast.LENGTH_SHORT);
             t.show();
+        }
+
+        if (id == R.id.adminPanel) {
+            Intent i = new Intent(PassFaceActivity.this, PassFaceAdminActivity.class);
+            startActivity(i);
+
         }
         return super.onOptionsItemSelected(item);
     }
