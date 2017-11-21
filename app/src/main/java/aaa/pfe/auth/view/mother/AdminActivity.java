@@ -19,7 +19,7 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
-    public void saveChanges(View v) {
+    public void retrieveChanges(View v) {
         Toast t = Toast.makeText(this, "Saved", Toast.LENGTH_SHORT);
         t.show();
     }
