@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_pin) {
-
-            // Handle the camera action
+            Intent i = new Intent(MainActivity.this,PinCodeActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_pattern) {
 
             Intent i = new Intent(MainActivity.this,SchemePatternActivity.class);

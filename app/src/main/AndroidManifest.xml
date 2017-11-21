@@ -21,6 +21,12 @@
         </activity>
         <activity android:name=".view.passface.PassFaceActivity" />
         <activity android:name=".view.SchemePatternActivity" />
+        <activity
+            android:name=".view.passface.PassFaceAdminActivity"
+            android:label="@string/title_activity_pass_face_admin"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.pincode.PinCodeActivity" />
+        <activity android:name=".view.pincode.PinCodeAdminActivity"></activity>
         <activity android:name=".view.passface.PassFaceAdminActivity" />
     </application>
 
