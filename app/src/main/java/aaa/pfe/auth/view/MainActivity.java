@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.passface.PassFaceActivity;
+import aaa.pfe.auth.view.pincode.PinCodeActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_pin) {
-            // Handle the camera action
+            Intent i = new Intent(MainActivity.this,PinCodeActivity.class);
+            startActivity(i);
         } else if (id == R.id.nav_pattern) {
 
             Intent i = new Intent(MainActivity.this,SchemePatternActivity.class);
