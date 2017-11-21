@@ -6,4 +6,37 @@
     android:layout_height="match_parent"
     tools:context="aaa.pfe.auth.view.pincode.PinCodeActivity">
 
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="256dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Enter your PIN"
+        android:textColor="@color/white"
+        android:textSize="34sp" />
+
+    <aaa.pfe.auth.view.pincodeview.IndicatorDots
+        android:id="@+id/indicator_dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        />
+    <aaa.pfe.auth.view.pincodeview.PinLockView
+        android:id="@+id/pin_lock_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/indicator_dots"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        app:keypadButtonSize="72dp"
+        app:keypadShowDeleteButton="true"
+        app:keypadTextColor="@color/white"
+        app:keypadTextSize="18dp" />
+
 </android.support.constraint.ConstraintLayout>
