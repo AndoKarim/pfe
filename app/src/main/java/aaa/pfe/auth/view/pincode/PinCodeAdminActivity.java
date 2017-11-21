@@ -1,11 +1,7 @@
 package aaa.pfe.auth.view.pincode;
 
-import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
 import aaa.pfe.auth.R;
 
@@ -16,7 +12,7 @@ public class PinCodeAdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face_admin);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.save);
+      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.save);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -29,7 +25,7 @@ public class PinCodeAdminActivity extends AppCompatActivity {
                     }
                 }, 1000);
             }
-        });
+        });*/
 
 
 
