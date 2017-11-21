@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <!--> Pattern_lock <-->
+    <color name="white">#FFFF</color>
+    <color name="pomegranate">#f4511e</color>
 </resources>
