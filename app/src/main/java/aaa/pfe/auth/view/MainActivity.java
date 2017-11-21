@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.passface.PassFaceActivity;
+import aaa.pfe.auth.view.pincode.PinCodeActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
