@@ -1,7 +1,6 @@
 package aaa.pfe.auth.view.passface;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,9 +13,6 @@ public class PassFaceAdminActivity extends AdminActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face_admin);
-
-
-        Log.d("salut", "slaut");
 
 
         //getSupportActionBar().setTitle("Admin");
@@ -34,6 +30,9 @@ public class PassFaceAdminActivity extends AdminActivity {
     public void retrieveChanges(View v) {
         Toast t = Toast.makeText(this, "SavePassface", Toast.LENGTH_SHORT);
         t.show();
+        String changes = "";
+
+        sendServer(changes);
     }
 
 

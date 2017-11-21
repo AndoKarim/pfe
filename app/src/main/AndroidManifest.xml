@@ -24,8 +24,8 @@
         <activity android:name=".view.schemepattern.SchemePatternActivity" />
         <activity android:name=".view.passface.PassFaceAdminActivity" />
         <activity android:name=".view.pincode.PinCodeActivity" />
-        <activity android:name=".view.pincode.PinCodeAdminActivity"></activity>
-        <activity android:name="aaa.pfe.auth.view.mother.AdminActivity"></activity>
+        <activity android:name=".view.pincode.PinCodeAdminActivity" />
+        <activity android:name="aaa.pfe.auth.view.mother.AdminActivity" />
 
     </application>
 </manifest>

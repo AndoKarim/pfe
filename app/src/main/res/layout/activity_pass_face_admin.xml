@@ -5,5 +5,7 @@
     android:layout_height="match_parent"
     tools:context="aaa.pfe.auth.view.passface.PassFaceAdminActivity">
 
+
+    <!-- Inheritance of the layout with the include of it, you can add other components under -->
     <include layout="@layout/activity_admin" />
 </RelativeLayout>
