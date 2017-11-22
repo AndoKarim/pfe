@@ -40,6 +40,7 @@
 	        <enum name="fixed" value="0" />
 	        <enum name="fill" value="1" />
 	        <enum name="fillWithAnimation" value="2" />
+			<enum name="fillWithAnimationAndNumber" value="3" />
 	    </attr>
 	</declare-styleable>
 </resources>
