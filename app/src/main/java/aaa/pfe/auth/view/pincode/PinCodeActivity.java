@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import aaa.pfe.auth.R;
@@ -16,6 +18,9 @@ import aaa.pfe.auth.view.pincodeview.PinLockView;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
+
+    private boolean onChangingCode = false;
+    private Button changeButton;
 
     private PinLockView mPinLockView;
     private IndicatorDots mIndicatorDots;
@@ -42,6 +47,8 @@ public class PinCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin_code);
 
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Pincode");
 
@@ -62,6 +69,20 @@ public class PinCodeActivity extends AppCompatActivity {
 
         mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
         //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
+
+        changeButton = (Button) findViewById(R.id.change_pin);
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!onChangingCode) {
+                    changeButton.setText("Annuler");
+                    onChangingCode = true;
+                }else{
+                    changeButton.setText("Change");
+                    onChangingCode = false;
+                }
+            }
+        });
     }
 
     @Override
