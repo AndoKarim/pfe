@@ -8,4 +8,6 @@
 
     <!-- Inheritance of the layout with the include of it, you can add other components under -->
     <include layout="@layout/activity_admin" />
+
+
 </RelativeLayout>

@@ -14,9 +14,6 @@ public class PassFaceAdminActivity extends AdminActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face_admin);
 
-
-        //getSupportActionBar().setTitle("Admin");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -36,4 +33,7 @@ public class PassFaceAdminActivity extends AdminActivity {
     }
 
 
+
 }
+
+
