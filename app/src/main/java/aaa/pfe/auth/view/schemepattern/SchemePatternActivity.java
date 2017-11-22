@@ -1,5 +1,6 @@
 package aaa.pfe.auth.view.schemepattern;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +18,11 @@ import aaa.pfe.auth.view.patternlockview.utils.PatternLockUtils;
 public class SchemePatternActivity extends AppCompatActivity {
 
 
+
+
+    /*
+    TODO : modifier le nombre min. le nombre max.
+     */
     private PatternLockView mPatternLockView;
 
     private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
@@ -77,6 +83,12 @@ public class SchemePatternActivity extends AppCompatActivity {
             // do something here
             Toast t =Toast.makeText(this,"Pull From Server",Toast.LENGTH_SHORT);
             t.show();
+        }
+
+        if (id == R.id.adminPanel) {
+            Intent i = new Intent(SchemePatternActivity.this, SchemeAdminActivity.class);
+            startActivity(i);
+
         }
         return super.onOptionsItemSelected(item);
     }

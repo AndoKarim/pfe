@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".view.passface.PassFaceActivity" />
         <activity android:name=".view.schemepattern.SchemePatternActivity" />
+        <activity android:name=".view.schemepattern.SchemeAdminActivity" />
         <activity android:name=".view.passface.PassFaceAdminActivity" />
         <activity android:name=".view.pincode.PinCodeActivity" />
         <activity android:name=".view.pincode.PinCodeAdminActivity" />
