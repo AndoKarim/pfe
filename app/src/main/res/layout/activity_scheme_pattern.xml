@@ -14,7 +14,8 @@
         app:aspectRatio="square"
         app:aspectRatioEnabled="true"
         app:dotAnimationDuration="150"
-        app:dotCount="4"/>
+        app:dotCount="3"
+        app:dotCount2="4"/>
 
     <Button
         android:id="@+id/changeSchemeButton"

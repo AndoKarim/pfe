@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.List;
 
@@ -52,8 +50,7 @@ public class SchemePatternActivity extends AppCompatActivity {
         public void onComplete(List<PatternLockView.Dot> pattern) {
             Log.d(getClass().getName(), "Pattern complete: " +
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
-            String schema = PatternLockUtils.patternToString(mPatternLockView, pattern);
-            String result = new String(Hex.encodeHex(DigestUtils.sha(schema)));
+            String result = PatternLockUtils.patternToSha1(mPatternLockView, pattern);
 
             if(onChangesCode){
 
@@ -77,7 +74,6 @@ public class SchemePatternActivity extends AppCompatActivity {
                 }
             }
         }
-
         @Override
         public void onCleared() {
             Log.d(getClass().getName(), "Pattern has been cleared");
@@ -92,7 +88,7 @@ public class SchemePatternActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("SchemePattern");
 
 
-        sharedPreferences = getBaseContext().getSharedPreferences("PassPreferences", MODE_PRIVATE);
+        sharedPreferences = getBaseContext().getSharedPreferences("SchemePreferences", MODE_PRIVATE);
 
         if (sharedPreferences.contains("schemePatternPass")){
             Toast.makeText(this, "Already saved :" + sharedPreferences.getString("schemePatternPass", null), Toast.LENGTH_SHORT).show();
