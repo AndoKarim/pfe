@@ -1,7 +1,10 @@
 package aaa.pfe.auth.view.schemepattern;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.List;
 
@@ -28,6 +34,7 @@ public class SchemePatternActivity extends AppCompatActivity {
     private PatternLockView mPatternLockView;
     private Button changeButton;
     private boolean onChangesCode=false;
+    SharedPreferences sharedPreferences;
 
     private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
@@ -45,6 +52,30 @@ public class SchemePatternActivity extends AppCompatActivity {
         public void onComplete(List<PatternLockView.Dot> pattern) {
             Log.d(getClass().getName(), "Pattern complete: " +
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
+            String schema = PatternLockUtils.patternToString(mPatternLockView, pattern);
+            String result = new String(Hex.encodeHex(DigestUtils.sha(schema)));
+
+            if(onChangesCode){
+
+                Log.d("Save pattern sha1",result);
+                sharedPreferences
+                        .edit()
+                        .putString("schemePatternPass", result)
+                        .apply();
+                setChangesButton();
+                Toast.makeText(SchemePatternActivity.this, "Password saved", Toast.LENGTH_SHORT).show();
+                mPatternLockView.clearPattern();
+
+            }else{
+                if (sharedPreferences.contains("schemePatternPass")){
+                    String savedPass = sharedPreferences.getString("schemePatternPass", null);
+                    if(savedPass.equals(result)){
+                        Toast.makeText(SchemePatternActivity.this, "Correct password", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(SchemePatternActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
         }
 
         @Override
@@ -60,6 +91,26 @@ public class SchemePatternActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("SchemePattern");
 
+
+        sharedPreferences = getBaseContext().getSharedPreferences("PassPreferences", MODE_PRIVATE);
+
+        if (sharedPreferences.contains("schemePatternPass")){
+            Toast.makeText(this, "Already saved :" + sharedPreferences.getString("schemePatternPass", null), Toast.LENGTH_SHORT).show();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No password are registered, you will now register one!")
+                    .setTitle("New password");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    setChangesButton();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        }
+
         mPatternLockView = (PatternLockView) findViewById(R.id.pattern_lock_view);
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
 
@@ -67,13 +118,7 @@ public class SchemePatternActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!onChangesCode) {
-                    changeButton.setText("Annuler");
-                    onChangesCode=true;
-                }else{
-                    changeButton.setText("Change");
-                    onChangesCode=false;
-                }
+                setChangesButton();
             }
         });
     }
@@ -112,7 +157,13 @@ public class SchemePatternActivity extends AppCompatActivity {
     }
 
 
-    public void setChanges(View view) {
-
+    public void setChangesButton() {
+        if(onChangesCode){
+            changeButton.setText("Change");
+            onChangesCode=false;
+        }else{
+            changeButton.setText("Annuler");
+            onChangesCode=true;
+        }
     }
 }
