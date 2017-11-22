@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class SchemePatternActivity extends AppCompatActivity {
     TODO : modifier le nombre min. le nombre max.
      */
     private PatternLockView mPatternLockView;
+    private Button changeButton;
+    private boolean onChangesCode=false;
 
     private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
         @Override
@@ -58,6 +62,20 @@ public class SchemePatternActivity extends AppCompatActivity {
 
         mPatternLockView = (PatternLockView) findViewById(R.id.pattern_lock_view);
         mPatternLockView.addPatternLockListener(mPatternLockViewListener);
+
+        changeButton = (Button) findViewById(R.id.changeSchemeButton);
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!onChangesCode) {
+                    changeButton.setText("Annuler");
+                    onChangesCode=true;
+                }else{
+                    changeButton.setText("Change");
+                    onChangesCode=false;
+                }
+            }
+        });
     }
 
 
@@ -91,5 +109,10 @@ public class SchemePatternActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void setChanges(View view) {
+
     }
 }
