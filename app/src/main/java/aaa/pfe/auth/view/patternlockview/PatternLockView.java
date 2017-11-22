@@ -85,6 +85,7 @@ public class PatternLockView extends View {
     }
 
     private static final int DEFAULT_PATTERN_DOT_COUNT = 3;
+    private static final int DEFAULT_PATTERN_DOT_COUNT2 = 4;
     private static final boolean PROFILE_DRAWING = false;
 
     /**
@@ -109,6 +110,7 @@ public class PatternLockView extends View {
 
     // Made static so that the static inner class can use it
     private static int sDotCount;
+    private static int sDotCount2;
 
     private boolean mAspectRatioEnabled;
     private int mAspectRatio;
@@ -166,6 +168,8 @@ public class PatternLockView extends View {
         try {
             sDotCount = typedArray.getInt(R.styleable.PatternLockView_dotCount,
                     DEFAULT_PATTERN_DOT_COUNT);
+            sDotCount2 = typedArray.getInt(R.styleable.PatternLockView_dotCount2,
+                    DEFAULT_PATTERN_DOT_COUNT2);
             mAspectRatioEnabled = typedArray.getBoolean(R.styleable.PatternLockView_aspectRatioEnabled,
                     false);
             mAspectRatio = typedArray.getInt(R.styleable.PatternLockView_aspectRatio,
@@ -192,12 +196,12 @@ public class PatternLockView extends View {
         }
 
         // The pattern will always be symmetrical
-        mPatternSize = sDotCount * sDotCount;
+        mPatternSize = sDotCount * sDotCount2;
         mPattern = new ArrayList<>(mPatternSize);
-        mPatternDrawLookup = new boolean[sDotCount][sDotCount];
+        mPatternDrawLookup = new boolean[sDotCount2][sDotCount];
 
-        mDotStates = new DotState[sDotCount][sDotCount];
-        for (int i = 0; i < sDotCount; i++) {
+        mDotStates = new DotState[sDotCount2][sDotCount];
+        for (int i = 0; i < sDotCount2; i++) {
             for (int j = 0; j < sDotCount; j++) {
                 mDotStates[i][j] = new DotState();
                 mDotStates[i][j].mSize = mDotNormalSize;
@@ -311,7 +315,7 @@ public class PatternLockView extends View {
         currentPath.rewind();
 
         // Draw the dots
-        for (int i = 0; i < sDotCount; i++) {
+        for (int i = 0; i < sDotCount2; i++) {
             float centerY = getCenterYForRow(i);
             for (int j = 0; j < sDotCount; j++) {
                 DotState dotState = mDotStates[i][j];
@@ -380,7 +384,7 @@ public class PatternLockView extends View {
         mViewWidth = adjustedWidth / (float) sDotCount;
 
         int adjustedHeight = height - getPaddingTop() - getPaddingBottom();
-        mViewHeight = adjustedHeight / (float) sDotCount;
+        mViewHeight = adjustedHeight / (float) sDotCount2;
     }
 
     @Override
@@ -487,6 +491,9 @@ public class PatternLockView extends View {
     public int getDotCount() {
         return sDotCount;
     }
+    public int getDotCount2() {
+        return sDotCount2;
+    }
 
     public boolean isAspectRatioEnabled() {
         return mAspectRatioEnabled;
@@ -572,14 +579,15 @@ public class PatternLockView extends View {
         invalidate();
     }
 
-    public void setDotCount(int dotCount) {
+    public void setDotCount(int dotCount, int dotCount2) {
         sDotCount = dotCount;
-        mPatternSize = sDotCount * sDotCount;
+        sDotCount2 = dotCount2;
+        mPatternSize = sDotCount * sDotCount2;
         mPattern = new ArrayList<>(mPatternSize);
-        mPatternDrawLookup = new boolean[sDotCount][sDotCount];
+        mPatternDrawLookup = new boolean[sDotCount2][sDotCount];
 
-        mDotStates = new DotState[sDotCount][sDotCount];
-        for (int i = 0; i < sDotCount; i++) {
+        mDotStates = new DotState[sDotCount2][sDotCount];
+        for (int i = 0; i < sDotCount2; i++) {
             for (int j = 0; j < sDotCount; j++) {
                 mDotStates[i][j] = new DotState();
                 mDotStates[i][j].mSize = mDotNormalSize;
@@ -622,7 +630,7 @@ public class PatternLockView extends View {
     public void setDotNormalSize(@Dimension int dotNormalSize) {
         mDotNormalSize = dotNormalSize;
 
-        for (int i = 0; i < sDotCount; i++) {
+        for (int i = 0; i < sDotCount2; i++) {
             for (int j = 0; j < sDotCount; j++) {
                 mDotStates[i][j] = new DotState();
                 mDotStates[i][j].mSize = mDotNormalSize;
@@ -759,7 +767,7 @@ public class PatternLockView extends View {
     }
 
     private void clearPatternDrawLookup() {
-        for (int i = 0; i < sDotCount; i++) {
+        for (int i = 0; i < sDotCount2; i++) {
             for (int j = 0; j < sDotCount; j++) {
                 mPatternDrawLookup[i][j] = false;
             }
@@ -930,7 +938,7 @@ public class PatternLockView extends View {
         float hitSize = squareHeight * mHitFactor;
 
         float offset = getPaddingTop() + (squareHeight - hitSize) / 2f;
-        for (int i = 0; i < sDotCount; i++) {
+        for (int i = 0; i < sDotCount2; i++) {
             float hitTop = offset + squareHeight * i;
             if (y >= hitTop && y <= hitTop + hitSize) {
                 return i;
@@ -1055,7 +1063,7 @@ public class PatternLockView extends View {
     }
 
     private void cancelLineAnimations() {
-        for (int i = 0; i < sDotCount; i++) {
+        for (int i = 0; i < sDotCount2; i++) {
             for (int j = 0; j < sDotCount; j++) {
                 DotState state = mDotStates[i][j];
                 if (state.mLineAnimator != null) {
@@ -1148,10 +1156,10 @@ public class PatternLockView extends View {
         private static Dot[][] sDots;
 
         static {
-            sDots = new Dot[sDotCount][sDotCount];
+            sDots = new Dot[sDotCount2][sDotCount];
 
             // Initializing the dots
-            for (int i = 0; i < sDotCount; i++) {
+            for (int i = 0; i < sDotCount2; i++) {
                 for (int j = 0; j < sDotCount; j++) {
                     sDots[i][j] = new Dot(i, j);
                 }
@@ -1193,13 +1201,13 @@ public class PatternLockView extends View {
          * Gets a cell from its identifier
          */
         public static synchronized Dot of(int id) {
-            return of(id / sDotCount, id % sDotCount);
+            return of(id / sDotCount, id % sDotCount2);
         }
 
         private static void checkRange(int row, int column) {
-            if (row < 0 || row > sDotCount - 1) {
+            if (row < 0 || row > sDotCount2 - 1) {
                 throw new IllegalArgumentException("mRow must be in range 0-"
-                        + (sDotCount - 1));
+                        + (sDotCount2 - 1));
             }
             if (column < 0 || column > sDotCount - 1) {
                 throw new IllegalArgumentException("mColumn must be in range 0-"

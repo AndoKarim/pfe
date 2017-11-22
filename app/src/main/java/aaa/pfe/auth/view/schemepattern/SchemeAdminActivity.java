@@ -1,7 +1,6 @@
 package aaa.pfe.auth.view.schemepattern;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,10 +18,6 @@ public class SchemeAdminActivity extends AdminActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scheme_admin);
             getSupportActionBar().setTitle("Admin SchemePattern");
-
-
-        Log.d("salut", "slaut");
-
 
         //getSupportActionBar().setTitle("Admin");
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
