@@ -23,17 +23,17 @@ public class PinCodeActivity extends AppCompatActivity {
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
         public void onComplete(String pin) {
-            Log.d(TAG, "Pin complete: " + pin);
+            Log.i(TAG, "Pin complete: " + pin);
         }
 
         @Override
         public void onEmpty() {
-            Log.d(TAG, "Pin empty");
+            Log.i(TAG, "Pin empty");
         }
 
         @Override
         public void onPinChange(int pinLength, String intermediatePin) {
-            Log.d(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
+            Log.i(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
         }
     };
 
@@ -53,13 +53,15 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
-        //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4});
-        //mPinLockView.enableLayoutShuffling();
+        //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
+        //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
 
-        mPinLockView.setPinLength(4);
+        mPinLockView.setPinLength(5);
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
 
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
+
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
+        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
     }
 
     @Override
