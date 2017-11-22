@@ -15,11 +15,15 @@ import aaa.pfe.auth.R;
 public class ImageAdapter extends BaseAdapter {
     private final String[] mobileValues;
     private Context context;
+    private boolean shuffle = true;
 
     public ImageAdapter(Context context, String[] mobileValues) {
         this.context = context;
 
-        this.mobileValues = shuffleArray(mobileValues);
+        if (shuffle)
+            this.mobileValues = shuffleArray(mobileValues);
+        else
+            this.mobileValues = mobileValues;
     }
 
     public static int getImageId(Context context, String imageName) {
