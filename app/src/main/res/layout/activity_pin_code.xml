@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="aaa.pfe.auth.view.pincode.PinCodeActivity">
+
 
     <TextView
         android:id="@+id/text"
@@ -16,7 +17,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:text="Enter your PIN"
-        android:textColor="@color/white"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="34sp" />
 
     <aaa.pfe.auth.view.pincodeview.IndicatorDots
@@ -37,6 +38,7 @@
         app:keypadButtonSize="72dp"
         app:keypadShowDeleteButton="true"
         app:keypadTextColor="@color/white"
-        app:keypadTextSize="18dp" />
+        app:keypadTextSize="18dp"
+        app:pinLength="5"  />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
