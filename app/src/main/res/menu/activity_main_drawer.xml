@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
      <item
             android:id="@+id/nav_pin"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="PIN CODE" />
+            android:icon="@drawable/ic_pin"
+            android:title="Pin Code" />
         <item
             android:id="@+id/nav_pattern"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_pattern"
             android:title="Scheme Pattern" />
         <item
             android:id="@+id/nav_passface"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_gallery"
             android:title="Passface" />
 </menu>

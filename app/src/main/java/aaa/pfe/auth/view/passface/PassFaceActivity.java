@@ -59,6 +59,33 @@ public class PassFaceActivity extends AppCompatActivity {
 
         lastPicsChosen = new ArrayList<>();
 
+        saveButton = (Button) findViewById(R.id.saveButton);
+        changeButton = (Button) findViewById(R.id.changeButton);
+        submitButton = (Button) findViewById(R.id.submitButton);
+        setupListeners();
+
+        sharedPreferences = getApplicationContext().getSharedPreferences("PassFacePreferences", MODE_PRIVATE);
+        showButtons();
+
+
+    }
+
+    //What kind of buttons we show, in function of an existing password or not.
+
+    private void showButtons() {
+        if (!sharedPreferences.contains("Password"))
+            saveButton.setVisibility(View.VISIBLE);
+        else {
+            changeButton.setVisibility(View.VISIBLE);
+            submitButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    //Method to set up all the click listeners of our view
+    private void setupListeners() {
+
+        //Handle the click on one image
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -88,18 +115,7 @@ public class PassFaceActivity extends AppCompatActivity {
             }
         });
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("PassFacePreferences", MODE_PRIVATE);
-
-        saveButton = (Button) findViewById(R.id.saveButton);
-        changeButton = (Button) findViewById(R.id.changeButton);
-        submitButton = (Button) findViewById(R.id.submitButton);
-
-        if (!sharedPreferences.contains("Password"))
-            saveButton.setVisibility(View.VISIBLE);
-        else {
-            changeButton.setVisibility(View.VISIBLE);
-            submitButton.setVisibility(View.VISIBLE);
-        }
+        //Handle the Save button when we setup a new password
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +132,8 @@ public class PassFaceActivity extends AppCompatActivity {
             }
         });
 
+
+        //Handle the submit button when you want to test a Password
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +148,7 @@ public class PassFaceActivity extends AppCompatActivity {
             }
         });
 
+        //If you forgot your password, you click on that to change the password
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,6 +158,7 @@ public class PassFaceActivity extends AppCompatActivity {
                 saveButton.setVisibility(View.VISIBLE);
             }
         });
+
 
     }
 

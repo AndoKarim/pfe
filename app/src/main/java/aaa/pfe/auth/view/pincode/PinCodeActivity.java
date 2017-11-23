@@ -1,9 +1,11 @@
 package aaa.pfe.auth.view.pincode;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +22,7 @@ import aaa.pfe.auth.view.pincodeview.PinLockView;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
-    public static final String PREFERENCES = "PassPreferences";
+    public static final String PREFERENCES = "PinPreferences";
 
     private boolean onChangingCode = false;
     private Button changeButton;
@@ -28,7 +30,7 @@ public class PinCodeActivity extends AppCompatActivity {
     private PinLockView mPinLockView;
     private IndicatorDots mIndicatorDots;
 
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     private PinLockListener mPinLockListener = new PinLockListener() {
@@ -42,22 +44,26 @@ public class PinCodeActivity extends AppCompatActivity {
             CharSequence resultPin;
 
             if (!onChangingCode) {
-                if (sharedpreferences.getString("pincode",null).equals(pin)) {
-                    //Correct PIN
-                    resultPin = "Correct Pin!";
+                if (!sharedPreferences.contains("pincode")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PinCodeActivity.this);
+                    showAlertNoCode(builder);
+                }else {
+                    if (sharedPreferences.getString("pincode", null).equals(pin)) {
+                        //Correct PIN
+                        resultPin = "Correct Pin!";
 
 
-                } else {
-                    resultPin = "Incorrect Pin!";
+                    } else {
+                        resultPin = "Incorrect Pin!";
+                    }
+
+                    Toast.makeText(context, resultPin, duration).show();
                 }
-
-                Toast.makeText(context, resultPin, duration).show();
 
             }else{
                 editor.putString("pincode", pin);
-                editor.apply();
-                changeButton.setText("Change");
-                onChangingCode = false;
+                editor.commit();
+                setChangesButton();
 
                 Toast.makeText(context,"pin updated", duration).show();
 
@@ -68,7 +74,9 @@ public class PinCodeActivity extends AppCompatActivity {
 
         @Override
         public void onEmpty() {
+
             Log.i(TAG, "Pin empty");
+            mPinLockView.resetPinLockView();
         }
 
         @Override
@@ -87,8 +95,16 @@ public class PinCodeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Pincode");
 
-        sharedpreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
+        sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if (sharedPreferences.contains("pincode")){
+            Toast.makeText(this, "Already saved :" + sharedPreferences.getString("pincode", null), Toast.LENGTH_SHORT).show();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            showAlertNoCode(builder);
+
+        }
 
 
         //PINLOCKVIEW
@@ -98,28 +114,21 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
+        /*PARAMS*/
         //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
         //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
-
         mPinLockView.setPinLength(5);
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
-
-
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
-        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
+        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
 
         changeButton = (Button) findViewById(R.id.change_pin);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!onChangingCode) {
-                    changeButton.setText("Annuler");
-                    onChangingCode = true;
-                }else{
-                    changeButton.setText("Change");
-                    onChangingCode = false;
-                    mPinLockView.resetPinLockView();
-                }
+                setChangesButton();
+                mPinLockView.resetPinLockView();
+
             }
         });
     }
@@ -154,5 +163,28 @@ public class PinCodeActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setChangesButton() {
+        if(onChangingCode){
+            changeButton.setText("Change");
+            onChangingCode=false;
+        }else{
+            changeButton.setText("Cancel");
+            onChangingCode=true;
+        }
+    }
+
+    private void showAlertNoCode(AlertDialog.Builder builder){
+        builder.setMessage("No password are registered, you will now register one!")
+                .setTitle("New password");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                setChangesButton();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

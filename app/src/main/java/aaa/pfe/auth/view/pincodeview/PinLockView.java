@@ -45,7 +45,12 @@ public class PinLockView extends RecyclerView {
                 mPin = mPin.concat(String.valueOf(keyValue));
 
                 if (isIndicatorDotsAttached()) {
-                    mIndicatorDots.updateDot(mPin.length());
+                    if(mIndicatorDots.getIndicatorType()<=2) {
+                        mIndicatorDots.updateDot(mPin.length());
+                    }else{
+                        //number utilisation
+                        mIndicatorDots.updateDotWithNum(mPin.length(),keyValue); //keyValue = last number entered
+                    }
                 }
 
                 if (mPin.length() == 1) {
@@ -66,7 +71,10 @@ public class PinLockView extends RecyclerView {
                     mPin = mPin.concat(String.valueOf(keyValue));
 
                     if (isIndicatorDotsAttached()) {
-                        mIndicatorDots.updateDot(mPin.length());
+                        if (mIndicatorDots.getIndicatorType()<=2)
+                            mIndicatorDots.updateDot(mPin.length());
+                        else
+                            mIndicatorDots.updateDotWithNum(mPin.length(),keyValue); //keyValue = last number entered
                     }
 
                     if (mPinLockListener != null) {
