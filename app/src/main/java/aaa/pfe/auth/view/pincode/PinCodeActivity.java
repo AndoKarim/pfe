@@ -1,9 +1,11 @@
 package aaa.pfe.auth.view.pincode;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,7 +30,7 @@ public class PinCodeActivity extends AppCompatActivity {
     private PinLockView mPinLockView;
     private IndicatorDots mIndicatorDots;
 
-    SharedPreferences sharedpreferences;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     private PinLockListener mPinLockListener = new PinLockListener() {
@@ -42,23 +44,26 @@ public class PinCodeActivity extends AppCompatActivity {
             CharSequence resultPin;
 
             if (!onChangingCode) {
+                if (!sharedPreferences.contains("pincode")){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PinCodeActivity.this);
+                    showAlertNoCode(builder);
+                }else {
+                    if (sharedPreferences.getString("pincode", null).equals(pin)) {
+                        //Correct PIN
+                        resultPin = "Correct Pin!";
 
-                if (sharedpreferences.contains("pincode") && sharedpreferences.getString("pincode",null).equals(pin)) {
-                    //Correct PIN
-                    resultPin = "Correct Pin!";
 
+                    } else {
+                        resultPin = "Incorrect Pin!";
+                    }
 
-                } else {
-                    resultPin = "Incorrect Pin!";
+                    Toast.makeText(context, resultPin, duration).show();
                 }
-
-                Toast.makeText(context, resultPin, duration).show();
 
             }else{
                 editor.putString("pincode", pin);
                 editor.commit();
-                changeButton.setText("Change");
-                onChangingCode = false;
+                setChangesButton();
 
                 Toast.makeText(context,"pin updated", duration).show();
 
@@ -90,8 +95,16 @@ public class PinCodeActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Pincode");
 
-        sharedpreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        editor = sharedpreferences.edit();
+        sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        if (sharedPreferences.contains("pincode")){
+            Toast.makeText(this, "Already saved :" + sharedPreferences.getString("pincode", null), Toast.LENGTH_SHORT).show();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            showAlertNoCode(builder);
+
+        }
 
 
         //PINLOCKVIEW
@@ -113,15 +126,9 @@ public class PinCodeActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!onChangingCode) {
-                    changeButton.setText("Annuler");
-                    onChangingCode = true;
-                    mPinLockView.resetPinLockView();
-                }else{
-                    changeButton.setText("Change");
-                    onChangingCode = false;
-                    mPinLockView.resetPinLockView();
-                }
+                setChangesButton();
+                mPinLockView.resetPinLockView();
+
             }
         });
     }
@@ -156,5 +163,28 @@ public class PinCodeActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setChangesButton() {
+        if(onChangingCode){
+            changeButton.setText("Change");
+            onChangingCode=false;
+        }else{
+            changeButton.setText("Cancel");
+            onChangingCode=true;
+        }
+    }
+
+    private void showAlertNoCode(AlertDialog.Builder builder){
+        builder.setMessage("No password are registered, you will now register one!")
+                .setTitle("New password");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                setChangesButton();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

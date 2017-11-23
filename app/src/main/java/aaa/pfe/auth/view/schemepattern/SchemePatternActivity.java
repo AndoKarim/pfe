@@ -158,7 +158,7 @@ public class SchemePatternActivity extends AppCompatActivity {
             changeButton.setText("Change");
             onChangesCode=false;
         }else{
-            changeButton.setText("Annuler");
+            changeButton.setText("Cancel");
             onChangesCode=true;
         }
     }

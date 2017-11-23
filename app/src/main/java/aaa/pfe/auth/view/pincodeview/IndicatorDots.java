@@ -6,9 +6,11 @@ import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -20,15 +22,18 @@ import aaa.pfe.auth.R;
  * can be used to indicate the current length of the input
  * <p>
  * Created by aritraroy on 01/06/16.
+ *
+ * Modified by AAA
  */
 public class IndicatorDots extends LinearLayout {
 
-    @IntDef({IndicatorType.FIXED, IndicatorType.FILL, IndicatorType.FILL_WITH_ANIMATION})
+    @IntDef({IndicatorType.FIXED, IndicatorType.FILL, IndicatorType.FILL_WITH_ANIMATION,IndicatorType.FILL_WITH_NUMBER_ANIMATION})
     @Retention(RetentionPolicy.SOURCE)
     public @interface IndicatorType {
         int FIXED = 0;
         int FILL = 1;
         int FILL_WITH_ANIMATION = 2;
+        int FILL_WITH_NUMBER_ANIMATION = 3;
     }
 
     private static final int DEFAULT_PIN_LENGTH = 4;
@@ -86,7 +91,7 @@ public class IndicatorDots extends LinearLayout {
 
                 addView(dot);
             }
-        } else if (mIndicatorType == 2) {
+        } else if ( (mIndicatorType == 2) ||(mIndicatorType == 3) ) {
             setLayoutTransition(new LayoutTransition());
         }
     }
@@ -142,6 +147,40 @@ public class IndicatorDots extends LinearLayout {
         }
     }
 
+    public void updateDotWithNum(int length,int last) {
+        if (length > 0) {
+            if (length > mPreviousLength) {
+                TextView num = new TextView(getContext());
+
+                //View dot = new View(getContext());
+                fillEphemeralNum(num,last);
+                //fillDot(dot);
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mDotDiameter,
+                        mDotDiameter);
+                params.setMargins(mDotSpacing, 0, mDotSpacing, 0);
+                num.setLayoutParams(params);
+
+                /*try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+                addView(num,length - 1);
+                num.setVisibility(View.GONE);
+
+                //dot.setLayoutParams(params);
+                //addView(dot, length - 1);
+            } else {
+                removeViewAt(length);
+            }
+            mPreviousLength = length;
+        } else {
+            removeAllViews();
+            mPreviousLength = 0;
+        }
+    }
+
     private void emptyDot(View dot) {
         dot.setBackgroundResource(mEmptyDrawable);
     }
@@ -171,4 +210,10 @@ public class IndicatorDots extends LinearLayout {
         removeAllViews();
         initView(getContext());
     }
+
+    private void fillEphemeralNum(TextView c_num,int value){
+        c_num.setVisibility(View.VISIBLE);
+        c_num.setText(String.valueOf(value));
+    }
+
 }
