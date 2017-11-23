@@ -20,7 +20,7 @@ import aaa.pfe.auth.view.pincodeview.PinLockView;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
-    public static final String PREFERENCES = "PassPreferences";
+    public static final String PREFERENCES = "PinPreferences";
 
     private boolean onChangingCode = false;
     private Button changeButton;
@@ -42,7 +42,8 @@ public class PinCodeActivity extends AppCompatActivity {
             CharSequence resultPin;
 
             if (!onChangingCode) {
-                if (sharedpreferences.getString("pincode",null).equals(pin)) {
+
+                if (sharedpreferences.contains("pincode") && sharedpreferences.getString("pincode",null).equals(pin)) {
                     //Correct PIN
                     resultPin = "Correct Pin!";
 
@@ -55,7 +56,7 @@ public class PinCodeActivity extends AppCompatActivity {
 
             }else{
                 editor.putString("pincode", pin);
-                editor.apply();
+                editor.commit();
                 changeButton.setText("Change");
                 onChangingCode = false;
 
@@ -68,7 +69,9 @@ public class PinCodeActivity extends AppCompatActivity {
 
         @Override
         public void onEmpty() {
+
             Log.i(TAG, "Pin empty");
+            mPinLockView.resetPinLockView();
         }
 
         @Override
@@ -98,15 +101,13 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
+        /*PARAMS*/
         //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
         //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
-
         mPinLockView.setPinLength(5);
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
-
-
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
-        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
+        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
 
         changeButton = (Button) findViewById(R.id.change_pin);
         changeButton.setOnClickListener(new View.OnClickListener() {
@@ -115,6 +116,7 @@ public class PinCodeActivity extends AppCompatActivity {
                 if (!onChangingCode) {
                     changeButton.setText("Annuler");
                     onChangingCode = true;
+                    mPinLockView.resetPinLockView();
                 }else{
                     changeButton.setText("Change");
                     onChangingCode = false;
