@@ -8,4 +8,29 @@
 
     <!-- Inheritance of the layout with the include of it, you can add other components under -->
     <include layout="@layout/activity_admin" />
+
+    <TextView
+        android:id="@+id/rowNumberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of rows"/>
+    <EditText
+        android:id="@+id/rowNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="3"
+        android:maxLength="2"
+        android:inputType="number"
+        android:layout_toRightOf="@+id/rowNumberTitle"
+        android:hint="Number of rows"/>
+
+    <EditText
+        android:id="@+id/columnNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:layout_below="@id/rowNumber"
+        android:hint="Number of rows"/>
+
 </RelativeLayout>
