@@ -87,7 +87,6 @@ public class PassFaceAdminActivity extends AdminActivity {
         nbSteps = Integer.valueOf(nbStepsSpinner.getSelectedItem().toString());
 
 
-
         RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
         RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
 
@@ -99,16 +98,17 @@ public class PassFaceAdminActivity extends AdminActivity {
         saveChanges();
     }
 
+    //Save changes into the SharedPreferences
     @Override
     public void saveChanges() {
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(getString(R.string.nbPhotos), String.valueOf(nbPhotos));
+        editor.putInt(getString(R.string.nbPhotos), nbPhotos);
         editor.putString(getString(R.string.typePhotos), typePhotos);
-        editor.putString(getString(R.string.passwordLength), String.valueOf(passwordLength));
-        editor.putString(getString(R.string.isInOrder), String.valueOf(isInOrder));
-        editor.putString(getString(R.string.numberSteps), String.valueOf(nbSteps));
+        editor.putInt(getString(R.string.passwordLength), passwordLength);
+        editor.putBoolean(getString(R.string.isInOrder), isInOrder);
+        editor.putInt(getString(R.string.numberSteps), nbSteps);
         editor.putString(getString(R.string.matchingType), typeOfMatching);
 
         editor.remove(getString(R.string.password));
