@@ -1,19 +1,12 @@
 package aaa.pfe.auth.view.pincode;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -28,15 +21,13 @@ public class PinCodeAdminActivity extends AdminActivity{
 
     private ToggleButton tRandNum;
 
-    private Spinner sPinLength;
+    private EditText ptPinLength;
 
     private EditText ptTry;
 
     private ArrayList<CheckBox> checkBoxList;
 
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +38,7 @@ public class PinCodeAdminActivity extends AdminActivity{
         //Retrieve Button
         tRandNum =  (ToggleButton) findViewById(R.id.toggleRandomNum);
 
-        sPinLength = (Spinner) findViewById(R.id.spinnerPinLength);
-
+        ptPinLength = (EditText) findViewById(R.id.editTextPinLength);
 
         ptTry = (EditText) findViewById(R.id.editTextTry);
 
@@ -62,6 +52,27 @@ public class PinCodeAdminActivity extends AdminActivity{
         checkBoxList.add(7,(CheckBox)findViewById(R.id.checkBox7));
         checkBoxList.add(8,(CheckBox)findViewById(R.id.checkBox8));
         checkBoxList.add(9,(CheckBox)findViewById(R.id.checkBox9));*/
+
+        //Shared Pref
+        sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
+
+        setDefaultsValues();
+    }
+
+    private void setDefaultsValues() {
+        if (sharedPreferences.contains("randNum")){
+            Log.i("PinCodeAdmin","setDefautValues numRand");
+            tRandNum.setChecked(sharedPreferences.getBoolean("numRand",false));
+        }
+
+        if (sharedPreferences.contains("pinLength")){
+            ptPinLength.setText(sharedPreferences.getInt("pinLength",4));
+        }
+
+        if (sharedPreferences.contains("nbTry")){
+            ptTry.setText(sharedPreferences.getInt("nbTry",3));
+        }
+
     }
 
     @Override
@@ -73,20 +84,22 @@ public class PinCodeAdminActivity extends AdminActivity{
     @Override
     public void retrieveChanges(View v) {
         Toast t = Toast.makeText(this, "Save Parameters", Toast.LENGTH_SHORT);
+        saveChanges();
         t.show();
 
-        //Shared Pref
-        sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+    }
 
+    @Override
+    public void saveChanges() {
+        Log.i("PinCodeAdmin","saveChanges");
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("randNum",tRandNum.isChecked());
-        editor.putInt("pinLength",Integer.valueOf(sPinLength.getSelectedItem().toString()));
+        Log.i("PinCodeAdmin","saveChanges2");
+        editor.putInt("pinLength",Integer.valueOf(ptPinLength.getText().toString()));
         editor.putInt("nbTry",Integer.valueOf(ptTry.getText().toString()));
         editor.apply();
-
-        Intent i = new Intent(PinCodeAdminActivity.this,PinCodeActivity.class);
-        startActivity(i);
-
+        finish();
     }
 
 }
