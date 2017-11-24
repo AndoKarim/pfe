@@ -3,6 +3,7 @@ package aaa.pfe.auth.view.passface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +51,7 @@ public class PassFaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pass_face);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Passface");
+        getSupportActionBar().setTitle(R.string.passFace);
 
 
         gridView = (GridView) findViewById(R.id.gridView);
@@ -64,7 +65,7 @@ public class PassFaceActivity extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submitButton);
         setupListeners();
 
-        sharedPreferences = getApplicationContext().getSharedPreferences("PassFacePreferences", MODE_PRIVATE);
+        sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
         showButtons();
 
 
@@ -109,7 +110,7 @@ public class PassFaceActivity extends AppCompatActivity {
                         lastPicsChosen.add(i);
                     }
                 }
-                i.setBackgroundColor(getResources().getColor(R.color.black));
+                i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                 i.setPadding(15, 15, 15, 15);
 
             }
@@ -121,11 +122,12 @@ public class PassFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!picName.equals("")) {
-                    sharedPreferences.edit().putString("Password", picName).commit();
+                    sharedPreferences.edit().putString(getString(R.string.password), picName).apply();
+
                     saveButton.setVisibility(View.INVISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                     changeButton.setVisibility(View.VISIBLE);
-                    Toast t = Toast.makeText(getApplicationContext(), "Password changed", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplicationContext(), R.string.Password_changed, Toast.LENGTH_SHORT);
                     t.show();
                 }
 
@@ -139,10 +141,10 @@ public class PassFaceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String currentPwd = sharedPreferences.getString("Password", "");
                 if (currentPwd.equals(picName)) {
-                    Toast t = Toast.makeText(getApplicationContext(), "Good Pwd", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT);
                     t.show();
                 } else {
-                    Toast t = Toast.makeText(getApplicationContext(), "Wrong Pwd", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT);
                     t.show();
                 }
             }
@@ -152,7 +154,7 @@ public class PassFaceActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPreferences.edit().remove("Password").commit();
+                sharedPreferences.edit().remove("Password").apply();
                 submitButton.setVisibility(View.INVISIBLE);
                 changeButton.setVisibility(View.INVISIBLE);
                 saveButton.setVisibility(View.VISIBLE);

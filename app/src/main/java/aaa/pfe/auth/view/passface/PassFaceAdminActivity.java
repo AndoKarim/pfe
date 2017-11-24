@@ -1,5 +1,6 @@
 package aaa.pfe.auth.view.passface;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,14 +21,14 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
     private Spinner nbStepsSpinner;
     private RadioGroup orderRadioGroup;
     private RadioGroup matchingRadioGroup;
-    private RadioButton orderRadioButton;
-    private RadioButton matchingRadioButton;
 
 
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
     private int nbSteps;
+    private boolean isInOrder;
+    private String typeOfMatching;
 
 
     @Override
@@ -86,12 +87,33 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
     //Called when you press the save button.
     @Override
     public void retrieveChanges(View v) {
-        orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
-        matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
+        RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
+        RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
+
+        isInOrder = (orderRadioButton.getText().equals(getString(R.string.yes)));
+        typeOfMatching = matchingRadioButton.getText().toString();
 
         nbPhotos = Integer.valueOf(nbPhotosEditText.getText().toString());
 
         saveChanges();
+    }
+
+    @Override
+    public void saveChanges() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(getString(R.string.nbPhotos), String.valueOf(nbPhotos));
+        editor.putString(getString(R.string.typePhotos), typePhotos);
+        editor.putString(getString(R.string.passwordLength), String.valueOf(passwordLength));
+        editor.putString(getString(R.string.isInOrder), String.valueOf(isInOrder));
+        editor.putString(getString(R.string.numberSteps), String.valueOf(nbSteps));
+        editor.putString(getString(R.string.matchingType), typeOfMatching);
+
+        editor.remove(getString(R.string.password));
+
+        editor.apply();
+
     }
 
 
