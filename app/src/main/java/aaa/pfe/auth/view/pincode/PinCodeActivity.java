@@ -33,6 +33,8 @@ public class PinCodeActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
+    private boolean shuffle;
+
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
         public void onComplete(String pin) {
@@ -69,6 +71,8 @@ public class PinCodeActivity extends AppCompatActivity {
 
             }
 
+            if (shuffle)
+                mPinLockView.enableLayoutShuffling();
             mPinLockView.resetPinLockView();
         }
 
@@ -111,27 +115,11 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
-        /*PARAMS*/
-        if (sharedPreferences.contains("pinLength")){
-            mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
-        }
-
-        if (sharedPreferences.contains("randNum")&&sharedPreferences.getBoolean("randNum",false)){
-            mPinLockView.enableLayoutShuffling();
-            Log.i("PincodeActivity","randNum");
-        }
-
-
-
-
-
-        //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
         //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
 
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
         //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
-
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
         changeButton = (Button) findViewById(R.id.change_pin);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,10 +132,29 @@ public class PinCodeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        /*PARAMS*/
+        if (sharedPreferences.contains("pinLength")){
+            mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
+        }
+
+        if (sharedPreferences.contains("randNum")&&sharedPreferences.getBoolean("randNum",false)){
+            mPinLockView.enableLayoutShuffling();
+            shuffle = true;
+            Log.i("PincodeActivity","randNum");
+        }else {
+            mPinLockView.setCustomKeySet(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); //TODO: modifier pour pouvoir avoir différent set
+            shuffle = false;
+        }
+    }
+
+    @Override
     public boolean onSupportNavigateUp(){
         finish();
         return true;
     }
+
 
     // create an action bar button
     @Override
