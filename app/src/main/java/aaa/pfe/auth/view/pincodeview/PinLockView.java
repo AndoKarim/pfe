@@ -402,6 +402,14 @@ public class PinLockView extends RecyclerView {
         }
     }
 
+    public void disenableLayoutShuffling() {
+        this.mCustomKeySet = ShuffleArrayUtils.shuffle(DEFAULT_KEY_SET);
+
+        if (mAdapter != null) {
+            mAdapter.setKeyValues(mCustomKeySet);
+        }
+    }
+
     private void clearInternalPin() {
         mPin = "";
     }

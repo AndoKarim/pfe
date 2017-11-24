@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -16,10 +18,13 @@ import aaa.pfe.auth.view.mother.AdminActivity;
 
 public class SchemeAdminActivity extends AdminActivity {
 
-    private Spinner nbRowsSpinner;
-    private Spinner nbColumnsSpinner;
+    private EditText nbRowsEditText;
+    private EditText nbColumnsEditText;
     private SharedPreferences sharedPreferences;
-    private Spinner lengthSpinner;
+    private EditText lengthEditText;
+    private CheckBox vibrationBox;
+    private CheckBox stealthBox;
+    private EditText dotSizeEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,36 +33,53 @@ public class SchemeAdminActivity extends AdminActivity {
         getSupportActionBar().setTitle("Admin SchemePattern");
 
         sharedPreferences = getApplicationContext().getSharedPreferences("SchemePreferences", MODE_PRIVATE);
-        nbRowsSpinner = (Spinner) findViewById(R.id.spinnerNbRows);
-        nbColumnsSpinner = (Spinner) findViewById(R.id.spinnerNbColumns);
-        lengthSpinner = (Spinner) findViewById(R.id.spinnerLengthPattern);
+        nbRowsEditText = (EditText) findViewById(R.id.nbRows);
+        nbColumnsEditText = (EditText) findViewById(R.id.nbColumns);
+        lengthEditText = (EditText) findViewById(R.id.lengthPattern);
+        vibrationBox = (CheckBox) findViewById(R.id.vibration);
+        stealthBox = (CheckBox) findViewById(R.id.stealth);
+        dotSizeEditText = (EditText) findViewById(R.id.dotSize);
 
-        setSpinnersAdapters();
+
         
         setDefaultsValues();
 
     }
 
     private void setDefaultsValues() {
-        if (sharedPreferences.contains("nbRowsSpinner")){
-            int nbRows = sharedPreferences.getInt("nbRowsSpinner",1);
-            nbRowsSpinner.setSelection(nbRows-1);
+        if (sharedPreferences.contains("nbRows")){
+            int nbRows = sharedPreferences.getInt("nbRows",1);
+            nbRowsEditText.setText(String.valueOf(nbRows));
         }
 
-        if (sharedPreferences.contains("nbColumnSpinner")){
-            int nbColumns = sharedPreferences.getInt("nbColumnSpinner",1);
-            nbColumnsSpinner.setSelection(nbColumns-1);
+        if (sharedPreferences.contains("nbColumns")){
+            int nbColumns = sharedPreferences.getInt("nbColumns",1);
+            nbColumnsEditText.setText(String.valueOf(nbColumns));
         }
 
         if (sharedPreferences.contains("lengthPattern")){
             int length = sharedPreferences.getInt("lengthPattern",1);
-            lengthSpinner.setSelection(length-1);
+            lengthEditText.setText(String.valueOf(length));
         }
 
+        if (sharedPreferences.contains("vibration")){
+            boolean vibration = sharedPreferences.getBoolean("vibration",true);
+            vibrationBox.setChecked(vibration);
+        }
+
+        if (sharedPreferences.contains("stealth")){
+            boolean stealth = sharedPreferences.getBoolean("stealth",false);
+            stealthBox.setChecked(stealth);
+        }
+
+        if (sharedPreferences.contains("dotSize")){
+            int dotSize = sharedPreferences.getInt("dotSize",30);
+            dotSizeEditText.setText(String.valueOf(dotSize));
+        }
 
     }
 
-    private void setSpinnersAdapters() {
+    /*private void setSpinnersAdapters() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.nbColumnsRows, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -69,7 +91,7 @@ public class SchemeAdminActivity extends AdminActivity {
                 R.array.lengthSchemePattern, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lengthSpinner.setAdapter(adapter);
-    }
+    }*/
 
 
     @Override
@@ -89,10 +111,12 @@ public class SchemeAdminActivity extends AdminActivity {
     public void saveChanges() {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putInt("nbRowsSpinner", Integer.valueOf(nbRowsSpinner.getSelectedItem().toString()));
-        editor.putInt("nbColumn", Integer.valueOf(nbColumnsSpinner.getSelectedItem().toString()));
-        editor.putInt("lengthPattern", Integer.valueOf(nbColumnsSpinner.getSelectedItem().toString()));
+        editor.putInt("nbRows", Integer.valueOf(nbRowsEditText.getText().toString()));
+        editor.putInt("nbColumns", Integer.valueOf(nbColumnsEditText.getText().toString()));
+        editor.putInt("lengthPattern", Integer.valueOf(lengthEditText.getText().toString()));
+        editor.putBoolean("vibration", vibrationBox.isChecked());
+        editor.putBoolean("stealth", stealthBox.isChecked());
+        editor.putInt("dotSize", Integer.valueOf(dotSizeEditText.getText().toString()));
 
 
         editor.remove("schemePatternPass");

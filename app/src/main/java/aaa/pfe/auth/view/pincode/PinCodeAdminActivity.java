@@ -56,21 +56,27 @@ public class PinCodeAdminActivity extends AdminActivity{
         //Shared Pref
         sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setDefaultsValues();
+        tRandNum.forceLayout();
     }
 
     private void setDefaultsValues() {
         if (sharedPreferences.contains("randNum")){
-            Log.i("PinCodeAdmin","setDefautValues numRand");
-            tRandNum.setChecked(sharedPreferences.getBoolean("numRand",false));
+            tRandNum.setChecked((boolean) sharedPreferences.getBoolean("randNum",true));
         }
 
+
         if (sharedPreferences.contains("pinLength")){
-            ptPinLength.setText(sharedPreferences.getInt("pinLength",4));
+            ptPinLength.setText(String.valueOf(sharedPreferences.getInt("pinLength",4)));
         }
 
         if (sharedPreferences.contains("nbTry")){
-            ptTry.setText(sharedPreferences.getInt("nbTry",3));
+            ptTry.setText(String.valueOf(sharedPreferences.getInt("nbTry",3)));
         }
 
     }
@@ -86,7 +92,6 @@ public class PinCodeAdminActivity extends AdminActivity{
         Toast t = Toast.makeText(this, "Save Parameters", Toast.LENGTH_SHORT);
         saveChanges();
         t.show();
-
     }
 
     @Override
