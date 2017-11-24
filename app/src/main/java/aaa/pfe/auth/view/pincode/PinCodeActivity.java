@@ -98,12 +98,9 @@ public class PinCodeActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        if (sharedPreferences.contains("pincode")){
-            Toast.makeText(this, "Already saved :" + sharedPreferences.getString("pincode", null), Toast.LENGTH_SHORT).show();
-        }else{
+        if (!sharedPreferences.contains("pincode")){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             showAlertNoCode(builder);
-
         }
 
 
@@ -115,9 +112,22 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.setPinLockListener(mPinLockListener);
 
         /*PARAMS*/
+        if (sharedPreferences.contains("pinLength")){
+            mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
+        }
+
+        if (sharedPreferences.contains("randNum")&&sharedPreferences.getBoolean("randNum",false)){
+            mPinLockView.enableLayoutShuffling();
+            Log.i("PincodeActivity","randNum");
+        }
+
+
+
+
+
         //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
         //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
-        mPinLockView.setPinLength(5);
+
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
         //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
         mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);

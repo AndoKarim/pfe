@@ -43,13 +43,6 @@
         android:layout_marginTop="52dp"
         android:text="Lenght of Pin Code" />
 
-    <Spinner
-        android:id="@+id/spinnerPinLength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textPinLength" />
-
 
     <TextView
         android:id="@+id/textTry"
@@ -154,6 +147,16 @@
         android:layout_marginStart="18dp"
         android:layout_toEndOf="@+id/checkBox8"
         android:text="9" />
+
+    <EditText
+        android:id="@+id/editTextPinLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textPinLength"
+        android:layout_alignBottom="@+id/textPinLength"
+        android:layout_alignParentEnd="true"
+        android:ems="10"
+        android:inputType="number" />
 
 
 </RelativeLayout>
