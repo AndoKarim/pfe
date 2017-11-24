@@ -115,13 +115,11 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
-        //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4}); //change ordre clavier
         //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
 
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
         //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
         mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
-
         changeButton = (Button) findViewById(R.id.change_pin);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +143,9 @@ public class PinCodeActivity extends AppCompatActivity {
             mPinLockView.enableLayoutShuffling();
             shuffle = true;
             Log.i("PincodeActivity","randNum");
+        }else {
+            mPinLockView.setCustomKeySet(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); //TODO: modifier pour pouvoir avoir différent set
+            shuffle = false;
         }
     }
 
