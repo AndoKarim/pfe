@@ -61,10 +61,11 @@
         android:ems="10"
         android:inputType="number"
         android:selectAllOnFocus="false"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:text="3" />
 
     <TextView
-        android:id="@+id/textSetNumer"
+        android:id="@+id/textSetNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textTry"
@@ -92,8 +93,8 @@
         android:id="@+id/checkBox3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textSetNumer"
-        android:layout_alignBottom="@+id/textSetNumer"
+        android:layout_alignBaseline="@+id/textSetNumber"
+        android:layout_alignBottom="@+id/textSetNumber"
         android:layout_toStartOf="@+id/toggleRandomNum"
         android:text="3" />
 
@@ -109,7 +110,7 @@
         android:id="@+id/checkBox5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textSetNumer"
+        android:layout_alignStart="@+id/textSetNumber"
         android:layout_below="@+id/checkBox1"
         android:text="5" />
 
@@ -156,7 +157,8 @@
         android:layout_alignBottom="@+id/textPinLength"
         android:layout_alignParentEnd="true"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:text="4" />
 
 
 </RelativeLayout>
