@@ -122,7 +122,7 @@ public class PassFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!picName.equals("")) {
-                    sharedPreferences.edit().putString(getString(R.string.password), picName).apply();
+                    sharedPreferences.edit().putString(getString(R.string.passwordPreference), picName).apply();
 
                     saveButton.setVisibility(View.INVISIBLE);
                     submitButton.setVisibility(View.VISIBLE);

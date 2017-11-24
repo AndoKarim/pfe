@@ -56,7 +56,7 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/yesRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="37dp"
@@ -65,7 +65,7 @@
             android:text="@string/yes" />
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/noRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="19dp"
@@ -83,7 +83,7 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/exactRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="37dp"
@@ -92,7 +92,7 @@
             android:text="@string/exact" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/sameRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="19dp"
@@ -126,26 +126,33 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/textView8" />
 
-    <Spinner
-        android:id="@+id/spinnerPasswordLength"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView5"
-        android:layout_alignParentEnd="true" />
-
-    <Spinner
-        android:id="@+id/spinnerNbSteps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textView6" />
-
     <EditText
         android:id="@+id/editTextNbPhotos"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="2" />
+
+    <EditText
+        android:id="@+id/editTextPasswordLength"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/spinnerTypePhotos"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="2" />
+
+    <EditText
+        android:id="@+id/editTextNbSteps"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView7"
+        android:layout_alignParentEnd="true"
         android:ems="10"
         android:inputType="number"
         android:maxLength="2" />
