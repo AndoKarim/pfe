@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
+        android:id="@+id/toggleRandomNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -28,33 +28,34 @@
         android:id="@+id/textRandomNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/toggleButton"
-        android:layout_alignBottom="@+id/toggleButton"
+        android:layout_alignBaseline="@+id/toggleRandomNum"
+        android:layout_alignBottom="@+id/toggleRandomNum"
         android:layout_alignParentStart="true"
         android:layout_marginStart="22dp"
         android:text="Enable Random Pad" />
 
     <TextView
-        android:id="@+id/textPinLenght"
+        android:id="@+id/textPinLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textRandomNum"
-        android:layout_below="@+id/toggleButton"
+        android:layout_below="@+id/toggleRandomNum"
         android:layout_marginTop="52dp"
         android:text="Lenght of Pin Code" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerPinLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textPinLenght" />
+        android:layout_alignTop="@+id/textPinLength" />
+
 
     <TextView
         android:id="@+id/textTry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textPinLenght"
+        android:layout_alignStart="@+id/textPinLength"
         android:layout_centerVertical="true"
         android:text="Number of try" />
 
@@ -100,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textSetNumer"
         android:layout_alignBottom="@+id/textSetNumer"
-        android:layout_toStartOf="@+id/toggleButton"
+        android:layout_toStartOf="@+id/toggleRandomNum"
         android:text="3" />
 
     <CheckBox

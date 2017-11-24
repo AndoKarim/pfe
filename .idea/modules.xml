@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://C:\Users\Antoine\Documents\Antoine\SI5\PFE\pfe\MyApplication.iml" filepath="C:\Users\Antoine\Documents\Antoine\SI5\PFE\pfe\MyApplication.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
+>>>>>>> 58970af5a87c95b0902a3df1bde2d61d350063ac
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pfe.iml" filepath="$PROJECT_DIR$/pfe.iml" />
     </modules>
