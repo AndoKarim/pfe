@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.utils.Const;
 import aaa.pfe.auth.view.mother.AdminActivity;
 
 public class PassFaceAdminActivity extends AdminActivity {
@@ -22,16 +23,25 @@ public class PassFaceAdminActivity extends AdminActivity {
     private Spinner typePhotosSpinner;
     private RadioGroup orderRadioGroup;
     private RadioGroup matchingRadioGroup;
-    private RadioButton yesRadioButton;
-    private RadioButton noRadioButton;
+    private RadioGroup shuffleRadioGroup;
+    private RadioGroup twiceRadioGroup;
+    private RadioButton yesOrderRadioButton;
+    private RadioButton noOrderRadioButton;
     private RadioButton exactRadioButton;
     private RadioButton sameRadioButton;
+    private RadioButton yesShuffleRadioButton;
+    private RadioButton noShuffleRadioButton;
+    private RadioButton yesTwiceRadioButton;
+    private RadioButton noTwiceRadioButton;
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
     private int nbSteps;
     private boolean isInOrder;
     private String typeOfMatching;
+    private boolean doShuffle;
+    private boolean twicePhoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +54,19 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         typePhotosSpinner = (Spinner) findViewById(R.id.spinnerTypePhotos);
 
-        orderRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        matchingRadioGroup = (RadioGroup) findViewById(R.id.radioGroup2);
+        orderRadioGroup = (RadioGroup) findViewById(R.id.orderRadioGroup);
+        matchingRadioGroup = (RadioGroup) findViewById(R.id.matchingRadioGroup);
+        shuffleRadioGroup = (RadioGroup) findViewById(R.id.shuffleRadioGroup);
+        twiceRadioGroup = (RadioGroup) findViewById(R.id.twiceRadioGroup);
 
-        yesRadioButton = (RadioButton) findViewById(R.id.yesRadioButton);
-        noRadioButton = (RadioButton) findViewById(R.id.noRadioButton);
+        yesOrderRadioButton = (RadioButton) findViewById(R.id.yesRadioButton);
+        noOrderRadioButton = (RadioButton) findViewById(R.id.noRadioButton);
         sameRadioButton = (RadioButton) findViewById(R.id.sameRadioButton);
         exactRadioButton = (RadioButton) findViewById(R.id.exactRadioButton);
+        yesShuffleRadioButton = (RadioButton) findViewById(R.id.yesShuffleRadioButton);
+        noShuffleRadioButton = (RadioButton) findViewById(R.id.noShuffleRadioButton);
+        yesTwiceRadioButton = (RadioButton) findViewById(R.id.yesTwiceRadioButton);
+        noTwiceRadioButton = (RadioButton) findViewById(R.id.noTwiceRadioButton);
 
         sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
 
@@ -64,34 +80,42 @@ public class PassFaceAdminActivity extends AdminActivity {
     }
 
     private void loadSettings() {
-        int defaultNbPhotos = 9;
-        String savedNbPhotos = String.valueOf(sharedPreferences.getInt(getString(R.string.nbPhotosPreference), defaultNbPhotos));
+        String savedNbPhotos = String.valueOf(sharedPreferences.getInt(getString(R.string.nbPhotosPreference), Const.DEFAULT_NB_PHOTOS));
         nbPhotosEditText.setText(savedNbPhotos);
 
-        int defaultPwdLength = 1;
-        String savedPwdLength = String.valueOf(sharedPreferences.getInt(getString(R.string.passwordLengthPreference), defaultPwdLength));
+        String savedPwdLength = String.valueOf(sharedPreferences.getInt(getString(R.string.passwordLengthPreference), Const.DEFAULT_PWD_LENGTH));
         passwordLengthEditText.setText(savedPwdLength);
 
-        int defaultSteps = 1;
-        String savedNbSteps = String.valueOf(sharedPreferences.getInt(getString(R.string.numberStepsPreference), defaultSteps));
+        String savedNbSteps = String.valueOf(sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS));
         nbStepsEditText.setText(savedNbSteps);
 
-        boolean defaultOrder = true;
-        boolean savedOrder = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), defaultOrder);
+        boolean savedOrder = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
         if (savedOrder)
-            yesRadioButton.setChecked(true);
+            yesOrderRadioButton.setChecked(true);
         else
-            noRadioButton.setChecked(false);
+            noOrderRadioButton.setChecked(false);
 
-        String defaultMatching = "Exact";
-        String savedMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), defaultMatching);
+        boolean savedShuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
+        if (savedShuffle)
+            yesShuffleRadioButton.setChecked(true);
+        else
+            noShuffleRadioButton.setChecked(true);
+
+
+        String savedMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), Const.DEFAULT_MATCHING);
         if (savedMatching.equals("Exact"))
             exactRadioButton.setChecked(true);
         else
             sameRadioButton.setChecked(true);
 
-        String defaultTypePhotos = "Faces";
-        typePhotosSpinner.setSelection(typePhotosAdapter.getPosition(sharedPreferences.getString(getString(R.string.typePhotosPreference), defaultTypePhotos)));
+        boolean twicePhoto = sharedPreferences.getBoolean(getString(R.string.twicePhotoPreference), Const.DEFAULT_TWICE_PHOTO);
+        if (twicePhoto)
+            yesTwiceRadioButton.setChecked(true);
+        else
+            noTwiceRadioButton.setChecked(true);
+
+
+        typePhotosSpinner.setSelection(typePhotosAdapter.getPosition(sharedPreferences.getString(getString(R.string.typePhotosPreference), Const.DEFAULT_TYPE_PHOTOS)));
 
 
     }
@@ -105,8 +129,6 @@ public class PassFaceAdminActivity extends AdminActivity {
         typePhotosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         typePhotosSpinner.setAdapter(typePhotosAdapter);
-
-
 
 
     }
@@ -129,10 +151,13 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
         RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
+        RadioButton shuffleRadioButton = (RadioButton) findViewById(shuffleRadioGroup.getCheckedRadioButtonId());
+        RadioButton twiceRadioButton = (RadioButton) findViewById(twiceRadioGroup.getCheckedRadioButtonId());
 
         isInOrder = (orderRadioButton.getText().equals(getString(R.string.yes)));
         typeOfMatching = matchingRadioButton.getText().toString();
-
+        doShuffle = (shuffleRadioButton.getText()).equals("Yes");
+        twicePhoto = (twiceRadioButton.getText().equals("Yes"));
         nbPhotos = Integer.valueOf(nbPhotosEditText.getText().toString());
 
         saveChanges();
@@ -149,6 +174,8 @@ public class PassFaceAdminActivity extends AdminActivity {
         editor.putBoolean(getString(R.string.isInOrderPreference), isInOrder);
         editor.putInt(getString(R.string.numberStepsPreference), nbSteps);
         editor.putString(getString(R.string.matchingTypePreference), typeOfMatching);
+        editor.putBoolean(getString(R.string.doShufflePreference), doShuffle);
+        editor.putBoolean(getString(R.string.twicePhotoPreference), twicePhoto);
 
         editor.remove(getString(R.string.passwordPreference));
 

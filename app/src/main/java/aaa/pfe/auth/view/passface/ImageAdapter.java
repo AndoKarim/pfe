@@ -13,17 +13,16 @@ import aaa.pfe.auth.R;
 
 
 public class ImageAdapter extends BaseAdapter {
-    private final String[] mobileValues;
+    private final String[] arrayOfImages;
     private Context context;
-    private boolean shuffle = true;
 
-    public ImageAdapter(Context context, String[] mobileValues) {
+    public ImageAdapter(Context context, String[] arrayOfImages, boolean shuffle) {
         this.context = context;
 
         if (shuffle)
-            this.mobileValues = shuffleArray(mobileValues);
+            this.arrayOfImages = shuffleArray(arrayOfImages);
         else
-            this.mobileValues = mobileValues;
+            this.arrayOfImages = arrayOfImages;
     }
 
     public static int getImageId(Context context, String imageName) {
@@ -60,7 +59,7 @@ public class ImageAdapter extends BaseAdapter {
             // set image based on selected text
             ImageView imageView = (ImageView) gridView.findViewById(R.id.imageView);
 
-            String mobile = mobileValues[position];
+            String mobile = arrayOfImages[position];
 
             imageView.setImageResource(getImageId(context, "image_" + mobile));
             imageView.setTag("image_" + mobile);
@@ -74,7 +73,7 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mobileValues.length;
+        return arrayOfImages.length;
     }
 
     @Override

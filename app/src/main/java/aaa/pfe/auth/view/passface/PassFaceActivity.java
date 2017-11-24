@@ -16,57 +16,97 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.utils.Const;
 
 public class PassFaceActivity extends AppCompatActivity {
-    static final String[] ANIMALS = new String[]{
+    final String[] ANIMALS = new String[]{
             "Lion", "Tigre", "Ours", "Abeille", "Chien", "Chat", "Mouton", "Baleine", "Cheval"};
-    static final String[] NUMBERS = new String[]{
+    final String[] MISC = new String[]{
             "0", "1", "2", "3", "4", "5", "6", "7", "8"};
 
 
     //View attributes
-    GridView gridView;
-    Button saveButton;
-    Button changeButton;
-    Button submitButton;
+    private GridView gridView;
+    private Button saveButton;
+    private Button changeButton;
+    private Button submitButton;
+    private Button cancelButton;
 
-    SharedPreferences sharedPreferences;
-
+    private SharedPreferences sharedPreferences;
     //Necessary for the PWD Treatment
-    String picName = "";
-    ImageView lastPicChosen;
-    List<ImageView> lastPicsChosen;
-    int lengthOfCurrentPWD = 0;
+    private String userPassword = "";
+    private ImageView lastPicChosen;
+    private List<ImageView> lastPicsChosen;
+    private int lengthOfCurrentPWD = 0;
 
-    //Differents parameters
-    int passwordLength = 1;
-    boolean orderOfPwd = false;
+    //Different parameters
+    private int nbPhotos;
+    private String typePhotos;
+    private int passwordLength;
+    private boolean orderOfPwd;
+    private int nbStep;             //TODO
+    private String typeMatching;    //TODO
+    private boolean shuffle;
+    private boolean twicePhoto;     //TODO
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.passFace);
 
+        //We reset the PWD
+        lengthOfCurrentPWD = 0;
+        sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
+
+        loadParameters();
 
         gridView = (GridView) findViewById(R.id.gridView);
 
-        gridView.setAdapter(new ImageAdapter(this, NUMBERS));
+        switch (typePhotos) {
+            case "Misc":
+                String[] newArrayMisc = Arrays.copyOfRange(MISC, 0, nbPhotos);
+                gridView.setAdapter(new ImageAdapter(this, newArrayMisc, shuffle));
+                break;
+            case "Animals":
+                String[] newArrayAnimals = Arrays.copyOfRange(MISC, 0, nbPhotos);
+                gridView.setAdapter(new ImageAdapter(this, newArrayAnimals, shuffle));
+
+                break;
+
+        }
 
         lastPicsChosen = new ArrayList<>();
 
         saveButton = (Button) findViewById(R.id.saveButton);
         changeButton = (Button) findViewById(R.id.changeButton);
         submitButton = (Button) findViewById(R.id.submitButton);
+        cancelButton = (Button) findViewById(R.id.cancelButton);
         setupListeners();
 
-        sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
         showButtons();
+
+    }
+
+    private void loadParameters() {
+        nbPhotos = sharedPreferences.getInt(getString(R.string.nbPhotosPreference), Const.DEFAULT_NB_PHOTOS);
+        typePhotos = sharedPreferences.getString(getString(R.string.typePhotosPreference), Const.DEFAULT_TYPE_PHOTOS);
+        passwordLength = sharedPreferences.getInt(getString(R.string.passwordLengthPreference), Const.DEFAULT_PWD_LENGTH);
+        orderOfPwd = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
+        nbStep = sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS);
+        typeMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), Const.DEFAULT_MATCHING);
+        shuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
 
 
     }
@@ -74,11 +114,15 @@ public class PassFaceActivity extends AppCompatActivity {
     //What kind of buttons we show, in function of an existing password or not.
 
     private void showButtons() {
-        if (!sharedPreferences.contains("Password"))
+        if (!sharedPreferences.contains("Password")) {
             saveButton.setVisibility(View.VISIBLE);
-        else {
+            cancelButton.setVisibility(View.VISIBLE);
+            changeButton.setVisibility(View.INVISIBLE);
+            submitButton.setVisibility(View.INVISIBLE);
+        } else {
             changeButton.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -91,27 +135,57 @@ public class PassFaceActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 ImageView i = (ImageView) ((LinearLayout) v).getChildAt(0);
+                String newPhotoName = i.getTag().toString();
 
-                //If the password is only with one image, we remove the border from the previous image
-                // we delete the password and replace it by the new image chosen.
-                if (passwordLength == 1) {
-                    if (lastPicChosen != null)
-                        lastPicChosen.setPadding(0, 0, 0, 0);
-                    picName = (String) i.getTag();
-                    lastPicChosen = i;
-                }
-                //Else, we add the new photo chosen
-                else {
-                    if (lengthOfCurrentPWD < passwordLength) {
-                        String newPhoto = i.getTag().toString();
-                        //If this is the first photo of the multiples one, don't add the separator
-                        picName += (picName.equals("")) ? newPhoto : "+" + newPhoto;
-                        //Add the imageView to the list, in case of removing the border
-                        lastPicsChosen.add(i);
+                //When we try password, we don't have to show hints.
+                //For example, when you save a PWD, if the size is 3 you don't show more than
+                //3 images with black border. But in Try mode, you don't give this info.
+                if (submitButton.getVisibility() == View.VISIBLE) {
+                    lengthOfCurrentPWD++;
+                    //If this is the first photo of the multiples one, don't add the separator
+                    userPassword += (userPassword.equals("")) ? newPhotoName : "+" + newPhotoName;
+                    //Add the imageView to the list, in case of removing the border
+                    lastPicsChosen.add(i);
+                    i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                    i.setPadding(15, 15, 15, 15);
+                } else {
+
+                    //If the password is only with one image, we remove the border from the previous image
+                    // we delete the password and replace it by the new image chosen.
+                    if (passwordLength == 1) {
+                        if (lastPicChosen != null)
+                            lastPicChosen.setPadding(0, 0, 0, 0);
+                        userPassword = (String) i.getTag();
+                        lastPicChosen = i;
+                        i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                        i.setPadding(15, 15, 15, 15);
+                    }
+                    //Else, we add the new photo chosen
+                    else {
+                        if (lengthOfCurrentPWD < passwordLength) {
+                            //If we already clicked on that image and we don't allow same image twice
+                            if (i.getPaddingBottom() != 0 && !twicePhoto) {
+                                //We remove the border
+                                i.setPadding(0, 0, 0, 0);
+                                lengthOfCurrentPWD--;
+                                //We remove the name in the PWD
+                                userPassword = userPassword.replace("+" + newPhotoName, "");
+                                //In case of the name of image is the first one clicked
+                                userPassword = userPassword.replace(newPhotoName, "");
+                            } else {
+                                lengthOfCurrentPWD++;
+                                //If this is the first photo of the multiples one, don't add the separator
+                                userPassword += (userPassword.equals("")) ? newPhotoName : "+" + newPhotoName;
+                                //Add the imageView to the list, in case of removing the border
+                                lastPicsChosen.add(i);
+                                i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+                                i.setPadding(15, 15, 15, 15);
+
+                            }
+
+                        }
                     }
                 }
-                i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-                i.setPadding(15, 15, 15, 15);
 
             }
         });
@@ -121,12 +195,21 @@ public class PassFaceActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!picName.equals("")) {
-                    sharedPreferences.edit().putString(getString(R.string.passwordPreference), picName).apply();
+                if (userPassword.equals("") || lengthOfCurrentPWD != passwordLength) {
+                    Toast t = Toast.makeText(getApplicationContext(), R.string.Password_not_changed, Toast.LENGTH_SHORT);
+                    t.show();
+                } else {
+                    sharedPreferences.edit().putString(getString(R.string.passwordPreference), userPassword).apply();
 
                     saveButton.setVisibility(View.INVISIBLE);
                     submitButton.setVisibility(View.VISIBLE);
                     changeButton.setVisibility(View.VISIBLE);
+
+                    for (ImageView i : lastPicsChosen) {
+                        i.setPadding(0, 0, 0, 0);
+                        userPassword = "";
+
+                    }
                     Toast t = Toast.makeText(getApplicationContext(), R.string.Password_changed, Toast.LENGTH_SHORT);
                     t.show();
                 }
@@ -140,7 +223,9 @@ public class PassFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String currentPwd = sharedPreferences.getString("Password", "");
-                if (currentPwd.equals(picName)) {
+
+
+                if (currentPwd.equals(userPassword) || (!orderOfPwd && samePwdDifferentOrders(currentPwd, userPassword))) {
                     Toast t = Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT);
                     t.show();
                 } else {
@@ -158,6 +243,18 @@ public class PassFaceActivity extends AppCompatActivity {
                 submitButton.setVisibility(View.INVISIBLE);
                 changeButton.setVisibility(View.INVISIBLE);
                 saveButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (ImageView i : lastPicsChosen) {
+                    i.setPadding(0, 0, 0, 0);
+                }
+                lengthOfCurrentPWD = 0;
+                userPassword = "";
             }
         });
 
@@ -196,5 +293,11 @@ public class PassFaceActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    public boolean samePwdDifferentOrders(String a, String b) {
+        char[] first = a.toCharArray();
+        char[] second = b.toCharArray();
+        Arrays.sort(first);
+        Arrays.sort(second);
+        return Arrays.equals(first, second);
+    }
 }

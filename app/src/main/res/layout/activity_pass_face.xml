@@ -20,7 +20,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="128dp"
         android:text="Save"
         android:visibility="invisible" />
 
@@ -41,5 +40,14 @@
         android:layout_below="@+id/gridView"
         android:layout_marginEnd="21dp"
         android:text="Submit"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Cancel"
         android:visibility="invisible" />
 </RelativeLayout>

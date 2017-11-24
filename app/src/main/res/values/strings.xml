@@ -22,7 +22,7 @@
     <string name="same">Same</string>
     <string name="exact">Exact</string>
     <string name="yes">Yes</string>
-    <string name="order_of_photos_in_password">Order of photos in password?</string>
+    <string name="order_of_photos_in_password">Password order</string>
     <string name="password_length">Password Length</string>
     <string name="type_of_pictures">Type of pictures</string>
     <string name="number_of_pictures_shown">Number of pictures shown</string>
@@ -39,6 +39,9 @@
     <string name="Password_changed">Password changed</string>
     <string name="good_pwd">Good Pwd</string>
     <string name="wrong_pwd">Wrong Pwd</string>
+    <string name="doShufflePreference">DoShuffle</string>
+    <string name="twicePhotoPreference">TwicePhoto</string>
+    <string name="Password_not_changed">The Password isn\'t following the rules</string>
 
 
     <string-array name="nbPhotos">
@@ -56,7 +59,7 @@
 
     <string-array name="typePhotos">
         <item>Animals</item>
-        <item>Faces</item>
+        <item>Misc</item>
         <item>Geometry Forms</item>
     </string-array>
 
@@ -81,32 +84,6 @@
     </string-array>
 
 
-
-    <!-- SchemePattern -->
-
-    <string-array name="nbColumnsRows">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-    </string-array>
-
-    <string-array name="lengthSchemePattern">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-    </string-array>
 
 
 </resources>
