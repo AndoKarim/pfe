@@ -9,28 +9,57 @@
     <!-- Inheritance of the layout with the include of it, you can add other components under -->
     <include layout="@layout/activity_admin" />
 
+
     <TextView
         android:id="@+id/rowNumberTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Number of rows"/>
-    <EditText
-        android:id="@+id/rowNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="3"
-        android:maxLength="2"
-        android:inputType="number"
-        android:layout_toRightOf="@+id/rowNumberTitle"
-        android:hint="Number of rows"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="17dp"
+        android:text="Number of rows" />
 
-    <EditText
-        android:id="@+id/columnNumber"
+    <Spinner
+        android:id="@+id/spinnerNbRows"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:layout_below="@id/rowNumber"
-        android:hint="Number of rows"/>
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/rowNumberTitle" />
+
+    <TextView
+        android:id="@+id/columnNumberTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rowNumberTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:text="Number of columns" />
+
+    <Spinner
+        android:id="@+id/spinnerNbColumns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/columnNumberTitle" />
+
+    <TextView
+        android:id="@+id/lengthPatternTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/columnNumberTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:text="Length of pattern" />
+
+    <Spinner
+        android:id="@+id/spinnerLengthPattern"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/lengthPatternTitle" />
+
+
+
 
 </RelativeLayout>
