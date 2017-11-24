@@ -1,30 +1,73 @@
 package aaa.pfe.auth.view.passface;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.mother.AdminActivity;
 
 public class PassFaceAdminActivity extends AdminActivity {
 
-    Spinner nbPhotos;
-    Spinner typePhotos;
-    Spinner passwordLength;
-    Spinner nbSteps;
+    private EditText nbPhotosEditText;
+    private Spinner typePhotosSpinner;
+    private Spinner passwordLengthSpinner;
+    private Spinner nbStepsSpinner;
+    private RadioGroup orderRadioGroup;
+    private RadioGroup matchingRadioGroup;
+
+
+    private int nbPhotos;
+    private String typePhotos;
+    private int passwordLength;
+    private int nbSteps;
+    private boolean isInOrder;
+    private String typeOfMatching;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face_admin);
 
-        nbPhotos = (Spinner) findViewById(R.id.spinnerNbPhotos);
-        typePhotos = (Spinner) findViewById(R.id.spinnerTypePhotos);
-        passwordLength = (Spinner) findViewById(R.id.spinnerPasswordLength);
-        nbSteps = (Spinner) findViewById(R.id.spinnerNbSteps);
+        nbPhotosEditText = (EditText) findViewById(R.id.editTextNbPhotos);
+        typePhotosSpinner = (Spinner) findViewById(R.id.spinnerTypePhotos);
+        passwordLengthSpinner = (Spinner) findViewById(R.id.spinnerPasswordLength);
+        nbStepsSpinner = (Spinner) findViewById(R.id.spinnerNbSteps);
+        orderRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        matchingRadioGroup = (RadioGroup) findViewById(R.id.radioGroup2);
 
+
+        setSpinnerAdapters();
+
+
+    }
+
+    private void setSpinnerAdapters() {
+
+
+        ArrayAdapter<CharSequence> typePhotosAdapter = ArrayAdapter.createFromResource(this,
+                R.array.typePhotos, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        typePhotosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        typePhotosSpinner.setAdapter(typePhotosAdapter);
+
+
+        ArrayAdapter<CharSequence> iteratorAdapter = ArrayAdapter.createFromResource(this,
+                R.array.iterator, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        iteratorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        passwordLengthSpinner.setAdapter(iteratorAdapter);
+
+
+        nbStepsSpinner.setAdapter(iteratorAdapter);
 
     }
 
@@ -35,16 +78,46 @@ public class PassFaceAdminActivity extends AdminActivity {
         return true;
     }
 
+
+    //Called when you press the save button.
     @Override
     public void retrieveChanges(View v) {
-        Toast t = Toast.makeText(this, "SavePassface", Toast.LENGTH_SHORT);
-        t.show();
-        String changes = "";
+        typePhotos = typePhotosSpinner.getSelectedItem().toString();
+        passwordLength = Integer.valueOf(passwordLengthSpinner.getSelectedItem().toString());
+        nbSteps = Integer.valueOf(nbStepsSpinner.getSelectedItem().toString());
 
-        sendServer(changes);
+
+        RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
+        RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
+
+        isInOrder = (orderRadioButton.getText().equals(getString(R.string.yes)));
+        typeOfMatching = matchingRadioButton.getText().toString();
+
+        nbPhotos = Integer.valueOf(nbPhotosEditText.getText().toString());
+
+        saveChanges();
     }
 
+    //Save changes into the SharedPreferences
+    @Override
+    public void saveChanges() {
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putInt(getString(R.string.nbPhotos), nbPhotos);
+        editor.putString(getString(R.string.typePhotos), typePhotos);
+        editor.putInt(getString(R.string.passwordLength), passwordLength);
+        editor.putBoolean(getString(R.string.isInOrder), isInOrder);
+        editor.putInt(getString(R.string.numberSteps), nbSteps);
+        editor.putString(getString(R.string.matchingType), typeOfMatching);
+
+        editor.remove(getString(R.string.password));
+
+        editor.apply();
+
+        finish();
+
+    }
 
 }
 

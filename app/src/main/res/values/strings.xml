@@ -17,6 +17,28 @@
     <string name="message_pattern_cleared">Pattern cleared</string>
 
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="type_of_matching">Type of matching</string>
+    <string name="nbSteps">Number of steps</string>
+    <string name="same">Same</string>
+    <string name="exact">Exact</string>
+    <string name="yes">Yes</string>
+    <string name="order_of_photos_in_password">Order of photos in password?</string>
+    <string name="password_length">Password Length</string>
+    <string name="type_of_pictures">Type of pictures</string>
+    <string name="number_of_pictures_shown">Number of pictures shown</string>
+    <string name="no">No</string>
+    <string name="nbPhotos">NbPhotos</string>
+    <string name="typePhotos">TypePhotos</string>
+    <string name="passwordLength">PasswordLength</string>
+    <string name="isInOrder">IsInOrder</string>
+    <string name="numberSteps">NumberOfSteps</string>
+    <string name="matchingType">MatchingType</string>
+    <string name="passFacePreferences">PassFacePreferences</string>
+    <string name="password">Password</string>
+    <string name="passFace">Passface</string>
+    <string name="Password_changed">Password changed</string>
+    <string name="good_pwd">Good Pwd</string>
+    <string name="wrong_pwd">Wrong Pwd</string>
 
 
     <string-array name="nbPhotos">
