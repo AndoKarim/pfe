@@ -1,34 +1,35 @@
 package aaa.pfe.auth.view.pincode;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.view.mother.AdminActivity;
 
-public class PinCodeAdminActivity extends AppCompatActivity {
+public class PinCodeAdminActivity extends AdminActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pass_face_admin);
-
-      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.save);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Saved, TODO, Send to server", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
-                    }
-                }, 1000);
-            }
-        });*/
-
-
-
-
+        setContentView(R.layout.activity_pin_code_admin);
+        getSupportActionBar().setTitle("Admin PinCode");
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    @Override
+    public void retrieveChanges(View v) {
+        Intent i = new Intent(PinCodeAdminActivity.this,PinCodeActivity.class);
+        startActivity(i);
+        Toast t = Toast.makeText(this, "Save Parameters", Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+
 }

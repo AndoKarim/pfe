@@ -1,9 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="aaa.pfe.auth.view.pincode.PinCodeAdminActivity">
+    tools:context="aaa.pfe.auth.view.passface.PassFaceAdminActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <!-- Inheritance of the layout with the include of it, you can add other components under -->
+
+    <include
+        layout="@layout/activity_admin"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="53dp"
+        android:text="ToggleButton" />
+
+    <TextView
+        android:id="@+id/textRandomNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/toggleButton"
+        android:layout_alignBottom="@+id/toggleButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="22dp"
+        android:text="Enable Random Pad" />
+
+    <TextView
+        android:id="@+id/textPinLenght"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textRandomNum"
+        android:layout_below="@+id/toggleButton"
+        android:layout_marginTop="52dp"
+        android:text="Lenght of Pin Code" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/textPinLenght" />
+
+    <TextView
+        android:id="@+id/textTry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textPinLenght"
+        android:layout_centerVertical="true"
+        android:text="Number of try" />
+
+    <EditText
+        android:id="@+id/editTextTry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="number"
+        android:selectAllOnFocus="false"
+        android:singleLine="false" />
+
+    <TextView
+        android:id="@+id/textSetNumer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textTry"
+        android:layout_below="@+id/editTextTry"
+        android:layout_marginTop="86dp"
+        android:text="Set of number" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBox8"
+        android:layout_toStartOf="@+id/editTextTry"
+        android:text="1" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBox7"
+        android:layout_toEndOf="@+id/checkBox7"
+        android:text="2" />
+
+    <CheckBox
+        android:id="@+id/checkBox3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textSetNumer"
+        android:layout_alignBottom="@+id/textSetNumer"
+        android:layout_toStartOf="@+id/toggleButton"
+        android:text="3" />
+
+    <CheckBox
+        android:id="@+id/checkBox4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/checkBox9"
+        android:layout_toEndOf="@+id/checkBox9"
+        android:text="4" />
+
+    <CheckBox
+        android:id="@+id/checkBox5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textSetNumer"
+        android:layout_below="@+id/checkBox1"
+        android:text="5" />
+
+    <CheckBox
+        android:id="@+id/checkBox6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox1"
+        android:layout_toStartOf="@+id/checkBox1"
+        android:text="6" />
+
+    <CheckBox
+        android:id="@+id/checkBox7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox1"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/textRandomNum"
+        android:text="7" />
+
+    <CheckBox
+        android:id="@+id/checkBox8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/checkBox9"
+        android:layout_alignBottom="@+id/checkBox9"
+        android:layout_toStartOf="@+id/checkBox3"
+        android:text="8" />
+
+    <CheckBox
+        android:id="@+id/checkBox9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBox3"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/checkBox8"
+        android:text="9" />
+
+
+</RelativeLayout>
