@@ -8,10 +8,7 @@
 
     <!-- Inheritance of the layout with the include of it, you can add other components under -->
 
-    <include
-        layout="@layout/activity_admin"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+    <include layout="@layout/activity_admin" />
 
     <TextView
         android:id="@+id/textView3"
@@ -21,14 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
         android:layout_marginTop="17dp"
-        android:text="Number of pictures shown" />
-
-    <Spinner
-        android:id="@+id/spinnerNbPhotos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textView3" />
+        android:text="@string/number_of_pictures_shown" />
 
     <TextView
         android:id="@+id/textView8"
@@ -37,7 +27,7 @@
         android:layout_alignStart="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="40dp"
-        android:text="Type of pictures" />
+        android:text="@string/type_of_pictures" />
 
     <TextView
         android:id="@+id/textView4"
@@ -46,7 +36,7 @@
         android:layout_alignStart="@+id/textView3"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="106dp"
-        android:text="Password Length" />
+        android:text="@string/password_length" />
 
     <TextView
         android:id="@+id/textView5"
@@ -55,7 +45,7 @@
         android:layout_alignStart="@+id/textView4"
         android:layout_below="@+id/textView4"
         android:layout_marginTop="65dp"
-        android:text="Order of photos in password?" />
+        android:text="@string/order_of_photos_in_password" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -69,22 +59,18 @@
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/radioGroup"
             android:layout_marginStart="37dp"
-            android:layout_toEndOf="@+id/textView5"
             android:layout_weight="1"
-            android:text="Yes" />
+            android:checked="true"
+            android:text="@string/yes" />
 
         <RadioButton
             android:id="@+id/radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/radioButton2"
-            android:layout_alignBottom="@+id/radioButton2"
-            android:layout_alignParentEnd="true"
             android:layout_marginEnd="19dp"
             android:layout_weight="1"
-            android:text="No" />
+            android:text="@string/no" />
 
     </RadioGroup>
 
@@ -100,22 +86,18 @@
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/radioGroup"
             android:layout_marginStart="37dp"
-            android:layout_toEndOf="@+id/textView5"
             android:layout_weight="1"
-            android:text="Exact" />
+            android:checked="true"
+            android:text="@string/exact" />
 
         <RadioButton
             android:id="@+id/radioButton4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/radioButton2"
-            android:layout_alignBottom="@+id/radioButton2"
-            android:layout_alignParentEnd="true"
             android:layout_marginEnd="19dp"
             android:layout_weight="1"
-            android:text="Same" />
+            android:text="@string/same" />
 
     </RadioGroup>
 
@@ -126,7 +108,7 @@
         android:layout_alignStart="@+id/textView5"
         android:layout_below="@+id/radioGroup"
         android:layout_marginTop="62dp"
-        android:text="Number of steps" />
+        android:text="@string/nbSteps" />
 
     <TextView
         android:id="@+id/textView7"
@@ -135,7 +117,7 @@
         android:layout_alignStart="@+id/textView6"
         android:layout_below="@+id/textView6"
         android:layout_marginTop="49dp"
-        android:text="Type of matching" />
+        android:text="@string/type_of_matching" />
 
     <Spinner
         android:id="@+id/spinnerTypePhotos"
@@ -157,6 +139,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/editTextNbPhotos"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:inputType="number"
+        android:maxLength="2" />
 
 
 </RelativeLayout>

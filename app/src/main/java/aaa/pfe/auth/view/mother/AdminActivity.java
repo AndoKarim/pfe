@@ -26,7 +26,7 @@ public class AdminActivity extends AppCompatActivity {
         t.show();
     }
 
-    public void sendServer(String changes) {
-        //Send to the distant server
+    public void saveChanges() {
+        //Save into sharedPreferences
     }
 }
