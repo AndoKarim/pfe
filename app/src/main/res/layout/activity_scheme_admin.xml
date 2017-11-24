@@ -18,14 +18,19 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
         android:layout_marginTop="17dp"
-        android:text="Number of rows" />
+        android:text="Number of rows"
+        />
 
-    <Spinner
-        android:id="@+id/spinnerNbRows"
+    <EditText
+        android:id="@+id/nbRows"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/rowNumberTitle" />
+        android:layout_alignBaseline="@+id/rowNumberTitle"
+        android:inputType="number"
+        android:ems="5"
+        android:maxLength="2"
+        android:text="3"/>
 
     <TextView
         android:id="@+id/columnNumberTitle"
@@ -36,12 +41,16 @@
         android:layout_marginStart="12dp"
         android:text="Number of columns" />
 
-    <Spinner
-        android:id="@+id/spinnerNbColumns"
+    <EditText
+        android:id="@+id/nbColumns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/columnNumberTitle" />
+        android:layout_alignBaseline="@+id/columnNumberTitle"
+        android:inputType="number"
+        android:ems="5"
+        android:maxLength="2"
+        android:text="3"/>
 
     <TextView
         android:id="@+id/lengthPatternTitle"
@@ -52,12 +61,69 @@
         android:layout_marginStart="12dp"
         android:text="Length of pattern" />
 
-    <Spinner
-        android:id="@+id/spinnerLengthPattern"
+    <EditText
+        android:id="@+id/lengthPattern"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/lengthPatternTitle" />
+        android:layout_alignBaseline="@+id/lengthPatternTitle"
+        android:inputType="number"
+        android:ems="5"
+        android:maxLength="2"
+        android:text="9"/>
+
+    <TextView
+        android:id="@+id/vibrationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lengthPatternTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:text="Vibration" />
+
+    <CheckBox
+        android:id="@+id/vibration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@+id/vibrationTitle"
+        android:checked="true"/>
+
+    <TextView
+        android:id="@+id/stealthTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vibrationTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:text="Stealth" />
+
+    <CheckBox
+        android:id="@+id/stealth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@+id/stealthTitle" />
+
+    <TextView
+        android:id="@+id/dotSizeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stealthTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="12dp"
+        android:text="Size of dot" />
+
+    <EditText
+        android:id="@+id/dotSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@+id/dotSizeTitle"
+        android:inputType="number"
+        android:ems="5"
+        android:maxLength="2"
+        android:text="30"/>
 
 
 

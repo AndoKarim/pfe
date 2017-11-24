@@ -47,7 +47,7 @@ public class PatternLockView extends View {
     /**
      * Represents the aspect ratio for the View
      */
-    @IntDef({AspectRatio.ASPECT_RATIO_SQUARE, AspectRatio.ASPECT_RATIO_WIDTH_BIAS, AspectRatio.ASPECT_RATIO_HEIGHT_BIAS})
+    @IntDef({AspectRatio.ASPECT_RATIO_SQUARE, AspectRatio.ASPECT_RATIO_WIDTH_BIAS, AspectRatio.ASPECT_RATIO_HEIGHT_BIAS, AspectRatio.ASPECT_RATIO_FREE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AspectRatio {
         // Width and height will be same. Minimum of width and height
@@ -56,6 +56,8 @@ public class PatternLockView extends View {
         int ASPECT_RATIO_WIDTH_BIAS = 1;
         // Height will be fixed. The width will be the minimum of width and height
         int ASPECT_RATIO_HEIGHT_BIAS = 2;
+
+        int ASPECT_RATIO_FREE = 3;
     }
 
     /**
@@ -264,6 +266,13 @@ public class PatternLockView extends View {
                 newWidth = Math.min(oldWidth, oldHeight);
                 newHeight = oldHeight;
                 break;
+
+            case AspectRatio.ASPECT_RATIO_FREE:
+                newWidth = Math.min(oldWidth, oldHeight);
+                newHeight = Math.min(oldWidth, oldHeight);
+                break;
+
+
 
             default:
                 throw new IllegalStateException("Unknown aspect ratio");

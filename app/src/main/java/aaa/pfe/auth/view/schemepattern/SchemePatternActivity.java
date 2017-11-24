@@ -20,12 +20,11 @@ import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.patternlockview.PatternLockView;
 import aaa.pfe.auth.view.patternlockview.listener.PatternLockViewListener;
 import aaa.pfe.auth.view.patternlockview.utils.PatternLockUtils;
+import aaa.pfe.auth.view.patternlockview.utils.ResourceUtils;
 
 public class SchemePatternActivity extends AppCompatActivity {
 
-
-
-
+    
     /*
     TODO : modifier le nombre min. le nombre max.
      */
@@ -117,6 +116,56 @@ public class SchemePatternActivity extends AppCompatActivity {
                 setChangesButton();
             }
         });
+        
+        //setAllPreferences();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setAllPreferences();
+    }
+
+    private void setAllPreferences() {
+        int nbRows = 3;
+        int nbColumns = 3;
+        if (sharedPreferences.contains("nbRows")){
+            nbRows = sharedPreferences.getInt("nbRows",1);
+
+        }
+        if (sharedPreferences.contains("nbColumns")){
+            nbColumns = sharedPreferences.getInt("nbColumns",1);
+        }
+
+        if(sharedPreferences.contains("vibration")){
+            boolean vibration = sharedPreferences.getBoolean("vibration",true);
+            mPatternLockView.setTactileFeedbackEnabled(vibration);
+        }
+
+        if(sharedPreferences.contains("stealth")){
+            boolean stealth = sharedPreferences.getBoolean("stealth",false);
+            mPatternLockView.setInStealthMode(stealth);
+        }
+
+        if (sharedPreferences.contains("dotSize")){
+            int dotSize = sharedPreferences.getInt("dotSize",30);
+            mPatternLockView.setDotNormalSize(dotSize);
+        }
+
+        mPatternLockView.setAspectRatio(PatternLockView.AspectRatio.ASPECT_RATIO_FREE);
+
+
+        mPatternLockView.setDotCount(nbColumns,nbRows);
+
+
+        /*if(sharedPreferences.contains("lengthPattern")){
+            int length = sharedPreferences.getInt("lengthPattern",1);
+            //lengthEditText.setText(length);
+        }*/
+
+
+
+
     }
 
 
