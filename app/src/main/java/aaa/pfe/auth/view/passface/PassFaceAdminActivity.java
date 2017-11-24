@@ -3,7 +3,6 @@ package aaa.pfe.auth.view.passface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -13,7 +12,7 @@ import android.widget.Spinner;
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.mother.AdminActivity;
 
-public class PassFaceAdminActivity extends AdminActivity implements AdapterView.OnItemSelectedListener {
+public class PassFaceAdminActivity extends AdminActivity {
 
     private EditText nbPhotosEditText;
     private Spinner typePhotosSpinner;
@@ -58,7 +57,6 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
         typePhotosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         typePhotosSpinner.setAdapter(typePhotosAdapter);
-        typePhotosSpinner.setOnItemSelectedListener(this);
 
 
         ArrayAdapter<CharSequence> iteratorAdapter = ArrayAdapter.createFromResource(this,
@@ -67,12 +65,9 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
         iteratorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         passwordLengthSpinner.setAdapter(iteratorAdapter);
-        passwordLengthSpinner.setOnItemSelectedListener(this);
 
 
         nbStepsSpinner.setAdapter(iteratorAdapter);
-        nbStepsSpinner.setOnItemSelectedListener(this);
-
 
     }
 
@@ -87,6 +82,12 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
     //Called when you press the save button.
     @Override
     public void retrieveChanges(View v) {
+        typePhotos = typePhotosSpinner.getSelectedItem().toString();
+        passwordLength = Integer.valueOf(passwordLengthSpinner.getSelectedItem().toString());
+        nbSteps = Integer.valueOf(nbStepsSpinner.getSelectedItem().toString());
+
+
+
         RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
         RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
 
@@ -118,29 +119,6 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
 
     }
 
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String value = (String) parent.getItemAtPosition(position);
-
-        switch (parent.getId()) {
-            case R.id.spinnerTypePhotos:
-                typePhotos = value;
-                break;
-            case R.id.spinnerPasswordLength:
-                passwordLength = Integer.valueOf(value);
-                break;
-            case R.id.spinnerNbSteps:
-                nbSteps = Integer.valueOf(value);
-                break;
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
 }
 
 
