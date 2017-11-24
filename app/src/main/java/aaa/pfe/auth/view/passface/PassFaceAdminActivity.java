@@ -93,7 +93,7 @@ public class PassFaceAdminActivity extends AdminActivity {
         if (savedOrder)
             yesOrderRadioButton.setChecked(true);
         else
-            noOrderRadioButton.setChecked(false);
+            noOrderRadioButton.setChecked(true);
 
         boolean savedShuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
         if (savedShuffle)

@@ -125,8 +125,9 @@
         android:id="@+id/spinnerTypePhotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editTextPasswordLength"
-        android:layout_alignTop="@+id/textView8" />
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toEndOf="@+id/twiceRadioGroup"
+        android:background="@android:color/transparent" />
 
     <EditText
         android:id="@+id/editTextNbPhotos"
