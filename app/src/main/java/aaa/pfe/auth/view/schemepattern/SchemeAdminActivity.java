@@ -19,6 +19,7 @@ public class SchemeAdminActivity extends AdminActivity {
     private Spinner nbRowsSpinner;
     private Spinner nbColumnsSpinner;
     private SharedPreferences sharedPreferences;
+    private Spinner lengthSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,8 @@ public class SchemeAdminActivity extends AdminActivity {
         sharedPreferences = getApplicationContext().getSharedPreferences("SchemePreferences", MODE_PRIVATE);
         nbRowsSpinner = (Spinner) findViewById(R.id.spinnerNbRows);
         nbColumnsSpinner = (Spinner) findViewById(R.id.spinnerNbColumns);
-        
+        lengthSpinner = (Spinner) findViewById(R.id.spinnerLengthPattern);
+
         setSpinnersAdapters();
         
         setDefaultsValues();
@@ -47,6 +49,12 @@ public class SchemeAdminActivity extends AdminActivity {
             nbColumnsSpinner.setSelection(nbColumns-1);
         }
 
+        if (sharedPreferences.contains("lengthPattern")){
+            int length = sharedPreferences.getInt("lengthPattern",1);
+            lengthSpinner.setSelection(length-1);
+        }
+
+
     }
 
     private void setSpinnersAdapters() {
@@ -55,8 +63,12 @@ public class SchemeAdminActivity extends AdminActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         nbRowsSpinner.setAdapter(adapter);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         nbColumnsSpinner.setAdapter(adapter);
+
+        adapter = ArrayAdapter.createFromResource(this,
+                R.array.lengthSchemePattern, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lengthSpinner.setAdapter(adapter);
     }
 
 
@@ -80,6 +92,9 @@ public class SchemeAdminActivity extends AdminActivity {
 
         editor.putInt("nbRowsSpinner", Integer.valueOf(nbRowsSpinner.getSelectedItem().toString()));
         editor.putInt("nbColumn", Integer.valueOf(nbColumnsSpinner.getSelectedItem().toString()));
+        editor.putInt("lengthPattern", Integer.valueOf(nbColumnsSpinner.getSelectedItem().toString()));
+
+
         editor.remove("schemePatternPass");
         
         editor.apply();
