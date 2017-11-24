@@ -114,6 +114,8 @@ public class PassFaceAdminActivity extends AdminActivity implements AdapterView.
 
         editor.apply();
 
+        finish();
+
     }
 
 
