@@ -24,9 +24,10 @@ import aaa.pfe.auth.utils.Const;
 
 public class PassFaceActivity extends AppCompatActivity {
     final String[] ANIMALS = new String[]{
-            "Lion", "Tigre", "Ours", "Abeille", "Chien", "Chat", "Mouton", "Baleine", "Cheval"};
+            "lion", "tigre", "ours", "abeille", "chien", "chat", "mouton", "baleine", "cheval", "koala", "chevre",
+            "fourmi", "renard", "loup", "pigeon", "papillon", "lapin", "lama", "ecureuil", "autruche"};
     final String[] MISC = new String[]{
-            "0", "1", "2", "3", "4", "5", "6", "7", "8"};
+            "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"};
 
 
     //View attributes
@@ -80,7 +81,7 @@ public class PassFaceActivity extends AppCompatActivity {
                 gridView.setAdapter(new ImageAdapter(this, newArrayMisc, shuffle));
                 break;
             case "Animals":
-                String[] newArrayAnimals = Arrays.copyOfRange(MISC, 0, nbPhotos);
+                String[] newArrayAnimals = Arrays.copyOfRange(ANIMALS, 0, nbPhotos);
                 gridView.setAdapter(new ImageAdapter(this, newArrayAnimals, shuffle));
 
                 break;
@@ -107,6 +108,7 @@ public class PassFaceActivity extends AppCompatActivity {
         nbStep = sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS);
         typeMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), Const.DEFAULT_MATCHING);
         shuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
+        twicePhoto = sharedPreferences.getBoolean(getString(R.string.twicePhotoPreference), Const.DEFAULT_TWICE_PHOTO);
 
 
     }

@@ -52,17 +52,16 @@ public class ImageAdapter extends BaseAdapter {
 
         if (convertView == null) {
 
-            // get layout from mobile.xml
             gridView = inflater.inflate(R.layout.layout_passface_image, null);
 
 
             // set image based on selected text
             ImageView imageView = (ImageView) gridView.findViewById(R.id.imageView);
 
-            String mobile = arrayOfImages[position];
+            String nameInArray = arrayOfImages[position];
 
-            imageView.setImageResource(getImageId(context, "image_" + mobile));
-            imageView.setTag("image_" + mobile);
+            imageView.setImageResource(getImageId(context, "image_" + nameInArray));
+            imageView.setTag("image_" + nameInArray);
 
         } else {
             gridView = (View) convertView;
