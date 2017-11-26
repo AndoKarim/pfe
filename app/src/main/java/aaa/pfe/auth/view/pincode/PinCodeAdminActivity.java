@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -25,7 +27,8 @@ public class PinCodeAdminActivity extends AdminActivity{
 
     private EditText ptTry;
 
-    private ArrayList<CheckBox> checkBoxList;
+    private RadioGroup radiogroupIndicators;
+    private RadioButton radioButtonNoDots, radioButtonDotsFill, radioButtonDotsAnimation;
 
     SharedPreferences sharedPreferences;
 
@@ -42,16 +45,10 @@ public class PinCodeAdminActivity extends AdminActivity{
 
         ptTry = (EditText) findViewById(R.id.editTextTry);
 
-        /*checkBoxList = new ArrayList<>();
-        checkBoxList.add(1,(CheckBox)findViewById(R.id.checkBox1));
-        checkBoxList.add(2,(CheckBox)findViewById(R.id.checkBox2));
-        checkBoxList.add(3,(CheckBox)findViewById(R.id.checkBox3));
-        checkBoxList.add(4,(CheckBox)findViewById(R.id.checkBox4));
-        checkBoxList.add(5,(CheckBox)findViewById(R.id.checkBox5));
-        checkBoxList.add(6,(CheckBox)findViewById(R.id.checkBox6));
-        checkBoxList.add(7,(CheckBox)findViewById(R.id.checkBox7));
-        checkBoxList.add(8,(CheckBox)findViewById(R.id.checkBox8));
-        checkBoxList.add(9,(CheckBox)findViewById(R.id.checkBox9));*/
+        radiogroupIndicators = (RadioGroup) findViewById(R.id.radioGroupIndicator);
+        radioButtonNoDots = (RadioButton) findViewById(R.id.radioButton1);
+        radioButtonDotsFill = (RadioButton) findViewById(R.id.radioButton2);
+        radioButtonDotsAnimation = (RadioButton) findViewById(R.id.radioButton3);
 
         //Shared Pref
         sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
@@ -79,6 +76,21 @@ public class PinCodeAdminActivity extends AdminActivity{
             ptTry.setText(String.valueOf(sharedPreferences.getInt("nbTry",3)));
         }
 
+        if (sharedPreferences.contains("indicators")){
+            int indicatorType=  sharedPreferences.getInt("indicators",-1);
+            switch (indicatorType){
+                case -1:
+                    radioButtonNoDots.setChecked(true);
+                    break;
+                case 0:
+                    radioButtonDotsFill.setChecked(true);
+                    break;
+                case 2:
+                    radioButtonDotsAnimation.setChecked(true);
+                    break;
+            }
+        }
+
     }
 
     @Override
@@ -100,9 +112,19 @@ public class PinCodeAdminActivity extends AdminActivity{
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("randNum",tRandNum.isChecked());
-        Log.i("PinCodeAdmin","saveChanges2");
         editor.putInt("pinLength",Integer.valueOf(ptPinLength.getText().toString()));
         editor.putInt("nbTry",Integer.valueOf(ptTry.getText().toString()));
+
+        int selectedId = radiogroupIndicators.getCheckedRadioButtonId();
+        if(selectedId == radioButtonNoDots.getId()) {
+            editor.putInt("indicators",-1);
+        } else if(selectedId == radioButtonDotsFill.getId()) {
+            editor.putInt("indicators",0);
+
+        } else if (selectedId == radioButtonDotsAnimation.getId()){
+            editor.putInt("indicators",2); //ou 1
+        }
+
         editor.apply();
         finish();
     }

@@ -447,4 +447,8 @@ public class PinLockView extends RecyclerView {
     public void attachIndicatorDots(IndicatorDots mIndicatorDots) {
         this.mIndicatorDots = mIndicatorDots;
     }
+
+    public void takeOffIndicatorDots(){
+        this.mIndicatorDots = null;
+    }
 }

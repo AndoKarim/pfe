@@ -115,8 +115,6 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
 
-        //mPinLockView.enableLayoutShuffling(); //disposition aléatoire
-
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
         //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
         mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
@@ -134,6 +132,9 @@ public class PinCodeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //re-initialize Pin
+        mPinLockView.resetPinLockView();
+
         /*PARAMS*/
         if (sharedPreferences.contains("pinLength")){
             mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
@@ -144,8 +145,23 @@ public class PinCodeActivity extends AppCompatActivity {
             shuffle = true;
             Log.i("PincodeActivity","randNum");
         }else {
-            mPinLockView.setCustomKeySet(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); //TODO: modifier pour pouvoir avoir différent set
+            mPinLockView.setCustomKeySet(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 0}); //Remet les touches dans l'ordre quand je désactive le flush dans les paramètres admin
             shuffle = false;
+        }
+
+        if(sharedPreferences.contains("indicators")){
+           int  indicatorType=  sharedPreferences.getInt("indicators",-1);
+           if (indicatorType>=0){
+               if (!mPinLockView.isIndicatorDotsAttached()) {
+                   mIndicatorDots.setVisibility(View.VISIBLE);
+                   mPinLockView.attachIndicatorDots(mIndicatorDots);
+               }
+               mIndicatorDots.setIndicatorType(indicatorType);
+           }else{
+               mPinLockView.takeOffIndicatorDots();
+               mIndicatorDots.setVisibility(View.INVISIBLE);
+           }
+
         }
     }
 

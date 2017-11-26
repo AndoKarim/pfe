@@ -11,9 +11,9 @@
     <include
         layout="@layout/activity_admin"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/radioGroup"
+        android:layout_below="@+id/editTextTry" />
 
     <ToggleButton
         android:id="@+id/toggleRandomNum"
@@ -64,91 +64,6 @@
         android:singleLine="false"
         android:text="3" />
 
-    <TextView
-        android:id="@+id/textSetNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textTry"
-        android:layout_below="@+id/editTextTry"
-        android:layout_marginTop="86dp"
-        android:text="Set of number" />
-
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkBox8"
-        android:layout_toStartOf="@+id/editTextTry"
-        android:text="1" />
-
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkBox7"
-        android:layout_toEndOf="@+id/checkBox7"
-        android:text="2" />
-
-    <CheckBox
-        android:id="@+id/checkBox3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textSetNumber"
-        android:layout_alignBottom="@+id/textSetNumber"
-        android:layout_toStartOf="@+id/toggleRandomNum"
-        android:text="3" />
-
-    <CheckBox
-        android:id="@+id/checkBox4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkBox9"
-        android:layout_toEndOf="@+id/checkBox9"
-        android:text="4" />
-
-    <CheckBox
-        android:id="@+id/checkBox5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textSetNumber"
-        android:layout_below="@+id/checkBox1"
-        android:text="5" />
-
-    <CheckBox
-        android:id="@+id/checkBox6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox1"
-        android:layout_toStartOf="@+id/checkBox1"
-        android:text="6" />
-
-    <CheckBox
-        android:id="@+id/checkBox7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox1"
-        android:layout_marginStart="11dp"
-        android:layout_toEndOf="@+id/textRandomNum"
-        android:text="7" />
-
-    <CheckBox
-        android:id="@+id/checkBox8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/checkBox9"
-        android:layout_alignBottom="@+id/checkBox9"
-        android:layout_toStartOf="@+id/checkBox3"
-        android:text="8" />
-
-    <CheckBox
-        android:id="@+id/checkBox9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox3"
-        android:layout_marginStart="18dp"
-        android:layout_toEndOf="@+id/checkBox8"
-        android:text="9" />
-
     <EditText
         android:id="@+id/editTextPinLength"
         android:layout_width="wrap_content"
@@ -159,6 +74,42 @@
         android:ems="10"
         android:inputType="number"
         android:text="4" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@+id/textRandomNum"
+        android:layout_below="@id/editTextTry"
+        android:orientation="horizontal"
+        android:id="@+id/radioGroupIndicator">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/radioGroup"
+            android:layout_below="@+id/editTextTry"
+            android:layout_marginTop="26dp"
+            android:text="No Indicators" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/radioButton1"
+        android:layout_alignBottom="@+id/radioButton1"
+        android:layout_toEndOf="@+id/textRandomNum"
+        android:text="Dots to fill" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/radioButton2"
+            android:layout_alignBottom="@+id/radioButton2"
+            android:layout_alignParentEnd="true"
+            android:text="Appearing dots" />
+    </RadioGroup>
 
 
 </RelativeLayout>
