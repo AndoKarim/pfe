@@ -281,12 +281,6 @@ public class PassFaceActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.pullFromServer) {
-            // do something here
-            Toast t = Toast.makeText(this, "Pull From Server", Toast.LENGTH_SHORT);
-            t.show();
-        }
-
         if (id == R.id.adminPanel) {
             Intent i = new Intent(PassFaceActivity.this, PassFaceAdminActivity.class);
             startActivity(i);

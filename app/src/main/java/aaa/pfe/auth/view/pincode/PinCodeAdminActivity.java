@@ -21,7 +21,7 @@ import static aaa.pfe.auth.view.pincode.PinCodeActivity.PREFERENCES;
 
 public class PinCodeAdminActivity extends AdminActivity{
 
-    private ToggleButton tRandNum;
+    private ToggleButton tRandNum,tCaptureMode;
 
     private EditText ptPinLength;
 
@@ -40,6 +40,8 @@ public class PinCodeAdminActivity extends AdminActivity{
 
         //Retrieve Button
         tRandNum =  (ToggleButton) findViewById(R.id.toggleRandomNum);
+
+        tCaptureMode = (ToggleButton) findViewById(R.id.toggleButtonCaptureMode);
 
         ptPinLength = (EditText) findViewById(R.id.editTextPinLength);
 
@@ -91,6 +93,10 @@ public class PinCodeAdminActivity extends AdminActivity{
             }
         }
 
+        if (sharedPreferences.contains("captureMode")){
+            tCaptureMode.setChecked((boolean) sharedPreferences.getBoolean("captureMode",true));
+        }
+
     }
 
     @Override
@@ -114,6 +120,7 @@ public class PinCodeAdminActivity extends AdminActivity{
         editor.putBoolean("randNum",tRandNum.isChecked());
         editor.putInt("pinLength",Integer.valueOf(ptPinLength.getText().toString()));
         editor.putInt("nbTry",Integer.valueOf(ptTry.getText().toString()));
+        editor.putBoolean("captureMode",tCaptureMode.isChecked());
 
         int selectedId = radiogroupIndicators.getCheckedRadioButtonId();
         if(selectedId == radioButtonNoDots.getId()) {

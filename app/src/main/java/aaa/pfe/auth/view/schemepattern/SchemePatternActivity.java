@@ -187,11 +187,6 @@ public class SchemePatternActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.pullFromServer) {
-            // do something here
-            Toast t =Toast.makeText(this,"Pull From Server",Toast.LENGTH_SHORT);
-            t.show();
-        }
 
         if (id == R.id.adminPanel) {
             Intent i = new Intent(SchemePatternActivity.this, SchemeAdminActivity.class);

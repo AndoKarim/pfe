@@ -7,9 +7,4 @@
         android:icon="@android:drawable/ic_menu_manage"
         android:title="Admin"
         app:showAsAction="always" />
-    <item
-        android:id="@+id/pullFromServer"
-        android:icon="@android:drawable/stat_sys_download"
-        android:title="Pull"
-        app:showAsAction="always" />
 </menu>

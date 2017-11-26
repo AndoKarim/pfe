@@ -75,13 +75,24 @@
         android:inputType="number"
         android:text="4" />
 
+
+    <TextView
+        android:id="@+id/textViewCaptureMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textTry"
+        android:layout_below="@+id/editTextTry"
+        android:layout_marginTop="45dp"
+        android:text="Capture Mode" />
+
     <RadioGroup
+        android:id="@+id/radioGroupIndicator"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignStart="@+id/textRandomNum"
-        android:layout_below="@id/editTextTry"
-        android:orientation="horizontal"
-        android:id="@+id/radioGroupIndicator">
+        android:layout_below="@id/textViewCaptureMode"
+        android:layout_marginTop="45dp"
+        android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/radioButton1"
@@ -90,16 +101,16 @@
             android:layout_alignStart="@+id/radioGroup"
             android:layout_below="@+id/editTextTry"
             android:layout_marginTop="26dp"
-            android:text="No Indicators" />
+            android:text="No indicator" />
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/radioButton1"
-        android:layout_alignBottom="@+id/radioButton1"
-        android:layout_toEndOf="@+id/textRandomNum"
-        android:text="Dots to fill" />
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/radioButton1"
+            android:layout_alignBottom="@+id/radioButton1"
+            android:layout_toEndOf="@+id/textRandomNum"
+            android:text="Dots to fill" />
 
         <RadioButton
             android:id="@+id/radioButton3"
@@ -109,7 +120,17 @@
             android:layout_alignBottom="@+id/radioButton2"
             android:layout_alignParentEnd="true"
             android:text="Appearing dots" />
+
     </RadioGroup>
+
+    <ToggleButton
+        android:id="@+id/toggleButtonCaptureMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/toggleRandomNum"
+        android:layout_below="@+id/editTextTry"
+        android:layout_marginTop="27dp"
+        android:text="ToggleButton" />
 
 
 </RelativeLayout>

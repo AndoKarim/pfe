@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.pincodeview.IndicatorDots;
 import aaa.pfe.auth.view.pincodeview.PinLockListener;
@@ -34,6 +36,10 @@ public class PinCodeActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     private boolean shuffle;
+
+    //capture mode
+    private boolean captureMode;
+
 
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
@@ -163,6 +169,8 @@ public class PinCodeActivity extends AppCompatActivity {
            }
 
         }
+
+        captureMode = sharedPreferences.getBoolean("captureMode",false);
     }
 
     @Override
@@ -184,11 +192,6 @@ public class PinCodeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.pullFromServer) {
-            // do something here
-            Toast t =Toast.makeText(this,"Pull From Server",Toast.LENGTH_SHORT);
-            t.show();
-        }
 
         if (id == R.id.adminPanel) {
             Intent i = new Intent(PinCodeActivity.this, PinCodeAdminActivity.class);
