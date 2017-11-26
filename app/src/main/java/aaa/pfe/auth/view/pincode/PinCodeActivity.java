@@ -39,12 +39,15 @@ public class PinCodeActivity extends AppCompatActivity {
 
     //capture mode
     private boolean captureMode;
-
+    private int nbTry,MAX_TRY;
+    private ArrayList<Integer> succeedArray,failArray; //met dans un tableau le nombre d'essai quand on réussi ou quand on rate (pour avoir le nombre de reussite .lenght() )
+    //TODO: quand on aura des sessions enregistrer dans une db sinon le tableau se réinitialisera à chaque fois qu'il ouvre activity
 
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
         public void onComplete(String pin) {
             Log.i(TAG, "Pin complete: " + pin);
+            nbTry ++;
 
             //TOAST
             Context context = getApplicationContext();
@@ -59,10 +62,16 @@ public class PinCodeActivity extends AppCompatActivity {
                     if (sharedPreferences.getString("pincode", null).equals(pin)) {
                         //Correct PIN
                         resultPin = "Correct Pin!";
-
-
-                    } else {
+                        nbTry = 0;
+                        if (captureMode)
+                            succeedArray.add(nbTry);
+                    } else {//Incorrect PIN
                         resultPin = "Incorrect Pin!";
+                        if (captureMode && (nbTry >=MAX_TRY)){
+                            failArray.add(nbTry);
+                            nbTry = 0;
+                        }
+
                     }
 
                     Toast.makeText(context, resultPin, duration).show();
@@ -72,7 +81,7 @@ public class PinCodeActivity extends AppCompatActivity {
                 editor.putString("pincode", pin);
                 editor.commit();
                 setChangesButton();
-
+                nbTry = 0;
                 Toast.makeText(context,"pin updated", duration).show();
 
             }
@@ -122,8 +131,6 @@ public class PinCodeActivity extends AppCompatActivity {
         mPinLockView.setPinLockListener(mPinLockListener);
 
         mPinLockView.setTextColor(ContextCompat.getColor(this, R.color.greyish));
-        //mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_NUMBER_ANIMATION);
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FIXED);
         changeButton = (Button) findViewById(R.id.change_pin);
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +140,8 @@ public class PinCodeActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     @Override
@@ -140,10 +149,17 @@ public class PinCodeActivity extends AppCompatActivity {
         super.onResume();
         //re-initialize Pin
         mPinLockView.resetPinLockView();
+        nbTry = 0;
+        succeedArray = new ArrayList<>();
+        failArray = new ArrayList<>();
 
         /*PARAMS*/
         if (sharedPreferences.contains("pinLength")){
             mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
+        }
+
+        if (sharedPreferences.contains("nbTry")){
+            MAX_TRY = sharedPreferences.getInt("nbTry",3);
         }
 
         if (sharedPreferences.contains("randNum")&&sharedPreferences.getBoolean("randNum",false)){
