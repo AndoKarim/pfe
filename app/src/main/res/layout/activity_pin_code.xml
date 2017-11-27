@@ -36,6 +36,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_below="@+id/pin_lock_view"
-        android:text="Change" />
+        android:text="New user" />
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package aaa.pfe.auth.view.schemepattern;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.mother.AdminActivity;
+import aaa.pfe.auth.view.pincode.PinCodeActivity;
+import aaa.pfe.auth.view.pincode.PinCodeAdminActivity;
 
 /**
  * Created by Anasse on 21/11/2017.
@@ -122,6 +125,8 @@ public class SchemeAdminActivity extends AdminActivity {
         editor.remove("schemePatternPass");
         
         editor.apply();
+        Intent i = new Intent(SchemeAdminActivity.this,SchemePatternActivity.class);
         finish();
+        startActivity(i);
     }
 }

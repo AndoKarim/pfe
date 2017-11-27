@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -52,7 +54,6 @@ public class SchemePatternActivity extends AppCompatActivity {
             String result = PatternLockUtils.patternToSha1(mPatternLockView, pattern);
 
             if(onChangesCode){
-
                 Log.d("Save pattern sha1",result);
                 sharedPreferences
                         .edit()
@@ -113,6 +114,19 @@ public class SchemePatternActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!onChangesCode) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SchemePatternActivity.this);
+                    builder.setMessage("You're a new user, please save a password")
+                            .setTitle("New user");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 setChangesButton();
             }
         });
@@ -189,8 +203,35 @@ public class SchemePatternActivity extends AppCompatActivity {
 
 
         if (id == R.id.adminPanel) {
-            Intent i = new Intent(SchemePatternActivity.this, SchemeAdminActivity.class);
-            startActivity(i);
+
+            LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
+
+            View mView = layoutInflaterAndroid.inflate(R.layout.admin_input_dialog, null);
+            AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(this);
+            alertDialogBuilderUserInput.setView(mView);
+
+            final EditText userInputDialogEditText = (EditText) mView.findViewById(R.id.userInputDialog);
+            alertDialogBuilderUserInput
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogBox, int id) {
+                            Intent i = new Intent(SchemePatternActivity.this, SchemeAdminActivity.class);
+                            finish();
+                            startActivity(i);
+                        }
+                    })
+
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogBox, int id) {
+                                    dialogBox.cancel();
+                                }
+                            });
+
+            AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
+            alertDialogAndroid.show();
+
+
 
         }
         return super.onOptionsItemSelected(item);
@@ -199,7 +240,7 @@ public class SchemePatternActivity extends AppCompatActivity {
 
     public void setChangesButton() {
         if(onChangesCode){
-            changeButton.setText("Change");
+            changeButton.setText("New user");
             onChangesCode=false;
         }else{
             changeButton.setText("Cancel");

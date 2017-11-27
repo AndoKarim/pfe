@@ -21,6 +21,7 @@ import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.pincodeview.IndicatorDots;
 import aaa.pfe.auth.view.pincodeview.PinLockListener;
 import aaa.pfe.auth.view.pincodeview.PinLockView;
+import aaa.pfe.auth.view.schemepattern.SchemePatternActivity;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -135,6 +136,19 @@ public class PinCodeActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!onChangingCode) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PinCodeActivity.this);
+                    builder.setMessage("You're a new user, please save a password")
+                            .setTitle("New user");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 setChangesButton();
                 mPinLockView.resetPinLockView();
 
@@ -211,6 +225,7 @@ public class PinCodeActivity extends AppCompatActivity {
 
         if (id == R.id.adminPanel) {
             Intent i = new Intent(PinCodeActivity.this, PinCodeAdminActivity.class);
+            finish();
             startActivity(i);
 
         }
@@ -219,7 +234,7 @@ public class PinCodeActivity extends AppCompatActivity {
 
     public void setChangesButton() {
         if(onChangingCode){
-            changeButton.setText("Change");
+            changeButton.setText("New user");
             onChangingCode=false;
         }else{
             changeButton.setText("Cancel");
