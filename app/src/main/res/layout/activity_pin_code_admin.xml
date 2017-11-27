@@ -119,6 +119,7 @@
             android:layout_alignBaseline="@+id/radioButton2"
             android:layout_alignBottom="@+id/radioButton2"
             android:layout_alignParentEnd="true"
+            android:checked="true"
             android:text="Appearing dots" />
 
     </RadioGroup>
@@ -129,8 +130,8 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/toggleRandomNum"
         android:layout_below="@+id/editTextTry"
-        android:checked="true"
         android:layout_marginTop="27dp"
+        android:checked="true"
         android:text="ToggleButton" />
 
 

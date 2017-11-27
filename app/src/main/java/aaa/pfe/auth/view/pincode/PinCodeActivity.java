@@ -18,13 +18,11 @@ import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.pincodeview.IndicatorDots;
 import aaa.pfe.auth.view.pincodeview.PinLockListener;
 import aaa.pfe.auth.view.pincodeview.PinLockView;
-import aaa.pfe.auth.view.schemepattern.SchemePatternActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +46,6 @@ public class PinCodeActivity extends AppCompatActivity {
     //capture mode
     private boolean captureMode;
     private int nbTry,MAX_TRY;
-    private ArrayList<Integer> succeedArray,failArray; //met dans un tableau le nombre d'essai quand on réussi ou quand on rate (pour avoir le nombre de reussite .lenght() )
     private OutputStream logFile;
 
     private PinLockListener mPinLockListener = new PinLockListener() {
@@ -70,13 +67,32 @@ public class PinCodeActivity extends AppCompatActivity {
                     if (sharedPreferences.getString("pincode", null).equals(pin)) {
                         //Correct PIN
                         resultPin = "Correct Pin!";
+                        if (captureMode){
+                            try {
+                                JSONObject jsonObject_Succeed = new JSONObject();
+                                JSONObject jsonObject_Try = new JSONObject();
+                                jsonObject_Try.put("try",nbTry);
+                                jsonObject_Succeed.put("success",jsonObject_Try.toString());
+                                logFile.write(jsonObject_Succeed.toString().getBytes());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
                         nbTry = 0;
-                        if (captureMode)
-                            succeedArray.add(nbTry);
                     } else {//Incorrect PIN
                         resultPin = "Incorrect Pin!";
                         if (captureMode && (nbTry >=MAX_TRY)){
-                            failArray.add(nbTry);
+                            try {
+                                JSONObject jsonObject_fail = new JSONObject();
+                                jsonObject_fail.put("fail",null);
+                                logFile.write(jsonObject_fail.toString().getBytes());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
                             nbTry = 0;
                         }
 
@@ -170,8 +186,6 @@ public class PinCodeActivity extends AppCompatActivity {
         //re-initialize Pin
         mPinLockView.resetPinLockView();
         nbTry = 0;
-        succeedArray = new ArrayList<>();
-        failArray = new ArrayList<>();
 
         /*PARAMS*/
         int pinLength =sharedPreferences.getInt("pinLength",4);
@@ -210,20 +224,21 @@ public class PinCodeActivity extends AppCompatActivity {
         if (captureMode) {
             String params = "" + shuffle + MAX_TRY + pinLength + indicatorType;
             String filename = String.valueOf(params.hashCode()) + ".log";
-            if (CheckExisting(getApplicationContext(), filename)) {
-                Log.i("test","here1");
+            if (CheckExisting(getApplicationContext(), filename)) { //expérience avec ces paramètres déjà faite
                 try {
                     logFile = openFileOutput(filename, MODE_APPEND);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else { //expérience avec nouveaux paramètres
                 try {
-                    Log.i("test","here2");
                     logFile = openFileOutput(filename, MODE_PRIVATE);
-                    JSONObject tmp = new JSONObject();
-                    tmp.put("test",3);
-                    logFile.write(tmp.toString().getBytes());
+                    JSONObject json_params = new JSONObject();
+                    json_params.put("shuffle",shuffle);
+                    json_params.put("max try",MAX_TRY);
+                    json_params.put("pin length",pinLength);
+                    json_params.put("indicator",indicatorType);
+                    logFile.write(json_params.toString().getBytes());
                 } catch (IOException e) {
                             e.printStackTrace();
                 } catch (JSONException e) {
