@@ -1,9 +1,11 @@
 package aaa.pfe.auth.view.passface;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -117,10 +119,21 @@ public class PassFaceActivity extends AppCompatActivity {
 
     private void showButtons() {
         if (!sharedPreferences.contains("Password")) {
-            saveButton.setVisibility(View.VISIBLE);
-            cancelButton.setVisibility(View.VISIBLE);
-            changeButton.setVisibility(View.INVISIBLE);
-            submitButton.setVisibility(View.INVISIBLE);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("No password are registered, you will now register one!")
+                    .setTitle("New password");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    saveButton.setVisibility(View.VISIBLE);
+                    cancelButton.setVisibility(View.VISIBLE);
+                    changeButton.setVisibility(View.INVISIBLE);
+                    submitButton.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         } else {
             changeButton.setVisibility(View.VISIBLE);
             submitButton.setVisibility(View.VISIBLE);

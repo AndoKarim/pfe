@@ -226,7 +226,7 @@ public class SchemePatternActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialogBox, int id) {
                                     dialogBox.cancel();
                                 }
-                            });
+                            }) ;
 
             AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
             alertDialogAndroid.show();
