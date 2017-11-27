@@ -23,112 +23,6 @@
         android:layout_marginTop="17dp"
         android:text="@string/number_of_pictures_shown" />
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="40dp"
-        android:text="@string/type_of_pictures" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="106dp"
-        android:text="@string/password_length" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_below="@+id/editTextPasswordLength"
-        android:layout_marginTop="43dp"
-        android:text="@string/order_of_photos_in_password" />
-
-    <RadioGroup
-        android:id="@+id/orderRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editTextNbSteps"
-        android:layout_alignTop="@+id/textView5"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/yesRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/yes" />
-
-        <RadioButton
-            android:id="@+id/noRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="17dp"
-            android:layout_weight="1"
-            android:text="@string/no" />
-
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/matchingRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/orderRadioGroup"
-        android:layout_alignTop="@+id/textView7"
-        android:orientation="horizontal">
-
-        <RadioButton
-            android:id="@+id/exactRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="@string/exact" />
-
-        <RadioButton
-            android:id="@+id/sameRadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/same" />
-
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView5"
-        android:layout_below="@+id/orderRadioGroup"
-        android:layout_marginTop="41dp"
-        android:text="@string/nbSteps" />
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView6"
-        android:layout_below="@+id/textView6"
-        android:layout_marginTop="49dp"
-        android:text="@string/type_of_matching" />
-
-    <Spinner
-        android:id="@+id/spinnerTypePhotos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView8"
-        android:layout_toEndOf="@+id/twiceRadioGroup"
-        android:background="@android:color/transparent" />
-
     <EditText
         android:id="@+id/editTextNbPhotos"
         android:layout_width="50dp"
@@ -140,16 +34,107 @@
         android:inputType="number"
         android:maxLength="2" />
 
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:text="Between 1 and 12"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="40dp"
+        android:text="@string/type_of_pictures" />
+
+    <Spinner
+        android:id="@+id/spinnerTypePhotos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toEndOf="@+id/twiceRadioGroup"
+        android:background="@android:color/transparent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="106dp"
+        android:text="@string/password_length" />
+
     <EditText
         android:id="@+id/editTextPasswordLength"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/textView4"
         android:layout_alignBottom="@+id/textView4"
-        android:layout_alignEnd="@+id/matchingRadioGroup"
+        android:layout_alignStart="@+id/editTextNbSteps"
         android:ems="10"
         android:inputType="number"
         android:maxLength="2" />
+
+    <!-- <TextView
+         android:id="@+id/textView5"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignStart="@+id/textView4"
+         android:layout_below="@+id/editTextPasswordLength"
+         android:layout_marginTop="42dp"
+         android:text="@string/order_of_photos_in_password" />
+
+     <RadioGroup
+         android:id="@+id/orderRadioGroup"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignEnd="@+id/editTextNbSteps"
+         android:layout_alignTop="@+id/textView5"
+         android:orientation="horizontal">
+
+         <RadioButton
+             android:id="@+id/yesRadioButton"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="20dp"
+             android:layout_weight="1"
+             android:checked="true"
+             android:text="@string/yes" />
+
+         <RadioButton
+             android:id="@+id/noRadioButton"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginRight="17dp"
+             android:layout_weight="1"
+             android:text="@string/no" />
+
+     </RadioGroup>-->
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView4"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="41dp"
+        android:text="@string/nbSteps" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/textView6"
+        android:text="Between 1 and 5"
+        android:textColor="@color/red"
+        android:textSize="10sp" />
 
     <EditText
         android:id="@+id/editTextNbSteps"
@@ -161,6 +146,42 @@
         android:ems="10"
         android:inputType="number"
         android:maxLength="2" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView6"
+        android:layout_below="@+id/textView6"
+        android:layout_marginTop="49dp"
+        android:text="@string/type_of_matching" />
+
+    <RadioGroup
+        android:id="@+id/matchingRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/editTextNbSteps"
+        android:layout_alignTop="@+id/textView7"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/exactRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/exact" />
+
+        <RadioButton
+            android:id="@+id/semanticRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft=" "
+            android:text="@string/semantic" />
+
+    </RadioGroup>
 
     <TextView
         android:id="@+id/textView9"
@@ -176,6 +197,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/matchingRadioGroup"
+        android:layout_alignStart="@id/matchingRadioGroup"
         android:layout_alignTop="@+id/textView9"
         android:orientation="horizontal">
 
@@ -183,7 +205,6 @@
             android:id="@+id/yesShuffleRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="22dp"
             android:layout_weight="1"
             android:checked="true"
             android:text="@string/yes" />
@@ -192,7 +213,6 @@
             android:id="@+id/noShuffleRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="17dp"
             android:layout_weight="1"
             android:text="@string/no" />
     </RadioGroup>
@@ -204,7 +224,7 @@
         android:layout_alignStart="@+id/textView9"
         android:layout_below="@+id/shuffleRadioGroup"
         android:layout_marginTop="18dp"
-        android:text="Use twice an image" />
+        android:text="Use an image twice " />
 
     <RadioGroup
         android:id="@+id/twiceRadioGroup"
@@ -218,7 +238,6 @@
             android:id="@+id/yesTwiceRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="22dp"
             android:layout_weight="1"
             android:text="@string/yes" />
 
@@ -226,9 +245,7 @@
             android:id="@+id/noTwiceRadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/orderRadioGroup"
-            android:layout_alignTop="@+id/twiceRadioGroup"
-            android:layout_marginEnd="12dp"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:checked="true"
             android:text="@string/no" />
