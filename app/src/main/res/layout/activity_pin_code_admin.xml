@@ -12,7 +12,7 @@
         layout="@layout/activity_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/radioGroup"
+        android:layout_alignStart="@+id/radioGroupIndicator"
         android:layout_below="@+id/editTextTry" />
 
     <ToggleButton
@@ -129,6 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/toggleRandomNum"
         android:layout_below="@+id/editTextTry"
+        android:checked="true"
         android:layout_marginTop="27dp"
         android:text="ToggleButton" />
 
