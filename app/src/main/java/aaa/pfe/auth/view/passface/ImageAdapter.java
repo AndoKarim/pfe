@@ -25,11 +25,11 @@ public class ImageAdapter extends BaseAdapter {
             this.arrayOfImages = arrayOfImages;
     }
 
-    public static int getImageId(Context context, String imageName) {
+    private static int getImageId(Context context, String imageName) {
         return context.getResources().getIdentifier("drawable/" + imageName, null, context.getPackageName());
     }
 
-    static String[] shuffleArray(String[] ar) {
+    private String[] shuffleArray(String[] ar) {
         // If running on Java 6 or older, use `new Random()` on RHS here
         Random rnd = new Random();
         for (int i = ar.length - 1; i > 0; i--) {
@@ -56,7 +56,7 @@ public class ImageAdapter extends BaseAdapter {
 
 
             // set image based on selected text
-            ImageView imageView = (ImageView) gridView.findViewById(R.id.imageView);
+            ImageView imageView = gridView.findViewById(R.id.imageView);
 
             String nameInArray = arrayOfImages[position];
 
@@ -64,11 +64,12 @@ public class ImageAdapter extends BaseAdapter {
             imageView.setTag("image_" + nameInArray);
 
         } else {
-            gridView = (View) convertView;
+            gridView = convertView;
         }
 
         return gridView;
     }
+
 
     @Override
     public int getCount() {

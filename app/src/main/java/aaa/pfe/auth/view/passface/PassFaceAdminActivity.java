@@ -3,18 +3,19 @@ package aaa.pfe.auth.view.passface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.utils.Const;
 import aaa.pfe.auth.view.mother.AdminActivity;
-import aaa.pfe.auth.view.pincode.PinCodeActivity;
-import aaa.pfe.auth.view.pincode.PinCodeAdminActivity;
 
 public class PassFaceAdminActivity extends AdminActivity {
 
@@ -27,23 +28,25 @@ public class PassFaceAdminActivity extends AdminActivity {
     private RadioGroup orderRadioGroup;
     private RadioGroup matchingRadioGroup;
     private RadioGroup shuffleRadioGroup;
-    private RadioGroup twiceRadioGroup;
-    private RadioButton yesOrderRadioButton;
-    private RadioButton noOrderRadioButton;
     private RadioButton exactRadioButton;
     private RadioButton sameRadioButton;
     private RadioButton yesShuffleRadioButton;
     private RadioButton noShuffleRadioButton;
     private RadioButton yesTwiceRadioButton;
     private RadioButton noTwiceRadioButton;
+    private RadioGroup twiceRadioGroup;
+    //private RadioButton yesOrderRadioButton;
+    // private RadioButton noOrderRadioButton;
+
+    
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
     private int nbSteps;
-    private boolean isInOrder;
     private String typeOfMatching;
     private boolean doShuffle;
     private boolean twicePhoto;
+    //private boolean isInOrder;
 
 
     @Override
@@ -61,22 +64,21 @@ public class PassFaceAdminActivity extends AdminActivity {
         matchingRadioGroup = (RadioGroup) findViewById(R.id.matchingRadioGroup);
         shuffleRadioGroup = (RadioGroup) findViewById(R.id.shuffleRadioGroup);
         twiceRadioGroup = (RadioGroup) findViewById(R.id.twiceRadioGroup);
-
-        yesOrderRadioButton = (RadioButton) findViewById(R.id.yesRadioButton);
-        noOrderRadioButton = (RadioButton) findViewById(R.id.noRadioButton);
-        sameRadioButton = (RadioButton) findViewById(R.id.sameRadioButton);
+        sameRadioButton = (RadioButton) findViewById(R.id.semanticRadioButton);
         exactRadioButton = (RadioButton) findViewById(R.id.exactRadioButton);
         yesShuffleRadioButton = (RadioButton) findViewById(R.id.yesShuffleRadioButton);
         noShuffleRadioButton = (RadioButton) findViewById(R.id.noShuffleRadioButton);
         yesTwiceRadioButton = (RadioButton) findViewById(R.id.yesTwiceRadioButton);
         noTwiceRadioButton = (RadioButton) findViewById(R.id.noTwiceRadioButton);
 
+        // yesOrderRadioButton = (RadioButton) findViewById(R.id.yesRadioButton);
+        //noOrderRadioButton = (RadioButton) findViewById(R.id.noRadioButton);
+
         sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
 
         setSpinnerAdapters();
 
         //We load the current saved settings
-
         loadSettings();
 
 
@@ -92,11 +94,6 @@ public class PassFaceAdminActivity extends AdminActivity {
         String savedNbSteps = String.valueOf(sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS));
         nbStepsEditText.setText(savedNbSteps);
 
-        boolean savedOrder = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
-        if (savedOrder)
-            yesOrderRadioButton.setChecked(true);
-        else
-            noOrderRadioButton.setChecked(true);
 
         boolean savedShuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
         if (savedShuffle)
@@ -117,6 +114,11 @@ public class PassFaceAdminActivity extends AdminActivity {
         else
             noTwiceRadioButton.setChecked(true);
 
+       /* boolean savedOrder = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
+        if (savedOrder)
+            yesOrderRadioButton.setChecked(true);
+        else
+            noOrderRadioButton.setChecked(true);*/
 
         typePhotosSpinner.setSelection(typePhotosAdapter.getPosition(sharedPreferences.getString(getString(R.string.typePhotosPreference), Const.DEFAULT_TYPE_PHOTOS)));
 
@@ -128,9 +130,8 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         typePhotosAdapter = ArrayAdapter.createFromResource(this,
                 R.array.typePhotos, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
+
         typePhotosAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
         typePhotosSpinner.setAdapter(typePhotosAdapter);
 
 
@@ -152,18 +153,20 @@ public class PassFaceAdminActivity extends AdminActivity {
         nbSteps = Integer.parseInt(nbStepsEditText.getText().toString());
 
 
-        RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
         RadioButton matchingRadioButton = (RadioButton) findViewById(matchingRadioGroup.getCheckedRadioButtonId());
         RadioButton shuffleRadioButton = (RadioButton) findViewById(shuffleRadioGroup.getCheckedRadioButtonId());
         RadioButton twiceRadioButton = (RadioButton) findViewById(twiceRadioGroup.getCheckedRadioButtonId());
 
-        isInOrder = (orderRadioButton.getText().equals(getString(R.string.yes)));
+        //RadioButton orderRadioButton = (RadioButton) findViewById(orderRadioGroup.getCheckedRadioButtonId());
         typeOfMatching = matchingRadioButton.getText().toString();
         doShuffle = (shuffleRadioButton.getText()).equals("Yes");
         twicePhoto = (twiceRadioButton.getText().equals("Yes"));
         nbPhotos = Integer.valueOf(nbPhotosEditText.getText().toString());
+        //isInOrder = (orderRadioButton.getText().equals(getString(R.string.yes)));
 
-        saveChanges();
+
+        //Parameters checking
+        checkParameters();
     }
 
     //Save changes into the SharedPreferences
@@ -174,20 +177,46 @@ public class PassFaceAdminActivity extends AdminActivity {
         editor.putInt(getString(R.string.nbPhotosPreference), nbPhotos);
         editor.putString(getString(R.string.typePhotosPreference), typePhotos);
         editor.putInt(getString(R.string.passwordLengthPreference), passwordLength);
-        editor.putBoolean(getString(R.string.isInOrderPreference), isInOrder);
         editor.putInt(getString(R.string.numberStepsPreference), nbSteps);
         editor.putString(getString(R.string.matchingTypePreference), typeOfMatching);
         editor.putBoolean(getString(R.string.doShufflePreference), doShuffle);
         editor.putBoolean(getString(R.string.twicePhotoPreference), twicePhoto);
+        //editor.putBoolean(getString(R.string.isInOrderPreference), isInOrder);
 
         editor.remove(getString(R.string.passwordPreference));
 
         editor.apply();
 
-        Intent i = new Intent(PassFaceAdminActivity.this,PassFaceActivity.class);
+        Intent i = new Intent(PassFaceAdminActivity.this, PassFaceActivity.class);
         finish();
         startActivity(i);
 
+    }
+
+    private void setRedColor(TextView v) {
+        v.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.red));
+    }
+
+    private void checkParameters() {
+        if (nbPhotos < 1 || nbPhotos > 12) {
+            TextView t1 = (TextView) findViewById(R.id.textView3);
+            setRedColor(t1);
+            Toast.makeText(getApplicationContext(), "Number of photos parameters incorrect", Toast.LENGTH_SHORT).show();
+        } else if (!twicePhoto && passwordLength > nbPhotos) {
+            TextView t1 = (TextView) findViewById(R.id.textView3);
+            TextView t2 = (TextView) findViewById(R.id.textView10);
+            TextView t3 = (TextView) findViewById(R.id.textView4);
+            setRedColor(t1);
+            setRedColor(t2);
+            setRedColor(t3);
+
+            Toast.makeText(getApplicationContext(), "You cannot set this password length with those parameters", Toast.LENGTH_SHORT).show();
+
+        } else if (nbSteps < 1 || nbSteps > 5) {
+            TextView t1 = (TextView) findViewById(R.id.textView6);
+            setRedColor(t1);
+        } else
+            saveChanges();
     }
 
 }

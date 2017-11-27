@@ -12,4 +12,5 @@
     <color name="greyish">#aaa8a8</color>
     <color name="mine_shaft">#303030</color>
     <color name="black">#000000</color>
+    <color name="red">#ffcc0000</color>
 </resources>

@@ -19,11 +19,11 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="type_of_matching">Type of matching</string>
     <string name="nbSteps">Number of steps</string>
-    <string name="same">Same</string>
+    <string name="semantic">Semantic</string>
     <string name="exact">Exact</string>
     <string name="yes">Yes</string>
     <string name="order_of_photos_in_password">Password order</string>
-    <string name="password_length">Password Length</string>
+    <string name="password_length">Password length per steps</string>
     <string name="type_of_pictures">Type of pictures</string>
     <string name="number_of_pictures_shown">Number of pictures shown</string>
     <string name="no">No</string>
