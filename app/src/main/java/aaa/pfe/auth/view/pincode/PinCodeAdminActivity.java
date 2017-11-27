@@ -1,6 +1,7 @@
 package aaa.pfe.auth.view.pincode;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.view.MainActivity;
 import aaa.pfe.auth.view.mother.AdminActivity;
 
 import static aaa.pfe.auth.view.pincode.PinCodeActivity.PREFERENCES;
@@ -133,7 +135,10 @@ public class PinCodeAdminActivity extends AdminActivity{
         }
 
         editor.apply();
+
+        Intent i = new Intent(PinCodeAdminActivity.this,PinCodeActivity.class);
         finish();
+        startActivity(i);
     }
 
 }

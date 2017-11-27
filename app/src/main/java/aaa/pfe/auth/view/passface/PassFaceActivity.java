@@ -283,6 +283,7 @@ public class PassFaceActivity extends AppCompatActivity {
 
         if (id == R.id.adminPanel) {
             Intent i = new Intent(PassFaceActivity.this, PassFaceAdminActivity.class);
+            finish();
             startActivity(i);
 
         }

@@ -1,5 +1,6 @@
 package aaa.pfe.auth.view.passface;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.Spinner;
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.utils.Const;
 import aaa.pfe.auth.view.mother.AdminActivity;
+import aaa.pfe.auth.view.pincode.PinCodeActivity;
+import aaa.pfe.auth.view.pincode.PinCodeAdminActivity;
 
 public class PassFaceAdminActivity extends AdminActivity {
 
@@ -181,7 +184,9 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         editor.apply();
 
+        Intent i = new Intent(PassFaceAdminActivity.this,PassFaceActivity.class);
         finish();
+        startActivity(i);
 
     }
 
