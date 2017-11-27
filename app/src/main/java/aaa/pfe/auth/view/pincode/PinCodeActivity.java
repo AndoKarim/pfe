@@ -15,13 +15,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.pincodeview.IndicatorDots;
 import aaa.pfe.auth.view.pincodeview.PinLockListener;
 import aaa.pfe.auth.view.pincodeview.PinLockView;
-import aaa.pfe.auth.view.schemepattern.SchemePatternActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -41,8 +46,7 @@ public class PinCodeActivity extends AppCompatActivity {
     //capture mode
     private boolean captureMode;
     private int nbTry,MAX_TRY;
-    private ArrayList<Integer> succeedArray,failArray; //met dans un tableau le nombre d'essai quand on réussi ou quand on rate (pour avoir le nombre de reussite .lenght() )
-    //TODO: quand on aura des sessions enregistrer dans une db sinon le tableau se réinitialisera à chaque fois qu'il ouvre activity
+    private OutputStream logFile;
 
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
@@ -63,13 +67,32 @@ public class PinCodeActivity extends AppCompatActivity {
                     if (sharedPreferences.getString("pincode", null).equals(pin)) {
                         //Correct PIN
                         resultPin = "Correct Pin!";
+                        if (captureMode){
+                            try {
+                                JSONObject jsonObject_Succeed = new JSONObject();
+                                JSONObject jsonObject_Try = new JSONObject();
+                                jsonObject_Try.put("try",nbTry);
+                                jsonObject_Succeed.put("success",jsonObject_Try.toString());
+                                logFile.write(jsonObject_Succeed.toString().getBytes());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
+                        }
                         nbTry = 0;
-                        if (captureMode)
-                            succeedArray.add(nbTry);
                     } else {//Incorrect PIN
                         resultPin = "Incorrect Pin!";
                         if (captureMode && (nbTry >=MAX_TRY)){
-                            failArray.add(nbTry);
+                            try {
+                                JSONObject jsonObject_fail = new JSONObject();
+                                jsonObject_fail.put("fail",null);
+                                logFile.write(jsonObject_fail.toString().getBytes());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }catch (IOException e){
+                                e.printStackTrace();
+                            }
                             nbTry = 0;
                         }
 
@@ -155,7 +178,6 @@ public class PinCodeActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     @Override
@@ -164,17 +186,13 @@ public class PinCodeActivity extends AppCompatActivity {
         //re-initialize Pin
         mPinLockView.resetPinLockView();
         nbTry = 0;
-        succeedArray = new ArrayList<>();
-        failArray = new ArrayList<>();
 
         /*PARAMS*/
-        if (sharedPreferences.contains("pinLength")){
-            mPinLockView.setPinLength(sharedPreferences.getInt("pinLength",4));
-        }
+        int pinLength =sharedPreferences.getInt("pinLength",4);
+        mPinLockView.setPinLength(pinLength);
 
-        if (sharedPreferences.contains("nbTry")){
-            MAX_TRY = sharedPreferences.getInt("nbTry",3);
-        }
+
+        MAX_TRY = sharedPreferences.getInt("nbTry",3);
 
         if (sharedPreferences.contains("randNum")&&sharedPreferences.getBoolean("randNum",false)){
             mPinLockView.enableLayoutShuffling();
@@ -185,22 +203,60 @@ public class PinCodeActivity extends AppCompatActivity {
             shuffle = false;
         }
 
-        if(sharedPreferences.contains("indicators")){
-           int  indicatorType=  sharedPreferences.getInt("indicators",-1);
-           if (indicatorType>=0){
-               if (!mPinLockView.isIndicatorDotsAttached()) {
-                   mIndicatorDots.setVisibility(View.VISIBLE);
-                   mPinLockView.attachIndicatorDots(mIndicatorDots);
-               }
-               mIndicatorDots.setIndicatorType(indicatorType);
-           }else{
-               mPinLockView.takeOffIndicatorDots();
-               mIndicatorDots.setVisibility(View.INVISIBLE);
-           }
 
-        }
+       int  indicatorType=  sharedPreferences.getInt("indicators",-1);
+       if (indicatorType>=0){
+           if (!mPinLockView.isIndicatorDotsAttached()) {
+               mIndicatorDots.setVisibility(View.VISIBLE);
+               mPinLockView.attachIndicatorDots(mIndicatorDots);
+           }
+           mIndicatorDots.setIndicatorType(indicatorType);
+       }else{
+           mPinLockView.takeOffIndicatorDots();
+           mIndicatorDots.setVisibility(View.INVISIBLE);
+       }
+
+
 
         captureMode = sharedPreferences.getBoolean("captureMode",false);
+
+        /*Log*/
+        if (captureMode) {
+            String params = "" + shuffle + MAX_TRY + pinLength + indicatorType;
+            String filename = String.valueOf(params.hashCode()) + ".log";
+            if (CheckExisting(getApplicationContext(), filename)) { //expérience avec ces paramètres déjà faite
+                try {
+                    logFile = openFileOutput(filename, MODE_APPEND);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else { //expérience avec nouveaux paramètres
+                try {
+                    logFile = openFileOutput(filename, MODE_PRIVATE);
+                    JSONObject json_params = new JSONObject();
+                    json_params.put("shuffle",shuffle);
+                    json_params.put("max try",MAX_TRY);
+                    json_params.put("pin length",pinLength);
+                    json_params.put("indicator",indicatorType);
+                    logFile.write(json_params.toString().getBytes());
+                } catch (IOException e) {
+                            e.printStackTrace();
+                } catch (JSONException e) {
+                        e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(captureMode && (logFile != null))
+            try {
+                logFile.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
@@ -253,5 +309,15 @@ public class PinCodeActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private  boolean CheckExisting(Context context, String file) {
+        String[] filenames = context.fileList();
+        for (String name : filenames) {
+            if (name.equals(file)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
