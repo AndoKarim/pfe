@@ -27,7 +27,6 @@ import aaa.pfe.auth.utils.Const;
 public class PassFaceActivity extends AppCompatActivity {
 
 
-
     //View attributes
     private GridView gridView;
     private Button saveButton;
@@ -41,6 +40,7 @@ public class PassFaceActivity extends AppCompatActivity {
     private ImageView lastPicChosen;
     private List<ImageView> lastPicsChosen;
     private int lengthOfCurrentPWD = 0;
+    private int currentStep = 0;
 
     //Different parameters
     private int nbPhotos;
@@ -73,18 +73,9 @@ public class PassFaceActivity extends AppCompatActivity {
 
         gridView = (GridView) findViewById(R.id.gridView);
 
-        switch (typePhotos) {
-            case "Misc":
-                String[] newArrayMisc = Arrays.copyOfRange(Const.MISC, 0, nbPhotos);
-                gridView.setAdapter(new ImageAdapter(this, newArrayMisc, shuffle));
-                break;
-            case "Animals":
-                String[] newArrayAnimals = Arrays.copyOfRange(Const.ANIMALS, 0, nbPhotos);
-                gridView.setAdapter(new ImageAdapter(this, newArrayAnimals, shuffle));
 
-                break;
+        updateGridView();
 
-        }
 
         lastPicsChosen = new ArrayList<>();
 
@@ -102,11 +93,11 @@ public class PassFaceActivity extends AppCompatActivity {
         nbPhotos = sharedPreferences.getInt(getString(R.string.nbPhotosPreference), Const.DEFAULT_NB_PHOTOS);
         typePhotos = sharedPreferences.getString(getString(R.string.typePhotosPreference), Const.DEFAULT_TYPE_PHOTOS);
         passwordLength = sharedPreferences.getInt(getString(R.string.passwordLengthPreference), Const.DEFAULT_PWD_LENGTH);
-        // orderOfPwd = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
         nbStep = sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS);
         typeMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), Const.DEFAULT_MATCHING);
         shuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
         twicePhoto = sharedPreferences.getBoolean(getString(R.string.twicePhotoPreference), Const.DEFAULT_TWICE_PHOTO);
+        // orderOfPwd = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
 
 
     }
@@ -168,7 +159,10 @@ public class PassFaceActivity extends AppCompatActivity {
                     if (passwordLength == 1) {
                         if (lastPicChosen != null)
                             lastPicChosen.setPadding(0, 0, 0, 0);
-                        enteredPassword = (String) i.getTag();
+                        if (nbStep == 1)
+                            enteredPassword = (String) i.getTag();
+                        else
+                            enteredPassword += (enteredPassword.equals("")) ? newPhotoName : "+" + newPhotoName;
                         lastPicChosen = i;
                         i.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                         i.setPadding(15, 15, 15, 15);
@@ -211,19 +205,27 @@ public class PassFaceActivity extends AppCompatActivity {
                 if (enteredPassword.equals("") || lengthOfCurrentPWD != passwordLength) {
                     Toast t = Toast.makeText(getApplicationContext(), R.string.Password_not_changed, Toast.LENGTH_SHORT);
                     t.show();
-                    //Prendre l'arrayList des trucs cliqués et enlever la bordure
                 } else {
-                    sharedPreferences.edit().putString(getString(R.string.passwordPreference), enteredPassword).apply();
+                    if (nbStep != 1 && currentStep != nbStep - 1) {
+                        currentStep++;
+                        lengthOfCurrentPWD = 0;
+                        updateGridView();
+                    } else {
 
-                    saveButton.setVisibility(View.INVISIBLE);
-                    submitButton.setVisibility(View.VISIBLE);
-                    changeButton.setVisibility(View.VISIBLE);
+                        sharedPreferences.edit().putString(getString(R.string.passwordPreference), enteredPassword).apply();
 
-                    removeBorders();
-                    enteredPassword = "";
+                        saveButton.setVisibility(View.INVISIBLE);
+                        submitButton.setVisibility(View.VISIBLE);
+                        changeButton.setVisibility(View.VISIBLE);
 
-                    Toast t = Toast.makeText(getApplicationContext(), R.string.Password_changed, Toast.LENGTH_SHORT);
-                    t.show();
+                        removeBorders();
+                        enteredPassword = "";
+                        currentStep = 0;
+                        updateGridView();
+
+                        Toast t = Toast.makeText(getApplicationContext(), R.string.Password_changed, Toast.LENGTH_SHORT);
+                        t.show();
+                    }
                 }
 
             }
@@ -236,13 +238,40 @@ public class PassFaceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String savedPassword = sharedPreferences.getString("Password", "");
 
+                //If we have more than one step
+                if (nbStep != 1) {
+                    int arrayStart = currentStep * passwordLength;
+                    int arrayEnd = arrayStart + passwordLength;
+                    String[] splitted = savedPassword.split("\\+");
+                    String cmp = "";
+                    for (int i = arrayStart; i < arrayEnd; i++)
+                        cmp += splitted[i];
 
-                if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
-                    Toast t = Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT);
-                    t.show();
+                    //If the password is the same for this step
+                    if (samePwdDifferentOrders(cmp, enteredPassword)) {
+                        //We remove the current step value because we will not need it anymore
+                        enteredPassword = enteredPassword.replace(cmp, "");
+                        //If we are not on the last step
+                        if (currentStep != nbStep - 1) {
+                            currentStep++;
+                            updateGridView();
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast t = Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT);
+                        t.show();
+                        removeBorders();
+                        lengthOfCurrentPWD = 0;
+                        enteredPassword = "";
+                    }
+
+                } else if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
+                    Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
+                    currentStep = 0;
                 } else {
-                    Toast t = Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT);
-                    t.show();
+                    Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
+
                     removeBorders();
                     lengthOfCurrentPWD = 0;
                     enteredPassword = "";
@@ -251,7 +280,9 @@ public class PassFaceActivity extends AppCompatActivity {
         });
 
         //If you forgot your password, you click on that to change the password
-        changeButton.setOnClickListener(new View.OnClickListener() {
+        changeButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 sharedPreferences.edit().remove("Password").apply();
@@ -259,10 +290,15 @@ public class PassFaceActivity extends AppCompatActivity {
                 changeButton.setVisibility(View.INVISIBLE);
                 saveButton.setVisibility(View.VISIBLE);
                 cancelButton.setVisibility(View.VISIBLE);
+                currentStep = 0;
+                enteredPassword = "";
+                updateGridView();
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 removeBorders();
@@ -272,6 +308,22 @@ public class PassFaceActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void updateGridView() {
+
+        String[] newArray = new String[0];
+        int startArray = currentStep * (nbPhotos + 1);
+        int endArray = startArray + nbPhotos;
+        switch (typePhotos) {
+            case "Misc":
+                newArray = Arrays.copyOfRange(Const.MISC, startArray, endArray);
+                break;
+            case "Animals":
+                newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
+                break;
+        }
+        gridView.setAdapter(new ImageAdapter(this, newArray, shuffle));
     }
 
     @Override

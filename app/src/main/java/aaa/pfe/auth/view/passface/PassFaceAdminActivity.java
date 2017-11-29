@@ -38,7 +38,7 @@ public class PassFaceAdminActivity extends AdminActivity {
     //private RadioButton yesOrderRadioButton;
     // private RadioButton noOrderRadioButton;
 
-    
+
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;

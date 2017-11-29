@@ -196,7 +196,6 @@
         android:id="@+id/shuffleRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/matchingRadioGroup"
         android:layout_alignStart="@id/matchingRadioGroup"
         android:layout_alignTop="@+id/textView9"
         android:orientation="horizontal">
