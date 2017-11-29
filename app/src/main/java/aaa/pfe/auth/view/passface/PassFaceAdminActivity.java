@@ -38,7 +38,7 @@ public class PassFaceAdminActivity extends AdminActivity {
     //private RadioButton yesOrderRadioButton;
     // private RadioButton noOrderRadioButton;
 
-    
+
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
@@ -60,7 +60,7 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         typePhotosSpinner = (Spinner) findViewById(R.id.spinnerTypePhotos);
 
-        orderRadioGroup = (RadioGroup) findViewById(R.id.orderRadioGroup);
+        //orderRadioGroup = (RadioGroup) findViewById(R.id.orderRadioGroup);
         matchingRadioGroup = (RadioGroup) findViewById(R.id.matchingRadioGroup);
         shuffleRadioGroup = (RadioGroup) findViewById(R.id.shuffleRadioGroup);
         twiceRadioGroup = (RadioGroup) findViewById(R.id.twiceRadioGroup);
