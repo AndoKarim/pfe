@@ -5,10 +5,12 @@ import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Anasse on 29/11/2017.
@@ -19,8 +21,10 @@ public class LogWriter {
     private static String directoryName = "/AuthApp_Logs/";
     private String fileName;
 
-    public LogWriter(String fileName){
-        this.fileName = fileName;
+    public LogWriter(String method){
+        DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+        String date = df.format(Calendar.getInstance().getTime());
+        this.fileName = method+"_"+date;
     }
 
     public void logParams(ArrayList<String> values){
@@ -38,7 +42,6 @@ public class LogWriter {
 
 
     public void logColumnsNames(ArrayList<String> names){
-
         logNextTentative(names);
     }
 
@@ -72,11 +75,8 @@ public class LogWriter {
         if(canWriteOnExternalStorage()) {
 
             File sdcard = Environment.getExternalStorageDirectory();
-            // to this path add a new directory path
             File dir = new File(sdcard.getAbsolutePath() + directoryName);
-            // create this directory if not already created
             dir.mkdirs();
-            // create the file in which we will write the contents
             File file = new File(dir, fileName);
             String data = txt;
             if (!file.exists()) {
@@ -90,7 +90,6 @@ public class LogWriter {
 
                 Log.d("Create and Write :","Done");
             }else{
-                // true = append file
                 FileWriter heapFileWritter = new FileWriter(
                         file.getAbsolutePath(), true);
                 BufferedWriter heapBufferWritter = new BufferedWriter(
@@ -100,19 +99,6 @@ public class LogWriter {
 
                 Log.d("Write :","Done");
             }
-
-
-
-
-            /*try {
-                FileOutputStream os = new FileOutputStream(file);
-                String data = "This is the content of my file";
-                os.write(data.getBytes());
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
         }
     }
 
