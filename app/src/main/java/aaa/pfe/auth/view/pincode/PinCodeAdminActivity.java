@@ -6,14 +6,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.util.ArrayList;
 
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.view.MainActivity;
@@ -56,7 +54,6 @@ public class PinCodeAdminActivity extends AdminActivity{
 
         //Shared Pref
         sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
-
     }
 
     @Override

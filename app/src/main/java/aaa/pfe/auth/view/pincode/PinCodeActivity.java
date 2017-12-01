@@ -15,18 +15,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.utils.LogWriter;
+import aaa.pfe.auth.utils.Pair;
 import aaa.pfe.auth.view.pincodeview.IndicatorDots;
 import aaa.pfe.auth.view.pincodeview.PinLockListener;
 import aaa.pfe.auth.view.pincodeview.PinLockView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class PinCodeActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -45,8 +46,12 @@ public class PinCodeActivity extends AppCompatActivity {
 
     //capture mode
     private boolean captureMode;
-    private int nbTry,MAX_TRY;
-    private OutputStream logFile;
+    private int nbTry,MAX_TRY,nbUser;
+    LogWriter logWriter;
+    Timestamp timestamp;
+    long lastTouchTime;
+    long begin;
+    Map<Integer,Pair<String,Long>> toucheMap;
 
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
@@ -68,32 +73,21 @@ public class PinCodeActivity extends AppCompatActivity {
                         //Correct PIN
                         resultPin = "Correct Pin!";
                         if (captureMode){
-                            try {
-                                JSONObject jsonObject_Succeed = new JSONObject();
-                                JSONObject jsonObject_Try = new JSONObject();
-                                jsonObject_Try.put("try",nbTry);
-                                jsonObject_Succeed.put("success",jsonObject_Try.toString());
-                                logFile.write(jsonObject_Succeed.toString().getBytes());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }catch (IOException e){
-                                e.printStackTrace();
-                            }
+                            saveTouch(pin.length(),pin);//last touch
+                            writeAttempt("success");
                         }
                         nbTry = 0;
                     } else {//Incorrect PIN
                         resultPin = "Incorrect Pin!";
-                        if (captureMode && (nbTry >=MAX_TRY)){
-                            try {
-                                JSONObject jsonObject_fail = new JSONObject();
-                                jsonObject_fail.put("fail",null);
-                                logFile.write(jsonObject_fail.toString().getBytes());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }catch (IOException e){
-                                e.printStackTrace();
+                        if (captureMode){
+
+                            if (nbTry >= MAX_TRY){
+                                writeAttempt("fatal fail");
+                                nbTry = 0;
+                            }else{
+                                writeAttempt("fail");
                             }
-                            nbTry = 0;
+
                         }
 
                     }
@@ -120,13 +114,25 @@ public class PinCodeActivity extends AppCompatActivity {
 
             Log.i(TAG, "Pin empty");
             mPinLockView.resetPinLockView();
+            timestamp.setTime(System.currentTimeMillis());
+            begin = timestamp.getTime();
         }
 
         @Override
-        public void onPinChange(int pinLength, String intermediatePin) {
-            Log.i(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
+        public void onPinChange(int pinLength2, String intermediatePin) {
+            Log.i(TAG, "Pin changed, new length " + pinLength2 + " with intermediate pin " + intermediatePin);
+            if (captureMode && !onChangingCode) {
+                saveTouch(pinLength2,intermediatePin);
+                //derniere lettre intermediatePin.substring(intermediatePin.length()-1, intermediatePin.length());
+            }
+
         }
     };
+
+    private void saveTouch(int length, String intermediatePin) {
+        lastTouchTime = timestamp.getTime() - begin;
+        toucheMap.put(length,new Pair<String, Long>(intermediatePin.substring(intermediatePin.length()-1, intermediatePin.length()),lastTouchTime));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,41 +228,34 @@ public class PinCodeActivity extends AppCompatActivity {
 
         /*Log*/
         if (captureMode) {
-            String params = "" + shuffle + MAX_TRY + pinLength + indicatorType;
-            String filename = String.valueOf(params.hashCode()) + ".log";
-            if (CheckExisting(getApplicationContext(), filename)) { //expérience avec ces paramètres déjà faite
-                try {
-                    logFile = openFileOutput(filename, MODE_APPEND);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else { //expérience avec nouveaux paramètres
-                try {
-                    logFile = openFileOutput(filename, MODE_PRIVATE);
-                    JSONObject json_params = new JSONObject();
-                    json_params.put("shuffle",shuffle);
-                    json_params.put("max try",MAX_TRY);
-                    json_params.put("pin length",pinLength);
-                    json_params.put("indicator",indicatorType);
-                    logFile.write(json_params.toString().getBytes());
-                } catch (IOException e) {
-                            e.printStackTrace();
-                } catch (JSONException e) {
-                        e.printStackTrace();
-                }
+            logWriter = new LogWriter("pincode");
+            ArrayList<String> params = new ArrayList<>();
+            params.add("shuffle="+shuffle);
+            params.add("pinLength="+pinLength);
+            params.add("try="+MAX_TRY);
+            params.add("indicatorType="+indicatorType);
+            logWriter.logParams(params);
+            nbUser = 0;
+            timestamp = new Timestamp(System.currentTimeMillis());
+            toucheMap = new HashMap();
+            //Coloumns name
+            ArrayList<String> columns = new ArrayList<>();
+            columns.add("result");
+            for (int i=1;i<pinLength+1;i++){
+                columns.add("touche"+i);
+                columns.add("value");
+                columns.add("time");
             }
+            logWriter.logNextTentative(columns);//ecris la valeur des colonnes
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(captureMode && (logFile != null))
-            try {
-                logFile.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (captureMode){
+            fillUserLog();
+        }
     }
 
     @Override
@@ -295,6 +294,11 @@ public class PinCodeActivity extends AppCompatActivity {
         }else{
             changeButton.setText("Cancel");
             onChangingCode=true;
+
+            if (captureMode) {
+                fillUserLog();
+                nbUser++;
+            }
         }
     }
 
@@ -311,13 +315,38 @@ public class PinCodeActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private  boolean CheckExisting(Context context, String file) {
-        String[] filenames = context.fileList();
-        for (String name : filenames) {
-            if (name.equals(file)) {
-                return true;
-            }
+    private void fillUserLog(){
+        while ((nbTry < MAX_TRY) && (nbTry!=0)){ //!=0 si l'user quitte juste après après avoir réussi (ou fail MAX_TRY fois)
+            //TODO: remplir ligne avec valeur vide ("")
+            nbTry ++;
         }
-        return false;
+    }
+
+    private void writeAttempt(String result){
+            String[] valTab = new String[3*toucheMap.size()+1];
+            //valArr.add(result);
+            valTab[0]=result;
+
+            int j;
+            for(Integer key: toucheMap.keySet()){
+                j=3*(key-1)+1;
+                //valArr.add(j++,key.toString()); //position touche
+                //valArr.add(j++,toucheMap.get(key).getFirst()); // valeur touche
+                //valArr.add(j,toucheMap.get(key).getSecond().toString()); // temps touche
+                valTab[j++]=key.toString();
+                valTab[j++]=toucheMap.get(key).getFirst();
+                valTab[j++]=toucheMap.get(key).getSecond().toString();
+            }
+
+            ArrayList<String> valArr =  new ArrayList( Arrays.asList(valTab));
+
+            if (nbTry == 1) {
+                logWriter.logFirstTentative("user" + nbUser, valArr);
+            }else {
+                logWriter.logNextTentative(valArr);
+            }
     }
 }
+
+
+//TODO: corriger bug touche et derniere touche pas log, timing, eviter extinction de l'écran pdt un certain temps,si le mec appuie sur cancel??
