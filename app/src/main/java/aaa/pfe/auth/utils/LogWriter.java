@@ -24,7 +24,18 @@ public class LogWriter {
     public LogWriter(String method){
         DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
         String date = df.format(Calendar.getInstance().getTime());
-        this.fileName = method+"_"+date;
+        this.fileName = method + "_" + date + ".csv";
+    }
+
+    public static boolean canWriteOnExternalStorage() {
+        // get the state of your external storage
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            // if storage is mounted return true
+            Log.v("sTag", "Yes, can write to external storage.");
+            return true;
+        }
+        return false;
     }
 
     public void logParams(ArrayList<String> values){
@@ -39,7 +50,6 @@ public class LogWriter {
             e.printStackTrace();
         }
     }
-
 
     public void logColumnsNames(ArrayList<String> names){
         logNextTentative(names);
@@ -68,7 +78,6 @@ public class LogWriter {
             e.printStackTrace();
         }
     }
-
 
     public void writeInFile(String txt) throws IOException {
 
@@ -100,17 +109,6 @@ public class LogWriter {
                 Log.d("Write :","Done");
             }
         }
-    }
-
-    public static boolean canWriteOnExternalStorage() {
-        // get the state of your external storage
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            // if storage is mounted return true
-            Log.v("sTag", "Yes, can write to external storage.");
-            return true;
-        }
-        return false;
     }
 
 
