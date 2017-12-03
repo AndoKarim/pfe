@@ -45,7 +45,7 @@ public class PinCodeActivity extends AppCompatActivity {
     private boolean shuffle;
 
     //capture mode
-    private boolean captureMode;
+    private boolean captureMode,newUser;
     private int nbTry,MAX_TRY,nbUser;
     LogWriter logWriter;
     Timestamp timestamp;
@@ -100,6 +100,7 @@ public class PinCodeActivity extends AppCompatActivity {
                 editor.commit();
                 setChangesButton();
                 nbTry = 0;
+                newUser = true;
                 Toast.makeText(context,"pin updated", duration).show();
 
             }
@@ -114,15 +115,15 @@ public class PinCodeActivity extends AppCompatActivity {
 
             Log.i(TAG, "Pin empty");
             mPinLockView.resetPinLockView();
-            timestamp.setTime(System.currentTimeMillis());
-            begin = timestamp.getTime();
         }
 
         @Override
-        public void onPinChange(int pinLength2, String intermediatePin) {
-            Log.i(TAG, "Pin changed, new length " + pinLength2 + " with intermediate pin " + intermediatePin);
+        public void onPinChange(int intermediatePinLength, String intermediatePin) {
+            Log.i(TAG, "Pin changed, new length " + intermediatePinLength + " with intermediate pin " + intermediatePin);
             if (captureMode && !onChangingCode) {
-                saveTouch(pinLength2,intermediatePin);
+                if (intermediatePinLength==1)
+                    begin = System.currentTimeMillis();
+                saveTouch(intermediatePinLength,intermediatePin);
                 //derniere lettre intermediatePin.substring(intermediatePin.length()-1, intermediatePin.length());
             }
 
@@ -130,7 +131,8 @@ public class PinCodeActivity extends AppCompatActivity {
     };
 
     private void saveTouch(int length, String intermediatePin) {
-        lastTouchTime = timestamp.getTime() - begin;
+        long currentTime = System.currentTimeMillis();
+        lastTouchTime = currentTime - begin;
         toucheMap.put(length,new Pair<String, Long>(intermediatePin.substring(intermediatePin.length()-1, intermediatePin.length()),lastTouchTime));
     }
 
@@ -183,6 +185,8 @@ public class PinCodeActivity extends AppCompatActivity {
 
             }
         });
+
+        newUser = true;
 
     }
 
@@ -340,8 +344,9 @@ public class PinCodeActivity extends AppCompatActivity {
 
             ArrayList<String> valArr =  new ArrayList( Arrays.asList(valTab));
 
-            if (nbTry == 1) {
+            if (nbTry == 1 && newUser) {
                 logWriter.logFirstTentative("user" + nbUser, valArr);
+                newUser = false;
             }else {
                 logWriter.logNextTentative(valArr);
             }
@@ -349,4 +354,4 @@ public class PinCodeActivity extends AppCompatActivity {
 }
 
 
-//TODO: corriger bug touche et derniere touche pas log, timing, eviter extinction de l'écran pdt un certain temps,si le mec appuie sur cancel??
+//TODO: timing, eviter extinction de l'écran pdt un certain temps,si le mec appuie sur cancel??
