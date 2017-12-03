@@ -99,6 +99,17 @@ Les lignes suivantes suivent l'organisation suivante;
 + Les valeurs observées, une ligne correspond à un évènement.  
 
 ### LockPattern
+La première ligne du fichier contient les différents paramètres de l'expérience:
+
++  nombre de lignes
++  nombre de colonnes
++  le nombre d'essais
++  vibration
++  stealth ie. si schema est affiché
+
+Ensuite chaque ligne du tableau correspond à une tentative de l'utilisateur.
+
+
 
 
 > "Make the world a safer place" - Abdelkarim Andolerzak
