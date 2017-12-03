@@ -11,9 +11,9 @@ L'application AuthApp permet de paramétrer et tester 3 mécanismes d'authentifi
 
 *C'est-à-dire ?*
 Arrivé sur la page d'accueil de l'application 3 boutons sont présents pour commencer une nouvelle expérimentation pour chaque mécanisme d'authentification. En cliquant sur l'un d'entre eux on est dirigé sur la page de paramétrage du mécanisme choisi. En appuyant sur le bouton sauvegarder on lance l'expérimentation. L'utilisateur doit alors determiner son pincode/scheme/passface personnel puis peut procéder à l'éxpérimentation (ie. répétition de son authentification)
-### Paramètres
+## Paramètres
 
-## PinCode
+### PinCode
 Les paramètres pouvant être modifier pour la saisie du code PIN:
 
 + **Random Pad** : si ce paramètre est activé les chiffres seront placé de manière aléatoire sur le clavier à chaque tentative. Sinon le clavier est un clavier numérique classique. Par défaut désactivé.
@@ -27,7 +27,7 @@ Les paramètres pouvant être modifier pour la saisie du code PIN:
 *Ce paramètre est présent dans les autres mécanismes.*
 +  **Indicator Type**: précise à l'utilisateur la progression dans la saisie code PIN. Soit il n'y a aucune indication (*no indicator*), soit on présente à l'utilisateur un nombre de point égal à la longueur de PIN et ceux-ci se remplissent à chaque chiffre saisi (*Dots to fill*), soit les points apparaissent au fur et à mesure de la saisie de chiffre (*Appearing dots*).
 
-## PassFace
+### PassFace
 Les paramètres qui peuvent être variés sont :
 + **Number of picture shown** : Le nombre de photos affichées dans la grille. La valeur peut être entre 1 et 12 (inclus). Par défaut 9.
 + **Type of pictures** : La catégorie de photos affichés à l'utilisateurs. Cela peut être des visages, comme des animaux. Par défaut "Faces".
@@ -37,15 +37,15 @@ Les paramètres qui peuvent être variés sont :
 + **Shufle images** : Est ce que la position des images est mélangée lors de chaque étape et chaque utilisation? Par défaut Yes.
 + **Use an image twice** : Est ce que l'on peut utiliser une image deux fois si **Password length** est superieur à 1. Par défaut No.
 
-## Unlock Graphic Scheme
+### Unlock Graphic Scheme
 
 
 
-### Log & utilisation
+## Log & utilisation
 
 Si le paramètre *Capture Mode* est activé. des fichiers de Log seront enregistré dans le stockage interne du téléphone dans le dossier **AuthApp_Logs**. Les fichiers correspondant aux logs du PinCode sont nommés de la manière suivante : **pincode_date_de_l_experimentation.csv**.
 
-## PinCode
+### PinCode
 
 La première ligne du fichier précise les paramètres de l'expérience:
 
@@ -63,7 +63,7 @@ Ensuite chaque ligne du tableau correspond à une tentative de l'utilisateur:
 
 Lorsque l'on change d'utilisateur son *nom* apparaît en début de ligne (*userN*). Si un utilisateur quitte un expérimentation en cours les champs seront rempli par des cases vides.
 
-## PassFace
+### PassFace
 
 La première ligne du fichier affiche les paramètres choisis pour l'expérience:
 + Number Of Photos
@@ -83,6 +83,9 @@ Les lignes suivantes suivent l'organisation suivante;
 + **Value** Le nom de l'image cliquée. La valeur est vide si l'on clique sur un bouton ou si on observe autre chose qu'un click.
 
 + Les valeurs observées, une ligne correspond à un évènement.  
+
+### PinCode
+
 
 > "Make the world a safer place" - Abdelkarim Andolerzak
 
