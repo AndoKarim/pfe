@@ -56,7 +56,7 @@ La première ligne du fichier précise les paramètres de l'expérience:
 
 Ensuite chaque ligne du tableau correspond à une tentative de l'utilisateur:
 
-+ **Result**: spécifie le résultat de la tentative. *Success* correspond à un code PIN correct. *Fail* correspond à code PIN erroné. *Fatal error* correspond un code PIN erroné ainsi que le nombre d'essai autorisé atteint.  
++ **Result**: spécifie le résultat de la tentative. *Success* correspond à un code PIN correct. *Fail* correspond à code PIN erroné. *Fatal fail* correspond un code PIN erroné ainsi que le nombre d'essai autorisé atteint.  
 +  **toucheN**: correspond à la position du chiffre dans le code PIN
 +  **value**: à la valeur du chiffre choisie dans *toucheN*
 + **time**:  temps mis entre le chiffre choisi et le premier chiffre choisi
