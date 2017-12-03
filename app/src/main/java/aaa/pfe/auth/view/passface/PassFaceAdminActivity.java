@@ -13,19 +13,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import aaa.pfe.auth.R;
 import aaa.pfe.auth.utils.Const;
+import aaa.pfe.auth.utils.LogWriter;
 import aaa.pfe.auth.view.mother.AdminActivity;
 
 public class PassFaceAdminActivity extends AdminActivity {
 
+    public static LogWriter logWriter;
     SharedPreferences sharedPreferences;
     ArrayAdapter<CharSequence> typePhotosAdapter;
     private EditText nbPhotosEditText;
     private EditText passwordLengthEditText;
     private EditText nbStepsEditText;
     private Spinner typePhotosSpinner;
-    private RadioGroup orderRadioGroup;
+    // private RadioGroup orderRadioGroup;
     private RadioGroup matchingRadioGroup;
     private RadioGroup shuffleRadioGroup;
     private RadioButton exactRadioButton;
@@ -34,20 +38,17 @@ public class PassFaceAdminActivity extends AdminActivity {
     private RadioButton noShuffleRadioButton;
     private RadioButton yesTwiceRadioButton;
     private RadioButton noTwiceRadioButton;
-    private RadioGroup twiceRadioGroup;
     //private RadioButton yesOrderRadioButton;
     // private RadioButton noOrderRadioButton;
-
-
+    private RadioGroup twiceRadioGroup;
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
     private int nbSteps;
     private String typeOfMatching;
     private boolean doShuffle;
-    private boolean twicePhoto;
     //private boolean isInOrder;
-
+    private boolean twicePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,8 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         //We load the current saved settings
         loadSettings();
+
+        logWriter = new LogWriter("PassFace");
 
 
     }
@@ -187,6 +190,9 @@ public class PassFaceAdminActivity extends AdminActivity {
 
         editor.apply();
 
+        createLog(buildSettingsLog());
+
+
         Intent i = new Intent(PassFaceAdminActivity.this, PassFaceActivity.class);
         finish();
         startActivity(i);
@@ -217,6 +223,23 @@ public class PassFaceAdminActivity extends AdminActivity {
             setRedColor(t1);
         } else
             saveChanges();
+    }
+
+
+    private ArrayList<String> buildSettingsLog() {
+        ArrayList<String> settings = new ArrayList<>();
+        String columns = "Number Of Photos;Type of Photos;Length per steps;Number of Steps;Type of Matching;Shuffle;Use twice an image";
+        settings.add(columns);
+
+        String paramVals = ";" + nbPhotos + ";" + typePhotos + ";" + passwordLength + ";" + nbSteps + ";" + typeOfMatching + ";" + doShuffle + ";" + twicePhoto;
+
+        settings.add(paramVals);
+        return settings;
+
+    }
+
+    private void createLog(ArrayList<String> settings) {
+        logWriter.writePassFaceParams(settings);
     }
 
 }

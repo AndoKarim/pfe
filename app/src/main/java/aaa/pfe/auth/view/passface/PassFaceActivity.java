@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import aaa.pfe.auth.R;
@@ -52,11 +53,21 @@ public class PassFaceActivity extends AppCompatActivity {
     private boolean shuffle;
     private boolean twicePhoto;     //TODO
 
+    private int idUser;
+    private ArrayList<String> logs = new ArrayList<>();
+    private Calendar currentTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face);
+        currentTime = Calendar.getInstance();
+        idUser = 1;
+        logs.add("Date;Username;Event;Position;Value");
+        PassFaceAdminActivity.logWriter.writePassFaceCols(logs);
+        logs.clear();
 
+        logs.add(getTimeAndUsername() + "Start of the experience");
     }
 
     @Override
@@ -84,6 +95,7 @@ public class PassFaceActivity extends AppCompatActivity {
         submitButton = (Button) findViewById(R.id.submitButton);
         cancelButton = (Button) findViewById(R.id.cancelButton);
         setupListeners();
+
 
         showButtons();
 
@@ -139,6 +151,8 @@ public class PassFaceActivity extends AppCompatActivity {
                 ImageView i = (ImageView) ((LinearLayout) v).getChildAt(0);
                 String newPhotoName = i.getTag().toString();
                 lengthOfCurrentPWD++;
+
+                logs.add(getTimeAndUsername() + "Photo clicked;" + position + ";" + newPhotoName);
 
 
                 //When we try password, we don't have to show hints.
@@ -202,9 +216,11 @@ public class PassFaceActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logs.add(getTimeAndUsername() + "Saved button clicked");
                 if (enteredPassword.equals("") || lengthOfCurrentPWD != passwordLength) {
                     Toast t = Toast.makeText(getApplicationContext(), R.string.Password_not_changed, Toast.LENGTH_SHORT);
                     t.show();
+                    logs.add(getTimeAndUsername() + "Illegal new password");
                 } else {
                     if (nbStep != 1 && currentStep != nbStep - 1) {
                         currentStep++;
@@ -225,6 +241,7 @@ public class PassFaceActivity extends AppCompatActivity {
 
                         Toast t = Toast.makeText(getApplicationContext(), R.string.Password_changed, Toast.LENGTH_SHORT);
                         t.show();
+                        logs.add(getTimeAndUsername() + "New password saved");
                     }
                 }
 
@@ -237,7 +254,7 @@ public class PassFaceActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String savedPassword = sharedPreferences.getString("Password", "");
-
+                logs.add(getTimeAndUsername() + "Submit button clicked");
                 //If we have more than one step
                 if (nbStep != 1) {
                     int arrayStart = currentStep * passwordLength;
@@ -256,9 +273,17 @@ public class PassFaceActivity extends AppCompatActivity {
                             currentStep++;
                             updateGridView();
                         } else {
+                            logs.add(getTimeAndUsername() + "Good password entered");
                             Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
+                            currentStep = 0;
+                            lengthOfCurrentPWD = 0;
+                            updateGridView();
+                            enteredPassword = "";
+                            PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+                            logs.clear();
                         }
                     } else {
+                        logs.add(getTimeAndUsername() + "Wrong password entered");
                         Toast t = Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT);
                         t.show();
                         removeBorders();
@@ -267,11 +292,15 @@ public class PassFaceActivity extends AppCompatActivity {
                     }
 
                 } else if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
+                    logs.add(getTimeAndUsername() + "Good password entered");
+                    PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+
                     Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
                     currentStep = 0;
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
+                    logs.add(getTimeAndUsername() + "Wrong password entered");
 
+                    Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
                     removeBorders();
                     lengthOfCurrentPWD = 0;
                     enteredPassword = "";
@@ -285,6 +314,7 @@ public class PassFaceActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
+                logs.add(getTimeAndUsername() + "Change password button clicked");
                 sharedPreferences.edit().remove("Password").apply();
                 submitButton.setVisibility(View.INVISIBLE);
                 changeButton.setVisibility(View.INVISIBLE);
@@ -301,6 +331,7 @@ public class PassFaceActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
+                logs.add(getTimeAndUsername() + "Cancel button clicked");
                 removeBorders();
                 lengthOfCurrentPWD = 0;
                 enteredPassword = "";
@@ -368,5 +399,9 @@ public class PassFaceActivity extends AppCompatActivity {
         if (lastPicChosen != null) {
             lastPicChosen.setPadding(0, 0, 0, 0);
         }
+    }
+
+    private String getTimeAndUsername() {
+        return ";" + currentTime.getTime().getTime() + ";" + "user" + idUser + ";";
     }
 }

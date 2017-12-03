@@ -112,4 +112,43 @@ public class LogWriter {
     }
 
 
+    public void writePassFaceParams(ArrayList<String> param) {
+        try {
+            writeInFile("Params;");
+            for (int i = 0; i < param.size(); i++) {
+                writeInFile(param.get(i) + "\n");
+
+            }
+            writeInFile("\n");
+            writeInFile("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writePassFaceCols(ArrayList<String> start) {
+        try {
+            writeInFile("Watching;");
+            for (int i = 0; i < start.size(); i++) {
+                writeInFile(start.get(i) + ";");
+            }
+            writeInFile("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writePassfaceEvent(ArrayList<String> values) {
+        try {
+            for (int i = 0; i < values.size(); i++) {
+                writeInFile(values.get(i) + "\n");
+
+            }
+            writeInFile("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
