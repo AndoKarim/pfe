@@ -4,7 +4,7 @@
 L'application AuthApp permet de paramétrer et tester 3 mécanismes d'authentification sur smartphone. Le guide d'utilisation permet d'utiliser ces mécanismes ainsi que leurs log:
 
 + PinCode
-+ Android Unlock Scheme
++ LockPattern
 + PassFace
 
 
@@ -23,7 +23,7 @@ Les paramètres pouvant être modifier pour la saisie du code PIN:
 +  **Number of try** :  correspond au nombre d'échecs acceptés lors de la saisie de code PIN avant que le téléphone se bloque théoriquement. Par défaut 3.
 *Ce paramètre est présent dans les autres mécanismes.*
 
-+  **Capture Mode**: si ce paramètre est un fichier de log sera enregistré dans le stockage interne du téléphone. Par défaut activé.
++  **Capture Mode**: si ce paramètre est activé un fichier de log sera enregistré dans le stockage interne du téléphone. Par défaut activé.
 *Ce paramètre est présent dans les autres mécanismes.*
 +  **Indicator Type**: précise à l'utilisateur la progression dans la saisie code PIN. Soit il n'y a aucune indication (*no indicator*), soit on présente à l'utilisateur un nombre de point égal à la longueur de PIN et ceux-ci se remplissent à chaque chiffre saisi (*Dots to fill*), soit les points apparaissent au fur et à mesure de la saisie de chiffre (*Appearing dots*).
 
@@ -37,8 +37,22 @@ Les paramètres qui peuvent être variés sont :
 + **Shufle images** : Est ce que la position des images est mélangée lors de chaque étape et chaque utilisation? Par défaut Yes.
 + **Use an image twice** : Est ce que l'on peut utiliser une image deux fois si **Password length** est superieur à 1. Par défaut No.
 
-### Unlock Graphic Scheme
+### LockPattern
+Les paramètres pouvant être modifier pour la saisie du code Pattern:
 
++ **Number of rows** : nombre de lignes pour le dessin du Pattern. Par défaut 3.
+
++ **Number of columns** : nombre de colonnes pour le dessin du Pattern. Par défaut 3.
+
++  **Number of try** :  correspond au nombre d'échecs acceptés lors de la saisie du Pattern avant que le téléphone se bloque théoriquement. Par défaut 3.
+*Ce paramètre est présent dans les autres mécanismes.*
+
++  **Capture Mode**: si ce paramètre est activé, un fichier de log sera enregistré dans le stockage interne du téléphone. Par défaut activé.
+*Ce paramètre est présent dans les autres mécanismes.*
+
++  **Vibration**: si ce paramètre est activé alors les vibrations lors de la saisie du Pattern seront activées.
+
++  **Stealth**: si ce paramètre est activé alors le tracé du schema ne sera pas visible.
 
 
 ## Log & utilisation
@@ -84,7 +98,7 @@ Les lignes suivantes suivent l'organisation suivante;
 
 + Les valeurs observées, une ligne correspond à un évènement.  
 
-### PinCode
+### LockPattern
 
 
 > "Make the world a safer place" - Abdelkarim Andolerzak
