@@ -1,14 +1,11 @@
 package aaa.pfe.auth.view.passface;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import aaa.pfe.auth.R;
@@ -55,13 +51,11 @@ public class PassFaceActivity extends AppCompatActivity {
 
     private int idUser;
     private ArrayList<String> logs = new ArrayList<>();
-    private Calendar currentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face);
-        currentTime = Calendar.getInstance();
         idUser = 1;
         logs.add("Date;Username;Event;Position;Value");
         PassFaceAdminActivity.logWriter.writePassFaceCols(logs);
@@ -294,7 +288,7 @@ public class PassFaceActivity extends AppCompatActivity {
                 } else if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
                     logs.add(getTimeAndUsername() + "Good password entered");
                     PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
-
+                    logs.clear();
                     Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
                     currentStep = 0;
                 } else {
@@ -322,6 +316,12 @@ public class PassFaceActivity extends AppCompatActivity {
                 cancelButton.setVisibility(View.VISIBLE);
                 currentStep = 0;
                 enteredPassword = "";
+                lengthOfCurrentPWD = 0;
+                idUser++;
+                logs.add(getTimeAndUsername() + "Start of the experience");
+                PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+                logs.clear();
+
                 updateGridView();
             }
         });
@@ -363,26 +363,6 @@ public class PassFaceActivity extends AppCompatActivity {
         return true;
     }
 
-    // create an action bar button
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.authmenu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    // handle button activities
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.adminPanel) {
-            Intent i = new Intent(PassFaceActivity.this, PassFaceAdminActivity.class);
-            finish();
-            startActivity(i);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public boolean samePwdDifferentOrders(String a, String b) {
         char[] first = a.toCharArray();
@@ -402,6 +382,6 @@ public class PassFaceActivity extends AppCompatActivity {
     }
 
     private String getTimeAndUsername() {
-        return ";" + currentTime.getTime().getTime() + ";" + "user" + idUser + ";";
+        return ";" + System.currentTimeMillis() + ";" + "user" + idUser + ";";
     }
 }
