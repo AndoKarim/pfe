@@ -214,7 +214,7 @@ public class PinCodeActivity extends AppCompatActivity {
         }
 
 
-       int  indicatorType=3;//  sharedPreferences.getInt("indicators",-1);
+       int  indicatorType=sharedPreferences.getInt("indicators",-1);
        if (indicatorType>=0){
            if (!mPinLockView.isIndicatorDotsAttached()) {
                mIndicatorDots.setVisibility(View.VISIBLE);
