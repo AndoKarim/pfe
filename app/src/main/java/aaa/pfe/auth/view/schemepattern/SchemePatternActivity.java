@@ -16,13 +16,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import aaa.pfe.auth.R;
+import aaa.pfe.auth.utils.LogWriter;
 import aaa.pfe.auth.view.patternlockview.PatternLockView;
 import aaa.pfe.auth.view.patternlockview.listener.PatternLockViewListener;
 import aaa.pfe.auth.view.patternlockview.utils.PatternLockUtils;
 import aaa.pfe.auth.view.patternlockview.utils.ResourceUtils;
+
+import static aaa.pfe.auth.view.passface.PassFaceAdminActivity.logWriter;
 
 public class SchemePatternActivity extends AppCompatActivity {
 
@@ -35,16 +41,44 @@ public class SchemePatternActivity extends AppCompatActivity {
     private boolean onChangesCode=false;
     SharedPreferences sharedPreferences;
 
+    private int nbRows = 3;
+    private int nbColumns = 3;
+    private int dotSize;
+    private int nbUser=1;
+    private int maxDot;
+    private boolean vibration;
+    private boolean stealth;
+    private boolean captureMode;
+    private boolean newUser;
+    private ArrayList<String> logsArray = new ArrayList<>();
+
     private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
+
+        private long begin;
         @Override
         public void onStarted() {
             Log.d(getClass().getName(), "Pattern drawing started");
+
+            begin = System.currentTimeMillis();
         }
 
         @Override
         public void onProgress(List<PatternLockView.Dot> progressPattern) {
-            Log.d(getClass().getName(), "Pattern progress: " +
-                    PatternLockUtils.patternToString(mPatternLockView, progressPattern));
+            if(captureMode && !onChangesCode) {
+                String dot = PatternLockUtils.getLastClickedDot(mPatternLockView, progressPattern);
+                Log.d(getClass().getName(), "Pattern progress:" +
+                        dot);
+                Log.d(getClass().getName(), "Pattern Size:" +
+                        progressPattern.size());
+                    logsArray.add(dot);
+                    long currentTime = System.currentTimeMillis();
+                    long lastTouchTime = currentTime - begin;
+                    logsArray.add(lastTouchTime + "");
+
+                Log.d("test","test");
+
+            }
+
         }
 
         @Override
@@ -68,10 +102,20 @@ public class SchemePatternActivity extends AppCompatActivity {
                     String savedPass = sharedPreferences.getString("schemePatternPass", null);
                     if(savedPass.equals(result)){
                         Toast.makeText(SchemePatternActivity.this, "Correct password", Toast.LENGTH_SHORT).show();
+                        logsArray.add(0,"Success");
                     }else{
                         Toast.makeText(SchemePatternActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
+                        logsArray.add(0,"Fail");
                     }
                 }
+
+                if(newUser) {
+                    logWriter.logFirstTentative("User" + nbUser, logsArray);
+                    newUser=false;
+                }else{
+                    logWriter.logNextTentative(logsArray);
+                }
+                logsArray.clear();
             }
         }
         @Override
@@ -79,6 +123,8 @@ public class SchemePatternActivity extends AppCompatActivity {
             Log.d(getClass().getName(), "Pattern has been cleared");
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,11 +184,33 @@ public class SchemePatternActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         setAllPreferences();
+
+        /*Log*/
+        if (captureMode) {
+            logWriter = new LogWriter("lockPattern");
+            ArrayList<String> params = new ArrayList<>();
+            params.add("nbRows="+nbRows);
+            params.add("nbColumns="+nbColumns);
+            params.add("dotSize="+dotSize);
+            params.add("vibration="+vibration);
+            params.add("stealth="+stealth);
+            logWriter.logParams(params);
+            nbUser = 0;
+            //timestamp = new Timestamp(System.currentTimeMillis());
+            //toucheMap = new HashMap();
+            //Coloumns name
+            ArrayList<String> columns = new ArrayList<>();
+            columns.add("Result");
+            for(int i=0; i < maxDot ; i++) {
+                columns.add("Value "+i);
+                columns.add("Time");
+            }
+            logWriter.logColumnsNames(columns);//ecris la valeur des colonnes
+        }
     }
 
     private void setAllPreferences() {
-        int nbRows = 3;
-        int nbColumns = 3;
+
         if (sharedPreferences.contains("nbRows")){
             nbRows = sharedPreferences.getInt("nbRows",1);
 
@@ -151,35 +219,32 @@ public class SchemePatternActivity extends AppCompatActivity {
             nbColumns = sharedPreferences.getInt("nbColumns",1);
         }
 
+        maxDot = nbRows*nbColumns; //TODO: Remove
+
         if(sharedPreferences.contains("vibration")){
-            boolean vibration = sharedPreferences.getBoolean("vibration",true);
+            vibration = sharedPreferences.getBoolean("vibration",true);
             mPatternLockView.setTactileFeedbackEnabled(vibration);
         }
 
         if(sharedPreferences.contains("stealth")){
-            boolean stealth = sharedPreferences.getBoolean("stealth",false);
+            stealth = sharedPreferences.getBoolean("stealth",false);
             mPatternLockView.setInStealthMode(stealth);
         }
 
         if (sharedPreferences.contains("dotSize")){
-            int dotSize = sharedPreferences.getInt("dotSize",30);
+            dotSize = sharedPreferences.getInt("dotSize",30);
             mPatternLockView.setDotNormalSize(dotSize);
         }
+
+        if (sharedPreferences.contains("captureMode")){
+            captureMode = sharedPreferences.getBoolean("captureMode",true);
+        }
+
 
         mPatternLockView.setAspectRatio(PatternLockView.AspectRatio.ASPECT_RATIO_FREE);
 
 
         mPatternLockView.setDotCount(nbColumns,nbRows);
-
-
-        /*if(sharedPreferences.contains("lengthPattern")){
-            int length = sharedPreferences.getInt("lengthPattern",1);
-            //lengthEditText.setText(length);
-        }*/
-
-
-
-
     }
 
 
@@ -245,6 +310,10 @@ public class SchemePatternActivity extends AppCompatActivity {
         }else{
             changeButton.setText("Cancel");
             onChangesCode=true;
+            if (captureMode) {
+                nbUser++;
+                newUser = true;
+            }
         }
     }
 }

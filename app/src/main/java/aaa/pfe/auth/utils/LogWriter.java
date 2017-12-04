@@ -22,8 +22,9 @@ public class LogWriter {
     private String fileName;
 
     public LogWriter(String method){
-        DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm");
+        DateFormat df = new SimpleDateFormat("dd MM yyyy_ HH_mm");
         String date = df.format(Calendar.getInstance().getTime());
+        date = date.replace(" ","_");
         this.fileName = method + "_" + date + ".csv";
     }
 
