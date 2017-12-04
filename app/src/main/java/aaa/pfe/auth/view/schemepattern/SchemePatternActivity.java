@@ -82,7 +82,7 @@ public class SchemePatternActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onComplete(List<PatternLockView.Dot> pattern) {
+        public void onComplete(List<PatternLockView.Dot> pattern, boolean sizeReached) {
             Log.d(getClass().getName(), "Pattern complete: " +
                     PatternLockUtils.patternToString(mPatternLockView, pattern));
             String result = PatternLockUtils.patternToSha1(mPatternLockView, pattern);
@@ -98,6 +98,12 @@ public class SchemePatternActivity extends AppCompatActivity {
                 mPatternLockView.clearPattern();
 
             }else{
+                if(sizeReached){
+                    Log.d(getClass().getName(), "Max Size Reached: " +
+                            PatternLockUtils.patternToString(mPatternLockView, pattern));
+                    Toast.makeText(SchemePatternActivity.this, "Max Size Reached", Toast.LENGTH_SHORT).show();
+                }
+
                 if (sharedPreferences.contains("schemePatternPass")){
                     String savedPass = sharedPreferences.getString("schemePatternPass", null);
                     if(savedPass.equals(result)){
@@ -108,6 +114,8 @@ public class SchemePatternActivity extends AppCompatActivity {
                         logsArray.add(0,"Fail");
                     }
                 }
+
+                //mPatternLockView.clearPattern();
 
                 if(newUser) {
                     logWriter.logFirstTentative("User" + nbUser, logsArray);
@@ -121,6 +129,11 @@ public class SchemePatternActivity extends AppCompatActivity {
         @Override
         public void onCleared() {
             Log.d(getClass().getName(), "Pattern has been cleared");
+        }
+
+        @Override
+        public void onSizeReached(List<PatternLockView.Dot> pattern) {
+
         }
     };
 
@@ -191,6 +204,7 @@ public class SchemePatternActivity extends AppCompatActivity {
             ArrayList<String> params = new ArrayList<>();
             params.add("nbRows="+nbRows);
             params.add("nbColumns="+nbColumns);
+            params.add("maxSize="+maxDot);
             params.add("dotSize="+dotSize);
             params.add("vibration="+vibration);
             params.add("stealth="+stealth);
@@ -219,7 +233,10 @@ public class SchemePatternActivity extends AppCompatActivity {
             nbColumns = sharedPreferences.getInt("nbColumns",1);
         }
 
-        maxDot = nbRows*nbColumns; //TODO: Remove
+        if (sharedPreferences.contains("maxSize")){
+            maxDot = sharedPreferences.getInt("maxSize",9);
+            mPatternLockView.setPatternMaxSize(maxDot);
+        }
 
         if(sharedPreferences.contains("vibration")){
             vibration = sharedPreferences.getBoolean("vibration",true);

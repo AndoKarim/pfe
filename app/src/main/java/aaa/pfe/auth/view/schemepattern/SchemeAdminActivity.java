@@ -62,8 +62,8 @@ public class SchemeAdminActivity extends AdminActivity {
             nbColumnsEditText.setText(String.valueOf(nbColumns));
         }
 
-        if (sharedPreferences.contains("lengthPattern")){
-            int length = sharedPreferences.getInt("lengthPattern",1);
+        if (sharedPreferences.contains("maxSize")){
+            int length = sharedPreferences.getInt("maxSize",9);
             lengthEditText.setText(String.valueOf(length));
         }
 
@@ -123,7 +123,7 @@ public class SchemeAdminActivity extends AdminActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("nbRows", Integer.valueOf(nbRowsEditText.getText().toString()));
         editor.putInt("nbColumns", Integer.valueOf(nbColumnsEditText.getText().toString()));
-        editor.putInt("lengthPattern", Integer.valueOf(lengthEditText.getText().toString()));
+        editor.putInt("maxSize", Integer.valueOf(lengthEditText.getText().toString()));
         editor.putBoolean("vibration", vibrationBox.isChecked());
         editor.putBoolean("stealth", stealthBox.isChecked());
         editor.putInt("dotSize", Integer.valueOf(dotSizeEditText.getText().toString()));

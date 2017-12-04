@@ -27,10 +27,15 @@ public interface PatternLockViewListener {
      * Fired when the user has completed drawing the pattern and has moved their finger away
      * from the view
      */
-    void onComplete(List<PatternLockView.Dot> pattern);
+    void onComplete(List<PatternLockView.Dot> pattern, boolean sizeReached);
 
     /**
      * Fired when the patten has been cleared from the view
      */
     void onCleared();
+
+    /**
+     * Fired when the pattern max size is reached
+     */
+    void onSizeReached(List<PatternLockView.Dot> pattern);
 }

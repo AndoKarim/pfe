@@ -44,6 +44,10 @@ import aaa.pfe.auth.view.patternlockview.utils.ResourceUtils;
  */
 public class PatternLockView extends View {
 
+    private MotionEvent myEvent;
+
+
+
     /**
      * Represents the aspect ratio for the View
      */
@@ -88,6 +92,7 @@ public class PatternLockView extends View {
 
     private static final int DEFAULT_PATTERN_DOT_COUNT = 3;
     private static final int DEFAULT_PATTERN_DOT_COUNT2 = 4;
+    private static final int DEFAULT_PATTERN_PATTERN_LENGTH = 9;
     private static final boolean PROFILE_DRAWING = false;
 
     /**
@@ -172,6 +177,8 @@ public class PatternLockView extends View {
                     DEFAULT_PATTERN_DOT_COUNT);
             sDotCount2 = typedArray.getInt(R.styleable.PatternLockView_dotCount2,
                     DEFAULT_PATTERN_DOT_COUNT2);
+            mPatternSize = typedArray.getInt(R.styleable.PatternLockView_patternLength,
+                    DEFAULT_PATTERN_PATTERN_LENGTH);
             mAspectRatioEnabled = typedArray.getBoolean(R.styleable.PatternLockView_aspectRatioEnabled,
                     false);
             mAspectRatio = typedArray.getInt(R.styleable.PatternLockView_aspectRatio,
@@ -198,7 +205,7 @@ public class PatternLockView extends View {
         }
 
         // The pattern will always be symmetrical
-        mPatternSize = sDotCount * sDotCount2;
+        //mPatternSize = sDotCount * sDotCount2;
         mPattern = new ArrayList<>(mPatternSize);
         mPatternDrawLookup = new boolean[sDotCount2][sDotCount];
 
@@ -445,6 +452,8 @@ public class PatternLockView extends View {
             return false;
         }
 
+        myEvent = event;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 handleActionDown(event);
@@ -591,7 +600,7 @@ public class PatternLockView extends View {
     public void setDotCount(int dotCount, int dotCount2) {
         sDotCount = dotCount;
         sDotCount2 = dotCount2;
-        mPatternSize = sDotCount * sDotCount2;
+        //mPatternSize = sDotCount * sDotCount2;
         mPattern = new ArrayList<>(mPatternSize);
         mPatternDrawLookup = new boolean[sDotCount2][sDotCount];
 
@@ -605,6 +614,10 @@ public class PatternLockView extends View {
 
         requestLayout();
         invalidate();
+    }
+
+    public void setPatternMaxSize(int patternMaxSize) {
+        this.mPatternSize = patternMaxSize;
     }
 
     public void setAspectRatioEnabled(boolean aspectRatioEnabled) {
@@ -736,6 +749,13 @@ public class PatternLockView extends View {
         notifyListenersCleared();
     }
 
+    private void notifyPatternSizeReached(){
+
+        sendAccessEvent(R.string.message_pattern_max_size);
+        notifyListenersSizeReached(mPattern);
+    }
+
+
     private void resetPattern() {
         mPattern.clear();
         clearPatternDrawLookup();
@@ -762,7 +782,7 @@ public class PatternLockView extends View {
     private void notifyListenersComplete(List<Dot> pattern) {
         for (PatternLockViewListener patternListener : mPatternListeners) {
             if (patternListener != null) {
-                patternListener.onComplete(pattern);
+                patternListener.onComplete(pattern,false);
             }
         }
     }
@@ -771,6 +791,14 @@ public class PatternLockView extends View {
         for (PatternLockViewListener patternListener : mPatternListeners) {
             if (patternListener != null) {
                 patternListener.onCleared();
+            }
+        }
+    }
+
+    private void notifyListenersSizeReached(List<Dot> pattern){
+        for (PatternLockViewListener patternListener : mPatternListeners) {
+            if (patternListener != null) {
+                patternListener.onComplete(pattern,true);
             }
         }
     }
@@ -837,8 +865,28 @@ public class PatternLockView extends View {
         if (!mInStealthMode) {
             startDotSelectedAnimation(newDot);
         }
-        notifyPatternProgress();
+        if(mPattern.size()==mPatternSize){
+
+            // Report pattern detected
+            if (!mPattern.isEmpty()) {
+                mPatternInProgress = false;
+                cancelLineAnimations();
+                notifyPatternSizeReached();
+                invalidate();
+            }
+            if (PROFILE_DRAWING) {
+                if (mDrawingProfilingStarted) {
+                    Debug.stopMethodTracing();
+                    mDrawingProfilingStarted = false;
+                }
+            }
+
+        }else {
+            notifyPatternProgress();
+        }
     }
+
+
 
     private void startDotSelectedAnimation(Dot dot) {
         final DotState dotState = mDotStates[dot.mRow][dot.mColumn];
@@ -1057,7 +1105,7 @@ public class PatternLockView extends View {
 
     private void handleActionUp(MotionEvent event) {
         // Report pattern detected
-        if (!mPattern.isEmpty()) {
+        if (!mPattern.isEmpty() && mPatternSize!=mPattern.size()) {
             mPatternInProgress = false;
             cancelLineAnimations();
             notifyPatternDetected();

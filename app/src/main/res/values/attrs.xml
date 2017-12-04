@@ -3,6 +3,7 @@
     <declare-styleable name="PatternLockView">
         <attr name="dotCount" format="integer"/>
         <attr name="dotCount2" format="integer"/>
+		<attr name="patternLength" format="integer"/>
         <attr name="dotNormalSize" format="dimension"/>
         <attr name="dotSelectedSize" format="dimension"/>
         <attr name="pathWidth" format="dimension"/>
