@@ -3,8 +3,8 @@
 
 L'application AuthApp permet de paramétrer et tester 3 mécanismes d'authentification sur smartphone. Le guide d'utilisation permet d'utiliser ces mécanismes ainsi que leurs log:
 
-+ PinCode
-+ LockPattern
++ PinCode (from [https://github.com/aritraroy/PinLockView](https://github.com/aritraroy/PinLockView))
++ LockPattern (from [https://github.com/aritraroy/PatternLockView](https://github.com/aritraroy/PatternLockView))
 + PassFace
 
 
@@ -25,7 +25,12 @@ Les paramètres pouvant être modifier pour la saisie du code PIN:
 
 +  **Capture Mode**: si ce paramètre est activé un fichier de log sera enregistré dans le stockage interne du téléphone. Par défaut activé.
 *Ce paramètre est présent dans les autres mécanismes.*
-+  **Indicator Type**: précise à l'utilisateur la progression dans la saisie code PIN. Soit il n'y a aucune indication (*no indicator*), soit on présente à l'utilisateur un nombre de point égal à la longueur de PIN et ceux-ci se remplissent à chaque chiffre saisi (*Dots to fill*), soit les points apparaissent au fur et à mesure de la saisie de chiffre (*Appearing dots*).
++  **Indicator Type**: pécise à l'utilisateur la progression dans la saise du code PIN:
+ 1. *no indicator*: aucune indication
+ 2. *Dots to fill*:  soit on présente à l'utilisateur un nombre de point égal à la longueur de PIN et ceux-ci se remplissent à chaque chiffre saisi
+ 3. *Appearing dots*: soit les points apparaissent au fur et à mesure de la saisie de chiffre
+ 4. *With Num*: affiche le dernier chiffre du code PIN saisi ainsi que le nombre de chiffre déjà saisie.
+
 
 ### PassFace
 Les paramètres qui peuvent être variés sont :
@@ -66,7 +71,7 @@ La première ligne du fichier précise les paramètres de l'expérience:
 +  shuffle .ie. si le clavier numérique est généré de manière aléatoire
 +   la taille du code
 +  le nombre d'essais
-+ le type d'indicateur (0 = No indicator, 1 = filling dots, 2 = Appearing dots)
++ le type d'indicateur (0 = No indicator, 1 = filling dots, 2 = Appearing dots, 3 = With Num)
 
 Ensuite chaque ligne du tableau correspond à une tentative de l'utilisateur:
 
@@ -113,4 +118,3 @@ Ensuite chaque ligne du tableau correspond à une tentative de l'utilisateur.
 
 
 > "Make the world a safer place" - Abdelkarim Andolerzak
-
