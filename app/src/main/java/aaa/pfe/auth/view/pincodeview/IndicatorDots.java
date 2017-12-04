@@ -154,7 +154,10 @@ public class IndicatorDots extends LinearLayout {
     public void updateDotWithNum(int length,int last) {
         if (length > 0) {
             if (length > mPreviousLength) {
-                View digit = new View(getContext());
+                TextView digit = new TextView(getContext());
+                digit.setText(String.valueOf(last));
+                digit.setTextSize(10);
+                //View digit = new View(getContext());
                 fillEphemeralNum(digit);
 
                 View dot = new View(getContext());
@@ -212,8 +215,8 @@ public class IndicatorDots extends LinearLayout {
     }
 
     private void fillEphemeralNum(View view){
-        view.setBackgroundResource(mDigitsDrawable);
-        view.
+        //view.setBackgroundResource(mDigitsDrawable);
+        //view.
     }
 
 }
