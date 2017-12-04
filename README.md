@@ -10,6 +10,7 @@ L'application AuthApp permet de paramétrer et tester 3 mécanismes d'authentifi
 
 
 *C'est-à-dire ?*
+
 Arrivé sur la page d'accueil de l'application 3 boutons sont présents pour commencer une nouvelle expérimentation pour chaque mécanisme d'authentification. En cliquant sur l'un d'entre eux on est dirigé sur la page de paramétrage du mécanisme choisi. En appuyant sur le bouton sauvegarder on lance l'expérimentation. L'utilisateur doit alors determiner son pincode/scheme/passface personnel puis peut procéder à l'éxpérimentation (ie. répétition de son authentification)
 ## Paramètres
 
