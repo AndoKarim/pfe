@@ -45,6 +45,8 @@ public class IndicatorDots extends LinearLayout {
     private int mPinLength;
     private int mIndicatorType;
 
+    private int mDigitsDrawable;
+
     private int mPreviousLength;
 
     public IndicatorDots(Context context) {
@@ -67,6 +69,8 @@ public class IndicatorDots extends LinearLayout {
                     R.drawable.dot_filled);
             mEmptyDrawable = typedArray.getResourceId(R.styleable.PinLockView_dotEmptyBackground,
                     R.drawable.dot_empty);
+            mDigitsDrawable = typedArray.getResourceId(R.styleable.PinLockView_dotFilledBackground,
+                    R.drawable.digits);
             mPinLength = typedArray.getInt(R.styleable.PinLockView_pinLength, DEFAULT_PIN_LENGTH);
             mIndicatorType = typedArray.getInt(R.styleable.PinLockView_indicatorType,
                     IndicatorType.FIXED);
@@ -150,27 +154,23 @@ public class IndicatorDots extends LinearLayout {
     public void updateDotWithNum(int length,int last) {
         if (length > 0) {
             if (length > mPreviousLength) {
-                TextView num = new TextView(getContext());
+                View digit = new View(getContext());
+                fillEphemeralNum(digit);
 
-                //View dot = new View(getContext());
-                fillEphemeralNum(num,last);
-                //fillDot(dot);
+                View dot = new View(getContext());
+                fillDot(dot);
 
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mDotDiameter,
                         mDotDiameter);
                 params.setMargins(mDotSpacing, 0, mDotSpacing, 0);
-                num.setLayoutParams(params);
+                digit.setLayoutParams(params);
+                dot.setLayoutParams(params);
 
-                /*try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-                addView(num,length - 1);
-                num.setVisibility(View.GONE);
-
-                //dot.setLayoutParams(params);
-                //addView(dot, length - 1);
+                if (length > 1) {
+                    removeViewAt(length - 2);
+                    addView(dot, length - 2);
+                }
+                addView(digit, length - 1);
             } else {
                 removeViewAt(length);
             }
@@ -211,9 +211,9 @@ public class IndicatorDots extends LinearLayout {
         initView(getContext());
     }
 
-    private void fillEphemeralNum(TextView c_num,int value){
-        c_num.setVisibility(View.VISIBLE);
-        c_num.setText(String.valueOf(value));
+    private void fillEphemeralNum(View view){
+        view.setBackgroundResource(mDigitsDrawable);
+        view.
     }
 
 }
