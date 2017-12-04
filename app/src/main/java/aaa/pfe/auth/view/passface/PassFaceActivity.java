@@ -44,7 +44,7 @@ public class PassFaceActivity extends AppCompatActivity {
     private String typePhotos;
     private int passwordLength;
     //private boolean orderOfPwd;
-    private int nbStep;             //TODO
+    private int nbStep;
     private String typeMatching;    //TODO
     private boolean shuffle;
     private boolean twicePhoto;     //TODO
@@ -229,7 +229,7 @@ public class PassFaceActivity extends AppCompatActivity {
                         changeButton.setVisibility(View.VISIBLE);
 
                         removeBorders();
-                        enteredPassword = "";
+                        resetPasswordLengthAndValue();
                         currentStep = 0;
                         updateGridView();
 
@@ -267,37 +267,41 @@ public class PassFaceActivity extends AppCompatActivity {
                             currentStep++;
                             updateGridView();
                         } else {
-                            logs.add(getTimeAndUsername() + "Good password entered");
                             Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
+
                             currentStep = 0;
-                            lengthOfCurrentPWD = 0;
                             updateGridView();
-                            enteredPassword = "";
+                            resetPasswordLengthAndValue();
+
+                            logs.add(getTimeAndUsername() + "Good password entered");
                             PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                             logs.clear();
                         }
                     } else {
-                        logs.add(getTimeAndUsername() + "Wrong password entered");
-                        Toast t = Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT);
-                        t.show();
+                        Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
+
                         removeBorders();
-                        lengthOfCurrentPWD = 0;
-                        enteredPassword = "";
+                        resetPasswordLengthAndValue();
+                        logs.add(getTimeAndUsername() + "Wrong password entered");
+
                     }
 
                 } else if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
+                    Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
+
+                    currentStep = 0;
+
                     logs.add(getTimeAndUsername() + "Good password entered");
                     PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                     logs.clear();
-                    Toast.makeText(getApplicationContext(), R.string.good_pwd, Toast.LENGTH_SHORT).show();
-                    currentStep = 0;
                 } else {
+                    Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
+
+                    removeBorders();
+                    resetPasswordLengthAndValue();
+
                     logs.add(getTimeAndUsername() + "Wrong password entered");
 
-                    Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
-                    removeBorders();
-                    lengthOfCurrentPWD = 0;
-                    enteredPassword = "";
                 }
             }
         });
@@ -308,21 +312,22 @@ public class PassFaceActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                logs.add(getTimeAndUsername() + "Change password button clicked");
                 sharedPreferences.edit().remove("Password").apply();
+
                 submitButton.setVisibility(View.INVISIBLE);
                 changeButton.setVisibility(View.INVISIBLE);
                 saveButton.setVisibility(View.VISIBLE);
                 cancelButton.setVisibility(View.VISIBLE);
                 currentStep = 0;
-                enteredPassword = "";
-                lengthOfCurrentPWD = 0;
+                resetPasswordLengthAndValue();
                 idUser++;
+                updateGridView();
+
+                logs.add(getTimeAndUsername() + "Change password button clicked");
                 logs.add(getTimeAndUsername() + "Start of the experience");
                 PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                 logs.clear();
 
-                updateGridView();
             }
         });
 
@@ -331,10 +336,10 @@ public class PassFaceActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View view) {
-                logs.add(getTimeAndUsername() + "Cancel button clicked");
                 removeBorders();
-                lengthOfCurrentPWD = 0;
-                enteredPassword = "";
+                resetPasswordLengthAndValue();
+
+                logs.add(getTimeAndUsername() + "Cancel button clicked");
             }
         });
 
@@ -383,5 +388,10 @@ public class PassFaceActivity extends AppCompatActivity {
 
     private String getTimeAndUsername() {
         return ";" + System.currentTimeMillis() + ";" + "user" + idUser + ";";
+    }
+
+    private void resetPasswordLengthAndValue() {
+        lengthOfCurrentPWD = 0;
+        enteredPassword = "";
     }
 }
