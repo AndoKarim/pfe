@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -157,17 +158,20 @@ public class IndicatorDots extends LinearLayout {
                 TextView digit = new TextView(getContext());
                 digit.setText(String.valueOf(last));
                 digit.setTextSize(10);
-                //View digit = new View(getContext());
                 fillEphemeralNum(digit);
 
                 View dot = new View(getContext());
                 fillDot(dot);
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(mDotDiameter,
+                LinearLayout.LayoutParams digitParams = new LinearLayout.LayoutParams(mDotDiameter,
+                        mDotDiameter+100);
+                digitParams.setMargins(mDotSpacing, -10, mDotSpacing, -10);
+                digit.setLayoutParams(digitParams);
+
+                LinearLayout.LayoutParams dotParams = new LinearLayout.LayoutParams(mDotDiameter,
                         mDotDiameter);
-                params.setMargins(mDotSpacing, 0, mDotSpacing, 0);
-                digit.setLayoutParams(params);
-                dot.setLayoutParams(params);
+                dotParams.setMargins(mDotSpacing, 0, mDotSpacing, 0);
+                dot.setLayoutParams(dotParams);
 
                 if (length > 1) {
                     removeViewAt(length - 2);

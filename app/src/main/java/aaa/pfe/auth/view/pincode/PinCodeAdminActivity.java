@@ -28,7 +28,7 @@ public class PinCodeAdminActivity extends AdminActivity{
     private EditText ptTry;
 
     private RadioGroup radiogroupIndicators;
-    private RadioButton radioButtonNoDots, radioButtonDotsFill, radioButtonDotsAnimation;
+    private RadioButton radioButtonNoDots, radioButtonDotsFill, radioButtonDotsAnimation,radioButtonNum;
 
     SharedPreferences sharedPreferences;
 
@@ -51,6 +51,7 @@ public class PinCodeAdminActivity extends AdminActivity{
         radioButtonNoDots = (RadioButton) findViewById(R.id.radioButton1);
         radioButtonDotsFill = (RadioButton) findViewById(R.id.radioButton2);
         radioButtonDotsAnimation = (RadioButton) findViewById(R.id.radioButton3);
+        radioButtonNum = (RadioButton) findViewById(R.id.radioButton4);
 
         //Shared Pref
         sharedPreferences = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
@@ -89,6 +90,8 @@ public class PinCodeAdminActivity extends AdminActivity{
                 case 2:
                     radioButtonDotsAnimation.setChecked(true);
                     break;
+                case 3:
+                    radioButtonNum.setChecked(true);
             }
         }
 
@@ -129,6 +132,8 @@ public class PinCodeAdminActivity extends AdminActivity{
 
         } else if (selectedId == radioButtonDotsAnimation.getId()){
             editor.putInt("indicators",2); //ou 1
+        }else if (selectedId == radioButtonNum.getId()){
+            editor.putInt("indicators",3);
         }
 
         editor.apply();
