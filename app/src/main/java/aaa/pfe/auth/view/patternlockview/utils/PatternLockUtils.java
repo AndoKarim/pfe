@@ -59,6 +59,23 @@ public class PatternLockUtils {
         return stringBuilder.toString();
     }
 
+    public static String getLastClickedDot(PatternLockView patternLockView,
+                                         List<PatternLockView.Dot> pattern) {
+        if (pattern == null) {
+            return "";
+        }
+        int patternSize = pattern.size();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        /*for (int i = 0; i < patternSize; i++) {
+
+            stringBuilder.append();
+        }*/
+        PatternLockView.Dot dot = pattern.get(patternSize-1);
+        stringBuilder.append((dot.getRow() * patternLockView.getDotCount() + dot.getColumn()));
+        return stringBuilder.toString();
+    }
+
     /**
      * De-serializes a given string to its equivalent pattern representation
      *

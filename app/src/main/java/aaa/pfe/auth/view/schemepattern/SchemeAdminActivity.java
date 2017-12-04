@@ -27,6 +27,7 @@ public class SchemeAdminActivity extends AdminActivity {
     private EditText lengthEditText;
     private CheckBox vibrationBox;
     private CheckBox stealthBox;
+    private CheckBox captureBox;
     private EditText dotSizeEditText;
 
     @Override
@@ -41,6 +42,7 @@ public class SchemeAdminActivity extends AdminActivity {
         lengthEditText = (EditText) findViewById(R.id.lengthPattern);
         vibrationBox = (CheckBox) findViewById(R.id.vibration);
         stealthBox = (CheckBox) findViewById(R.id.stealth);
+        captureBox = (CheckBox) findViewById(R.id.capture);
         dotSizeEditText = (EditText) findViewById(R.id.dotSize);
 
 
@@ -78,6 +80,11 @@ public class SchemeAdminActivity extends AdminActivity {
         if (sharedPreferences.contains("dotSize")){
             int dotSize = sharedPreferences.getInt("dotSize",30);
             dotSizeEditText.setText(String.valueOf(dotSize));
+        }
+
+        if (sharedPreferences.contains("captureMode")){
+            boolean captureMode = sharedPreferences.getBoolean("captureMode",true);
+            captureBox.setChecked(captureMode);
         }
 
     }
@@ -120,6 +127,7 @@ public class SchemeAdminActivity extends AdminActivity {
         editor.putBoolean("vibration", vibrationBox.isChecked());
         editor.putBoolean("stealth", stealthBox.isChecked());
         editor.putInt("dotSize", Integer.valueOf(dotSizeEditText.getText().toString()));
+        editor.putBoolean("captureMode",captureBox.isChecked());
 
 
         editor.remove("schemePatternPass");
