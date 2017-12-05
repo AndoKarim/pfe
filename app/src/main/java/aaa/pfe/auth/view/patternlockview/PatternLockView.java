@@ -865,7 +865,7 @@ public class PatternLockView extends View {
         if (!mInStealthMode) {
             startDotSelectedAnimation(newDot);
         }
-        if(mPattern.size()==mPatternSize){
+        if(mPattern.size()== mPatternSize){
 
             // Report pattern detected
             if (!mPattern.isEmpty()) {

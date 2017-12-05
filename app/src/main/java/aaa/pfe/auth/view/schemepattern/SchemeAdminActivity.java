@@ -25,6 +25,7 @@ public class SchemeAdminActivity extends AdminActivity {
     private EditText nbColumnsEditText;
     private SharedPreferences sharedPreferences;
     private EditText lengthEditText;
+    private EditText maxTryEditText;
     private CheckBox vibrationBox;
     private CheckBox stealthBox;
     private CheckBox captureBox;
@@ -40,6 +41,7 @@ public class SchemeAdminActivity extends AdminActivity {
         nbRowsEditText = (EditText) findViewById(R.id.nbRows);
         nbColumnsEditText = (EditText) findViewById(R.id.nbColumns);
         lengthEditText = (EditText) findViewById(R.id.lengthPattern);
+        maxTryEditText = (EditText) findViewById(R.id.maxTry);
         vibrationBox = (CheckBox) findViewById(R.id.vibration);
         stealthBox = (CheckBox) findViewById(R.id.stealth);
         captureBox = (CheckBox) findViewById(R.id.capture);
@@ -52,40 +54,29 @@ public class SchemeAdminActivity extends AdminActivity {
     }
 
     private void setDefaultsValues() {
-        if (sharedPreferences.contains("nbRows")){
-            int nbRows = sharedPreferences.getInt("nbRows",1);
+            int nbRows = sharedPreferences.getInt("nbRows",3);
             nbRowsEditText.setText(String.valueOf(nbRows));
-        }
 
-        if (sharedPreferences.contains("nbColumns")){
-            int nbColumns = sharedPreferences.getInt("nbColumns",1);
+            int nbColumns = sharedPreferences.getInt("nbColumns",3);
             nbColumnsEditText.setText(String.valueOf(nbColumns));
-        }
 
-        if (sharedPreferences.contains("maxSize")){
             int length = sharedPreferences.getInt("maxSize",9);
             lengthEditText.setText(String.valueOf(length));
-        }
 
-        if (sharedPreferences.contains("vibration")){
+        int maxTry = sharedPreferences.getInt("maxTry",3);
+        maxTryEditText.setText(String.valueOf(maxTry));
+
             boolean vibration = sharedPreferences.getBoolean("vibration",true);
             vibrationBox.setChecked(vibration);
-        }
 
-        if (sharedPreferences.contains("stealth")){
             boolean stealth = sharedPreferences.getBoolean("stealth",false);
             stealthBox.setChecked(stealth);
-        }
 
-        if (sharedPreferences.contains("dotSize")){
             int dotSize = sharedPreferences.getInt("dotSize",30);
             dotSizeEditText.setText(String.valueOf(dotSize));
-        }
 
-        if (sharedPreferences.contains("captureMode")){
             boolean captureMode = sharedPreferences.getBoolean("captureMode",true);
             captureBox.setChecked(captureMode);
-        }
 
     }
 
@@ -124,6 +115,7 @@ public class SchemeAdminActivity extends AdminActivity {
         editor.putInt("nbRows", Integer.valueOf(nbRowsEditText.getText().toString()));
         editor.putInt("nbColumns", Integer.valueOf(nbColumnsEditText.getText().toString()));
         editor.putInt("maxSize", Integer.valueOf(lengthEditText.getText().toString()));
+        editor.putInt("maxTry", Integer.valueOf(maxTryEditText.getText().toString()));
         editor.putBoolean("vibration", vibrationBox.isChecked());
         editor.putBoolean("stealth", stealthBox.isChecked());
         editor.putInt("dotSize", Integer.valueOf(dotSizeEditText.getText().toString()));

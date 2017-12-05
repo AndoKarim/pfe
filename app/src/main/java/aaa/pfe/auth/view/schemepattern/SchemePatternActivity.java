@@ -32,10 +32,6 @@ import static aaa.pfe.auth.view.passface.PassFaceAdminActivity.logWriter;
 
 public class SchemePatternActivity extends AppCompatActivity {
 
-    
-    /*
-    TODO : modifier le nombre min. le nombre max.
-     */
     private PatternLockView mPatternLockView;
     private Button changeButton;
     private boolean onChangesCode=false;
@@ -51,6 +47,9 @@ public class SchemePatternActivity extends AppCompatActivity {
     private boolean captureMode;
     private boolean newUser;
     private ArrayList<String> logsArray = new ArrayList<>();
+
+    private int nbTry;
+    private int maxTry=3;
 
     private PatternLockViewListener mPatternLockViewListener = new PatternLockViewListener() {
 
@@ -95,14 +94,17 @@ public class SchemePatternActivity extends AppCompatActivity {
                         .apply();
                 setChangesButton();
                 Toast.makeText(SchemePatternActivity.this, "Password saved", Toast.LENGTH_SHORT).show();
-                mPatternLockView.clearPattern();
 
+                //mPatternLockView.clearPattern();
             }else{
+                nbTry ++;
                 if(sizeReached){
                     Log.d(getClass().getName(), "Max Size Reached: " +
                             PatternLockUtils.patternToString(mPatternLockView, pattern));
                     Toast.makeText(SchemePatternActivity.this, "Max Size Reached", Toast.LENGTH_SHORT).show();
                 }
+
+
 
                 if (sharedPreferences.contains("schemePatternPass")){
                     String savedPass = sharedPreferences.getString("schemePatternPass", null);
@@ -113,6 +115,23 @@ public class SchemePatternActivity extends AppCompatActivity {
                         Toast.makeText(SchemePatternActivity.this, "Wrong password", Toast.LENGTH_SHORT).show();
                         logsArray.add(0,"Fail");
                     }
+                }
+
+                if(nbTry==maxTry){
+                    //TODO Créer un dialogBox
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SchemePatternActivity.this);
+                    builder.setMessage("Max try reached")
+                            .setTitle("Max try");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            changeButton.performClick();
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
                 }
 
                 //mPatternLockView.clearPattern();
@@ -210,52 +229,37 @@ public class SchemePatternActivity extends AppCompatActivity {
             params.add("stealth="+stealth);
             logWriter.logParams(params);
             nbUser = 0;
-            //timestamp = new Timestamp(System.currentTimeMillis());
-            //toucheMap = new HashMap();
-            //Coloumns name
             ArrayList<String> columns = new ArrayList<>();
             columns.add("Result");
             for(int i=0; i < maxDot ; i++) {
                 columns.add("Value "+i);
                 columns.add("Time");
             }
-            logWriter.logColumnsNames(columns);//ecris la valeur des colonnes
+            logWriter.logColumnsNames(columns);
         }
     }
 
     private void setAllPreferences() {
 
-        if (sharedPreferences.contains("nbRows")){
-            nbRows = sharedPreferences.getInt("nbRows",1);
+            nbRows = sharedPreferences.getInt("nbRows",3);
 
-        }
-        if (sharedPreferences.contains("nbColumns")){
-            nbColumns = sharedPreferences.getInt("nbColumns",1);
-        }
+            nbColumns = sharedPreferences.getInt("nbColumns",3);
 
-        if (sharedPreferences.contains("maxSize")){
             maxDot = sharedPreferences.getInt("maxSize",9);
             mPatternLockView.setPatternMaxSize(maxDot);
-        }
 
-        if(sharedPreferences.contains("vibration")){
+            maxTry = sharedPreferences.getInt("maxTry",3);
+
             vibration = sharedPreferences.getBoolean("vibration",true);
             mPatternLockView.setTactileFeedbackEnabled(vibration);
-        }
 
-        if(sharedPreferences.contains("stealth")){
             stealth = sharedPreferences.getBoolean("stealth",false);
             mPatternLockView.setInStealthMode(stealth);
-        }
 
-        if (sharedPreferences.contains("dotSize")){
             dotSize = sharedPreferences.getInt("dotSize",30);
             mPatternLockView.setDotNormalSize(dotSize);
-        }
 
-        if (sharedPreferences.contains("captureMode")){
             captureMode = sharedPreferences.getBoolean("captureMode",true);
-        }
 
 
         mPatternLockView.setAspectRatio(PatternLockView.AspectRatio.ASPECT_RATIO_FREE);
@@ -330,6 +334,7 @@ public class SchemePatternActivity extends AppCompatActivity {
             if (captureMode) {
                 nbUser++;
                 newUser = true;
+                nbTry = 0;
             }
         }
     }
