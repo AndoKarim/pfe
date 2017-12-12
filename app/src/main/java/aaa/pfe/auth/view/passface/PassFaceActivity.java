@@ -38,16 +38,19 @@ public class PassFaceActivity extends AppCompatActivity {
     private List<ImageView> lastPicsChosen;
     private int lengthOfCurrentPWD = 0;
     private int currentStep = 0;
+    private int currentNbAttempt = 0;
 
     //Different parameters
     private int nbPhotos;
     private String typePhotos;
     private int passwordLength;
+    private int nbAttempts;
     //private boolean orderOfPwd;
     private int nbStep;
     private String typeMatching;    //TODO
-    private boolean shuffle;
+    private boolean doShuffle;
     private boolean twicePhoto;     //TODO
+    private boolean doCapture;
 
     private int idUser;
     private ArrayList<String> logs = new ArrayList<>();
@@ -57,11 +60,16 @@ public class PassFaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_face);
         idUser = 1;
-        logs.add("Date;Username;Event;Position;Value");
-        PassFaceAdminActivity.logWriter.writePassFaceCols(logs);
-        logs.clear();
 
-        logs.add(getTimeAndUsername() + "Start of the experience");
+        sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.passFacePreferences), MODE_PRIVATE);
+        loadParameters();
+        if (doCapture) {
+            logs.add("Date;Username;Event;Position;Value");
+            PassFaceAdminActivity.logWriter.writePassFaceCols(logs);
+            logs.clear();
+
+            logs.add(getTimeAndUsername() + "Start of the experience");
+        }
     }
 
     @Override
@@ -100,9 +108,11 @@ public class PassFaceActivity extends AppCompatActivity {
         typePhotos = sharedPreferences.getString(getString(R.string.typePhotosPreference), Const.DEFAULT_TYPE_PHOTOS);
         passwordLength = sharedPreferences.getInt(getString(R.string.passwordLengthPreference), Const.DEFAULT_PWD_LENGTH);
         nbStep = sharedPreferences.getInt(getString(R.string.numberStepsPreference), Const.DEFAULT_NB_STEPS);
+        nbAttempts = sharedPreferences.getInt(getString(R.string.numberAttemptsPreference), Const.DEFAULT_NB_ATTEMPTS);
         typeMatching = sharedPreferences.getString(getString(R.string.matchingTypePreference), Const.DEFAULT_MATCHING);
-        shuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
+        doShuffle = sharedPreferences.getBoolean(getString(R.string.doShufflePreference), Const.DEFAULT_SHUFFLE);
         twicePhoto = sharedPreferences.getBoolean(getString(R.string.twicePhotoPreference), Const.DEFAULT_TWICE_PHOTO);
+        doCapture = sharedPreferences.getBoolean(getString(R.string.captureModePreference), Const.DEFAULT_CAPTURE_MODE);
         // orderOfPwd = sharedPreferences.getBoolean(getString(R.string.isInOrderPreference), Const.DEFAULT_ORDER);
 
 
@@ -274,7 +284,8 @@ public class PassFaceActivity extends AppCompatActivity {
                             resetPasswordLengthAndValue();
 
                             logs.add(getTimeAndUsername() + "Good password entered");
-                            PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+                            if (doCapture)
+                                PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                             logs.clear();
                         }
                     } else {
@@ -284,6 +295,12 @@ public class PassFaceActivity extends AppCompatActivity {
                         resetPasswordLengthAndValue();
                         logs.add(getTimeAndUsername() + "Wrong password entered");
 
+                        currentNbAttempt++;
+                        if (currentNbAttempt >= nbAttempts) {
+                            Toast.makeText(getApplicationContext(), "Number of attempts reached", Toast.LENGTH_SHORT).show();
+                            logs.add(getTimeAndUsername() + "Number of attempts reached");
+                        }
+
                     }
 
                 } else if (savedPassword.equals(enteredPassword) /*|| (!orderOfPwd && samePwdDifferentOrders(currentPwd, enteredPassword))*/) {
@@ -292,7 +309,8 @@ public class PassFaceActivity extends AppCompatActivity {
                     currentStep = 0;
 
                     logs.add(getTimeAndUsername() + "Good password entered");
-                    PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+                    if (doCapture)
+                        PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                     logs.clear();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.wrong_pwd, Toast.LENGTH_SHORT).show();
@@ -301,6 +319,12 @@ public class PassFaceActivity extends AppCompatActivity {
                     resetPasswordLengthAndValue();
 
                     logs.add(getTimeAndUsername() + "Wrong password entered");
+
+                    currentNbAttempt++;
+                    if (currentNbAttempt >= nbAttempts) {
+                        Toast.makeText(getApplicationContext(), "Number of attempts reached", Toast.LENGTH_SHORT).show();
+                        logs.add(getTimeAndUsername() + "Number of attempts reached");
+                    }
 
                 }
             }
@@ -325,7 +349,8 @@ public class PassFaceActivity extends AppCompatActivity {
 
                 logs.add(getTimeAndUsername() + "Change password button clicked");
                 logs.add(getTimeAndUsername() + "Start of the experience");
-                PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
+                if (doCapture)
+                    PassFaceAdminActivity.logWriter.writePassfaceEvent(logs);
                 logs.clear();
 
             }
@@ -359,7 +384,7 @@ public class PassFaceActivity extends AppCompatActivity {
                 newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
                 break;
         }
-        gridView.setAdapter(new ImageAdapter(this, newArray, shuffle));
+        gridView.setAdapter(new ImageAdapter(this, newArray, doShuffle));
     }
 
     @Override
@@ -393,5 +418,10 @@ public class PassFaceActivity extends AppCompatActivity {
     private void resetPasswordLengthAndValue() {
         lengthOfCurrentPWD = 0;
         enteredPassword = "";
+    }
+
+    private void hideSubmitCancel() {
+        submitButton.setVisibility(View.INVISIBLE);
+        cancelButton.setVisibility(View.INVISIBLE);
     }
 }
