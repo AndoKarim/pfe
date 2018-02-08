@@ -24,8 +24,8 @@
         android:id="@+id/toggleRandomNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignBaseline="@+id/textRandomNum"
+        android:layout_alignParentEnd="true"
         android:text="ToggleButton" />
 
 
@@ -34,18 +34,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textRandomNum"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
         android:text="Lenght of Pin Code" />
 
     <EditText
         android:id="@+id/editTextPinLength"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignBaseline="@+id/textPinLength"
-        android:inputType="number"
+        android:layout_alignParentEnd="true"
         android:ems="5"
+        android:inputType="number"
         android:maxLength="2"
         android:text="4" />
 
@@ -55,18 +55,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textPinLength"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
         android:text="Number of try" />
 
     <EditText
         android:id="@+id/editTextTry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignBaseline="@+id/textTry"
-        android:inputType="number"
+        android:layout_alignParentEnd="true"
         android:ems="5"
+        android:inputType="number"
         android:maxLength="2"
         android:text="3" />
 
@@ -76,17 +76,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textTry"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="30dp"
         android:text="Capture Mode" />
 
     <ToggleButton
         android:id="@+id/toggleButtonCaptureMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignBaseline="@+id/textViewCaptureMode"
+        android:layout_alignParentEnd="true"
+        android:checked="true"
         android:text="ToggleButton" />
 
     <RadioGroup
@@ -94,10 +94,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewCaptureMode"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="12dp"
-        android:orientation="horizontal"
-        >
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
 
         <RadioButton
             android:id="@+id/radioButton1"

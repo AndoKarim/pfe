@@ -30,7 +30,7 @@
     <string name="no">No</string>
     <string name="passFace">Passface</string>
     <string name="Password_changed">Password changed</string>
-    <string name="good_pwd">Good Pwd</string>
+    <string name="good_pwd">Correct Password</string>
     <string name="wrong_pwd">Wrong Pwd</string>
     <string name="Password_not_changed">The Password isn\'t following the rules</string>
 
