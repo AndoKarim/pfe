@@ -374,8 +374,13 @@ public class PassFaceActivity extends AppCompatActivity {
     private void updateGridView() {
 
         String[] newArray = new String[0];
-        int startArray = currentStep * (nbPhotos + 1);
-        int endArray = startArray + nbPhotos;
+        int startArray;
+        if (currentStep == 0)
+            startArray = currentStep * (nbPhotos + 1);
+        else
+            startArray = currentStep * (nbPhotos);
+
+        int endArray = (startArray + nbPhotos);
         switch (typePhotos) {
             case "Misc":
                 newArray = Arrays.copyOfRange(Const.MISC, startArray, endArray);
@@ -384,7 +389,7 @@ public class PassFaceActivity extends AppCompatActivity {
                 newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
                 break;
             case "Faces":
-                newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
+                newArray = Arrays.copyOfRange(Const.FACES, startArray, endArray);
                 break;
         }
         gridView.setAdapter(new ImageAdapter(this, newArray, doShuffle));
