@@ -52,7 +52,7 @@
     <string-array name="typePhotos">
         <item>Animals</item>
         <item>Misc</item>
-        <item>Geometry Forms</item>
+        <item>Faces</item>
     </string-array>
 
     <string-array name="iterator">

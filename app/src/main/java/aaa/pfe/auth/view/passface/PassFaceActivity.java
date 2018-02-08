@@ -383,6 +383,9 @@ public class PassFaceActivity extends AppCompatActivity {
             case "Animals":
                 newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
                 break;
+            case "Faces":
+                newArray = Arrays.copyOfRange(Const.ANIMALS, startArray, endArray);
+                break;
         }
         gridView.setAdapter(new ImageAdapter(this, newArray, doShuffle));
     }
